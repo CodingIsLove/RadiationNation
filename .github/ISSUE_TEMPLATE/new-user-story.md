@@ -15,10 +15,12 @@ So that <some business value>
 ### Goal
 - [ ] goal 1
 
-### requirements
+### Requirements
 - [ ] requirement 1
 
-### links
+### Links
 - Check out [link](www.google.ch)
 
-### possible issues
+### Possible issues
+
+### Open questions
