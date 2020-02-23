@@ -1,0 +1,25 @@
+{
+  "name": "radiationnation",
+  "version": "1.0.0",
+  "description": "Tower defense game developed for a study project at our university of applied sciences",
+  "main": "main.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CodingIsLove/RadiationNation.git"
+  },
+  "author": "Benjamin Wyss and Christopher Germann",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CodingIsLove/RadiationNation/issues"
+  },
+  "homepage": "https://github.com/CodingIsLove/RadiationNation#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
