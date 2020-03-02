@@ -7,6 +7,5 @@ app.listen(port,(err)=>{
         return console.log(err)
     }
 
-
     return console.log(`server is listening on ${port}`)
 })
