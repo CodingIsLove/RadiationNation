@@ -1,10 +1,12 @@
 <template>
-    
+    <div class="signIn">
+        <LoginView/>
+    </div>
 </template>
 
 <script>
     export default {
-        name: "Game"
+        name: "LoginView"
     }
 </script>
 

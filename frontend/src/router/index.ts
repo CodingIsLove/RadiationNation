@@ -1,14 +1,24 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+import Login from '../views/LoginView.vue'
+import LobbyView from '../views/LobbyView.vue'
+import Game from '../views/Game.vue'
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
-    name: "Home",
-    component: Home
+    name: "Login",
+    component:Login
+  },{
+    path:"/lobby",
+    name: "Lobby",
+    component:LobbyView
+  },{
+    path:"/game",
+    name:"Game",
+    component: Game
   },
   {
     path: "/about",
@@ -22,7 +32,7 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  routes
+  routes: routes
 });
 
 export default router;
