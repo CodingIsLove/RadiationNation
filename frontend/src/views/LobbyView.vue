@@ -1,10 +1,15 @@
 <template>
-    <h1>Lobby View</h1>
+    <div class="Lobby">
+        <h1>Lobby View</h1>
+        <Lobby/>
+    </div>
 </template>
 
 <script>
+    import Lobby from "../components/Lobby";
     export default {
-        name: "LobbyView"
+        name: "LobbyView",
+        components: {Lobby}
     }
 </script>
 

@@ -1,6 +1,7 @@
 <template>
     <div class="login">
-        <h1>This here is a Login Component</h1>
+        <h1>Here we will insert the Login screen</h1>
+        <router-link></router-link>
     </div>
 </template>
 

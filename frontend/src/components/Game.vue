@@ -1,5 +1,5 @@
 <template>
-   <h1>GameView</h1>
+    
 </template>
 
 <script>
