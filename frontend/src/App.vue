@@ -1,5 +1,11 @@
 <template>
   <div id="app">
+    <div id="nav">
+        <h1>Here some temporary links to the different pages. This will change, when we implement the real userflow, but it is fine for the moment</h1>
+      <router-link to="/">LoginScreen</router-link> |
+      <router-link to="/game">Game</router-link>   |
+      <router-link to="/lobby">Lobby</router-link>
+    </div>
     <router-view />
   </div>
 </template>
