@@ -1,20 +1,12 @@
 <template>
-  <v-app>
-    <v-content>
-      <LoginView></LoginView>
-    </v-content>
-  </v-app>
+    <div id="app">
+        <router-view/>
+    </div>
 </template>
 
 <script>
-import LoginView from "./views/LoginView";
-
 export default {
   name: "App",
-
-  components: {
-    LoginView
-  },
 
   data: () => ({
     //
