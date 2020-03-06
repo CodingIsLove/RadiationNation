@@ -1,5 +1,6 @@
 <template>
-   <v-app id="lobby">
+   <v-app class="lobby">
+       <h1>This here will be the lobby component</h1>
    </v-app>
 </template>
 
@@ -10,7 +11,7 @@ export default {
 </script>
 
 <style scoped>
-   #lobby{
+   .lobby{
       height: 95%;
       background-color: green;
    }

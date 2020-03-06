@@ -1,5 +1,5 @@
 <template>
-    <v-app id="lobbyView">
+    <v-app class="lobbyView">
         <Navbar/>
         <v-container id="container">
             <v-row align="center">
@@ -29,7 +29,7 @@ export default {
         height: 100%;
     }
 
-    #lobbyView{
+    .lobbyView{
         background-image: url("../assets/battle_background.jpg");
         background-position: center;
     }

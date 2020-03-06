@@ -1,17 +1,17 @@
 <template>
-    <v-app id="chat">
-
+    <v-app class="chat">
+        <h1>This here will be the chat component</h1>
     </v-app>
 </template>
 
 <script>
-export default {
-  name: "Chat"
-};
+    export default {
+        name: "Chat"
+    };
 </script>
 
 <style scoped>
-    #chat{
+    .chat {
         height: 100%;
         background-color: aqua;
     }
