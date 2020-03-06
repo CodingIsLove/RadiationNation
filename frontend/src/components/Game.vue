@@ -1,7 +1,7 @@
 <template>
-  <div class="Game">
-    <h1>This here is a game, how sweet is this</h1>
-  </div>
+    <v-app>
+        <h1>Here will be the Game view</h1>
+    </v-app>
 </template>
 
 <script>
