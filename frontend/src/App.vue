@@ -1,34 +1,23 @@
 <template>
-  <div id="app">
-    <div id="nav">
-        <h1>Here some temporary links to the different pages. This will change, when we implement the real userflow, but it is fine for the moment</h1>
-      <router-link to="/">LoginScreen</router-link> |
-      <router-link to="/game">Game</router-link>   |
-      <router-link to="/lobby">Lobby</router-link>
-    </div>
-    <router-view />
-  </div>
+  <v-app>
+    <v-content>
+      <LoginView></LoginView>
+    </v-content>
+  </v-app>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import LoginView from "./views/LoginView";
 
-#nav {
-  padding: 30px;
+export default {
+  name: "App",
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+  components: {
+    LoginView
+  },
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-</style>
+  data: () => ({
+    //
+  })
+};
+</script>

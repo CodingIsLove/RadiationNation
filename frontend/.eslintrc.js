@@ -3,11 +3,7 @@ module.exports = {
   env: {
     node: true
   },
-  extends: [
-    "plugin:vue/essential",
-    "eslint:recommended",
-    "@vue/prettier",
-  ],
+  extends: ["plugin:vue/essential", "eslint:recommended", "@vue/prettier"],
   parserOptions: {
     ecmaVersion: 2020
   },
@@ -17,10 +13,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: [
-        "**/__tests__/*.js?(x)",
-        "**/tests/unit/**/*.spec.js?(x)"
-      ],
+      files: ["**/__tests__/*.js?(x)", "**/tests/unit/**/*.spec.js?(x)"],
       env: {
         mocha: true
       }
