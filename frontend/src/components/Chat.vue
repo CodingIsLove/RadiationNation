@@ -1,7 +1,7 @@
 <template>
-  <div class="Chat">
-    <h1>Welcome Welcome to the Chat component</h1>
-  </div>
+    <v-app id="chat">
+
+    </v-app>
 </template>
 
 <script>
@@ -10,4 +10,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+    #chat{
+        height: 100%;
+        background-color: aqua;
+    }
+</style>

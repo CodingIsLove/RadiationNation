@@ -1,7 +1,6 @@
 <template>
-  <div class="Lobby">
-    <h1>Welcome welcome to the Lobbyview</h1>
-  </div>
+   <v-app id="lobby">
+   </v-app>
 </template>
 
 <script>
@@ -10,4 +9,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+   #lobby{
+      height: 95%;
+      background-color: green;
+   }
+</style>
