@@ -1,32 +1,50 @@
 <template>
-    <script src="/socket.io/socket.io.js"></script>
-    <v-app class="chat">
-        <ul id="messages"></ul>
-        <form action="">
-            <input id="m" autocomplete="off" /><button>Send</button>
-        </form>
-    </v-app>
+    <v-card class="mt-3">
+        <v-card-title>
+            <h3>Chat</h3>
+        </v-card-title>
+        <v-card-text>
+            <div class="messages">
+                <p v-for="msg in messages" :key="msg.ts">
+                    <strong>{{ msg.user }}</strong
+                    >: {{ msg.message }}
+                </p>
+            </div>
+            <br />
+            <v-text-field label="User:" type="text" v-model="user"></v-text-field>
+            <v-textarea label="Message:" v-model="message"></v-textarea>
+        </v-card-text>
+        <v-card-actions>
+            <v-btn color="success" @click.prevent="sendMessage">Send</v-btn>
+        </v-card-actions>
+    </v-card>
 </template>
 
 <script>
-    import io from 'socket.io-client';
-
-    
+    import io from "socket.io-client";
+    const PORT = process.env.PORT ?? 3000;
     export default {
-        name: "Chat",
-        created() {
-
+        name: "chat",
+        data() {
+            return {
+                user: "",
+                message: "",
+                messages: [],
+                socket: io(`localhost:${PORT}`)
+            };
+        },
+        methods: {
+            sendMessage() {
+                this.socket.emit("SEND_MESSAGE", {
+                    user: this.user,
+                    message: this.message,
+                    ts: Date.now() + this.user[0]
+                });
+                this.message = "";
+            }
+        },
+        mounted() {
+            this.socket.on("MESSAGE", data => this.messages.push(data));
         }
     };
 </script>
-
-<style scoped>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font: 13px Helvetica, Arial; }
-    form { background: #FFF; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-    form input { border: 0; padding: 10px; width: 10%; margin-right: .5%; }
-    form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-    #messages { list-style-type: none; margin: 0; padding: 0; }
-    #messages li { padding: 5px 10px; }
-    #messages li:nth-child(odd) { background: #eee; }
-</style>

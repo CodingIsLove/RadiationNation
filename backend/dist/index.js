@@ -1,14 +1,15 @@
-var app = require('express')();
-var io = require('socket.io')(server);
-var server = require('http').createServer(app);
-app.get('/', function (req, res) {
-    res.sendFile();
+const express = require("express");
+const app = express();
+const PORT = process.env.PORT || 3000;
+const server = app.listen(PORT, () => {
+    //eslint-disable-next-line no-console
+    console.log(`Server is running on port ${PORT}`);
 });
-var app = require('express')();
-io.on('connection', function (socket) {
-    console.log('a user connected');
-});
-server.listen(3000, function () {
-    console.log('listening on *:3000');
+const io = require("socket.io")(server);
+io.on("connection", socket => {
+    // console.log('sid=', socket.id);
+    socket.on("SEND_MESSAGE", data => {
+        io.emit("MESSAGE", data);
+    });
 });
 //# sourceMappingURL=index.js.map
