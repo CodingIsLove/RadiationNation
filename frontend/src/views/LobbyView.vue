@@ -1,18 +1,36 @@
 <template>
-    <div class="Lobby">
-        <h1>Lobby View</h1>
-        <Lobby/>
-    </div>
+    <v-app class="lobbyView">
+        <Navbar/>
+        <v-container id="container">
+            <v-row align="center">
+                <v-col align-self="start" cols="8">
+                    <Lobby/>
+                </v-col>
+                <v-col align-self="end" cols="4">
+                    <Chat/>
+                </v-col>
+            </v-row>
+        </v-container>
+    </v-app>
 </template>
 
 <script>
-    import Lobby from "../components/Lobby";
-    export default {
-        name: "LobbyView",
-        components: {Lobby}
-    }
+import Lobby from "../components/Lobby";
+import Chat from "../components/Chat";
+import Navbar from "../components/Navbar";
+export default {
+  name: "LobbyView",
+  components: {Navbar, Lobby,Chat }
+};
 </script>
 
 <style scoped>
+    #container{
+        height: 100%;
+    }
 
+    .lobbyView{
+        background-image: url("../assets/battle_background.jpg");
+        background-position: center;
+    }
 </style>

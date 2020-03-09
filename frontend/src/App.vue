@@ -1,34 +1,15 @@
 <template>
-  <div id="app">
-    <div id="nav">
-        <h1>Here some temporary links to the different pages. This will change, when we implement the real userflow, but it is fine for the moment</h1>
-      <router-link to="/">LoginScreen</router-link> |
-      <router-link to="/game">Game</router-link>   |
-      <router-link to="/lobby">Lobby</router-link>
+    <div id="app">
+        <router-view/>
     </div>
-    <router-view />
-  </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+export default {
+  name: "App",
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-</style>
+  data: () => ({
+    //
+  })
+};
+</script>
