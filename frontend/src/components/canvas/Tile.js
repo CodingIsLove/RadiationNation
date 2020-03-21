@@ -32,13 +32,14 @@ module.exports = class Tile{
     drawTile(){
         console.log(`Drawing tile at position: (${this.x},${this.y})`)
         console.log(`Current perspective is: ${this.perspective}`)
+        this.applyStandard()
 
         // Convert the base coordinates into coordinates of the choosen coordinate system
         if(this.perspective === "PLANAR"){
             this.ctx.fillRect(this.x_trafo,this.y_trafo,this.stdWidth-3,this.stdWidth-3)
             this.ctx.strokeRect(this.x_trafo,this.y_trafo,this.stdWidth-3,this.stdWidth-3)
         }else{
-            console.log("Now it should make the isometric transformation")
+            console.log("Hello hello")
         }
     }
 
@@ -51,6 +52,14 @@ module.exports = class Tile{
     }
 
     isometricTransformation(){
+        this.stdWidth = ((this.canvas.width-this.margin)/2)*Math.sqrt(2)
+        let origin_x = this.margin
+        //let origin_y = (this.canvas.height-this.margin)/2
+        this.x_trafo = origin_x + this.stdWidth/Math.sqrt(2)*this.x
+        this.y_trafo =
+
+
+        this.x_trafo = origin_x
         this.stdWidth =(this.canvas . this.margin)/(2*Math.sqrt(2))
     }
 
