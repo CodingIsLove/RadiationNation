@@ -42,5 +42,7 @@ app.listen(app.get('port'),()=>{
     console.log(`app is listening on port: ${app.get('port')}`);
 });
 
+// Export the application for testing purposes
+export default app;
 
 

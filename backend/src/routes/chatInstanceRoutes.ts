@@ -7,22 +7,22 @@ chatRouter.use((req,res,next)=>{
 });
 
 chatRouter.post("/connectToGameInstance",(req,res)=>{
-    //TODO: IMPLEMENT
+    // TODO: IMPLEMENT
     res.send('not implemented yet');
 });
 
 chatRouter.post("/killChatInstance",(req,res)=>{
-    //TODO: IMPLEMENT
+    // TODO: IMPLEMENT
     res.send('not implemented yet');
 });
 
 chatRouter.post("/connect2globalChat",(req,res)=>{
-    //TODO: IMPLEMENT
+    // TODO: IMPLEMENT
     res.send('not implemented yet');
 });
 
 chatRouter.post("/disconnectGlobalChat",(req,res)=>{
-    //TODO: IMPLEMENT
+    // TODO: IMPLEMENT
     res.send('not implemented yet');
 });
 
