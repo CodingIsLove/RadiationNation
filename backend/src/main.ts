@@ -4,14 +4,13 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import {credentials} from './misc/credentials'
 import expressSession from 'express-session';
+// import cors from 'cors'
 
 // Import all the different routes
 import {userRouter} from './routes/userRoutes';
 import {resourceRouter} from './routes/resourcesRoutes';
 import {chatRouter} from './routes/chatInstanceRoutes';
-import {errorRouter} from './routes/errorRoutes'
-
-
+import {gameRouter} from './routes/gameInstanceState';
 
 // ---- initialize configuration
 const app = express();
@@ -20,18 +19,22 @@ app.set('port', process.env.PORT || 3000);
 app.disable('x-powered-by'); // omit information, that could help hackers
 app.use(cookieParser(credentials.cookieSecret));
 app.use(expressSession());
-
 app.use(bodyParser.json());
+// app.use(cors() => could prevent Cross-Origin Resource Sharing... currently not necessary, but could be important for late
 
-// ---- configure all the routes
+// ---- primary page routing
+app.get('/',(req,res)=>{
+        res.send('Main thing of requests is working')
+});
+
+// ---- configure API
 app.use('/api/user', userRouter);
 app.use('/api/resource', resourceRouter);
 app.use('/api/chat', chatRouter);
-// todo: the last rout should be error handling, but not sure how to implement this
-// app.use("/*", errorRouter);
+app.use('/api/game', gameRouter);
 
-app.get('/',(req,res)=>{
-        res.send('Main thing of requests is working')
+app.get('/*',(req,res)=>{
+   res.send('uuups something went wrong');
 });
 
 // ---- Start the server
