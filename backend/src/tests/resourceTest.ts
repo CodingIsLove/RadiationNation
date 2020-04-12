@@ -11,5 +11,4 @@ suite('GameInstance API Testing', ()=>{
         rest.post(`${base}/api/user`,{}).on('success',(data)=>{
         })
     });
-
 });

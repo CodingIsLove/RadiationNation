@@ -1,8 +1,27 @@
 import express from 'express';
+import {credentials} from '../misc/credentials'
 import mongoose from 'mongoose';
+import app from '../main'
 import {userSchema} from '../schema/userSchema'
 const userRouter = express.Router();
 const User = mongoose.model('User',userSchema);
+let opts = {
+    server:{
+        socketOptions:{ keepAlive:true}
+    }};
+
+switch (app.get('env')) {
+    case 'development':
+        mongoose.connect(credentials.mongo.development.connectionString);
+        break;
+    case 'production':
+        mongoose.connect(credentials.mongo.production.connectionString);
+        break;
+    default:
+        throw new Error (`Unknown execution environment: ${app.get('env')}`);
+}
+
+
 
 // todo: will be used for email import {credentials} from '../misc/credentials'
 // todo: implement later: import nodeMailer from 'nodeMailer'

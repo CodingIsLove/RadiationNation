@@ -12,6 +12,10 @@ import {resourceRouter} from './routes/resourcesRoutes';
 import {chatRouter} from './routes/chatInstanceRoutes';
 import {gameRouter} from './routes/gameInstanceState';
 
+// Set up mongo as a session store
+let MongoSessionStore = require('session-mongoose')(require('connect'));
+let sessionStore = new MongoSessionStore({url: credentials.mongo.production.connectionString});
+
 // ---- initialize configuration
 const app = express();
 dotenv.config();
