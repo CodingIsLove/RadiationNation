@@ -32,6 +32,7 @@
     "nodemailer": "^6.4.6",
     "save-dev": "0.0.1-security",
     "session-mongoose": "^0.5.2",
+    "start-server-and-test": "^1.10.11",
     "static": "^2.0.0",
     "xoauth2": "^1.2.0"
   },

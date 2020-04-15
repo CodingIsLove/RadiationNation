@@ -7,8 +7,9 @@ suite('GameInstance API Testing', ()=>{
     const base = "http://localhost:8080";
 
     test('/getResource',(done)=>{
-        //todo: write this test
+        // todo: write this test
         rest.post(`${base}/api/user`,{}).on('success',(data)=>{
+            console.log(data);
         })
     });
 });

@@ -17,32 +17,37 @@ suite('User API Tests', ()=>{
     });
 
     test('/getUserData',(done)=>{
-        //todo: write this test
+        // todo: write this test
         rest.post(`${base}/api/user`,{}).on('success',(data)=>{
+            console.log(data)
         })
     });
 
     test('/register',(done)=>{
-        //todo: write this test
+        // todo: write this test
         rest.post(`${base}/api/user`,{}).on('success',(data)=>{
+            console.log(data)
         })
     });
 
      test('/login',(done)=>{
-        //todo: write this test
+        // todo: write this test
         rest.post(`${base}/api/user`,{}).on('success',(data)=>{
+            console.log(data)
         })
     });
 
      test('/getVerificationMail',(done)=>{
-        //todo: write this test
+        // todo: write this test
         rest.post(`${base}/api/user`,{}).on('success',(data)=>{
+            console.log(data)
         })
     });
 
      test('/updateUser',(done)=>{
-        //todo: write this test
+        // todo: write this test
         rest.post(`${base}/api/user`,{}).on('success',(data)=>{
+            console.log(data)
         })
     });
 });

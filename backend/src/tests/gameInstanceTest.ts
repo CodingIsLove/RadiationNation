@@ -8,26 +8,30 @@ suite('GameInstance API Testing', ()=>{
 
 
     test('/getGameState',(done)=>{
-        //todo: write this test
+        // todo: write this test
         rest.post(`${base}/api/user`,{}).on('success',(data)=>{
+            console.log(data);
         })
     });
 
     test('/newGame',(done)=>{
-        //todo: write this test
+        // todo: write this test
         rest.post(`${base}/api/user`,{}).on('success',(data)=>{
+            console.log(data);
         })
     });
 
     test('/updateGameState',(done)=>{
-        //todo: write this test
+        // todo: write this test
         rest.post(`${base}/api/user`,{}).on('success',(data)=>{
+            console.log(data);
         })
     });
 
     test('/killGameInstance',(done)=>{
-        //todo: write this test
+        // todo: write this test
         rest.post(`${base}/api/user`,{}).on('success',(data)=>{
+            console.log(data);
         })
     });
 });
