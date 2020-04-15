@@ -30,6 +30,7 @@
     "mongoose": "^5.9.7",
     "save-dev": "0.0.1-security",
     "session-mongoose": "^0.5.2",
+    "socket.io": "^2.3.0",
     "start-server-and-test": "^1.10.11",
     "static": "^2.0.0"
   },

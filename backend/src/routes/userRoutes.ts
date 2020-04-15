@@ -1,13 +1,10 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import app from '../main'
-import {userSchema} from '../schema/userSchema'
+import {User} from '../schema/userSchema'
 const userRouter = express.Router();
-const User = mongoose.model('User',userSchema);
-const opts = {
-    server:{
-        socketOptions:{ keepAlive:true}
-    }};
+
+
+
 
 userRouter.use((req,res,next)=>{
     // todo: implement middleware stuff here if necessary
@@ -29,19 +26,40 @@ userRouter.post("/",(req,res)=>{
 
 // Returns the user date for the user with id:userId
 userRouter.post("/getUserData",(req,res)=>{
-    // todo: implement this shit
-    res.send('not implemented yet')
+    // define guard, to see if user is already logged in or not
+    mongoose.connect(process.env.CONNECTION_STRING, {useNewUrlParser: true, useUnifiedTopology: true});
+    const db = mongoose.connection;
+    db.on('error', console.error.bind(console, 'connection error:'));
+    db.once('open', () => {
+        User.findById()
+    });
 });
 
 userRouter.post("/login",(req,res)=>{
+    // 1, Check, if Profile already exists or not
+    // 2. If profile exists, log in :)
     // TODO: implement
     res.send('not implemented yet')
 });
 
-userRouter.post("/register",(req,res)=>{
-    // TODO: IMPLEMENT
-    res.send('not implemented yet')
- });
+userRouter.post("/register",(req,res)=> {
+    // Check if username is not already taken
+
+    mongoose.connect(process.env.CONNECTION_STRING, {useNewUrlParser: true, useUnifiedTopology: true});
+    const db = mongoose.connection;
+    db.on('error', console.error.bind(console, 'connection error:'));
+    db.once('open', () => {
+        new User({
+            userId: req.body.userId,
+            username: req.body.username,
+            password: req.body.password,
+            email: req.body.email
+        }).save((err, user) => {
+            if (err) res.send('Missing parameters in the request')
+            res.send(user)
+        });
+    });
+});
 
 userRouter.post("/getVerificationMail",(req,res)=>{
        // todo: implement this method
