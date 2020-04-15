@@ -1,5 +1,4 @@
 import express from 'express';
-import {credentials} from '../misc/credentials'
 import mongoose from 'mongoose';
 import app from '../main'
 import {userSchema} from '../schema/userSchema'
@@ -9,10 +8,6 @@ const opts = {
     server:{
         socketOptions:{ keepAlive:true}
     }};
-
-
-// todo: will be used for email import {credentials} from '../misc/credentials'
-// todo: implement later: import nodeMailer from 'nodeMailer'
 
 userRouter.use((req,res,next)=>{
     // todo: implement middleware stuff here if necessary

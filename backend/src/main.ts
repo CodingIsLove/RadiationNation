@@ -2,7 +2,6 @@ import dotenv from 'dotenv';
 import express, {Request, Response} from "express";
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
-import {credentials} from './misc/credentials'
 import expressSession from 'express-session';
 // import cors from 'cors'
 
@@ -21,7 +20,7 @@ const app = express();
 dotenv.config();
 app.set('port', process.env.PORT || 3000);
 app.disable('x-powered-by'); // omit information, that could help hackers
-app.use(cookieParser(credentials.cookieSecret));
+app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(expressSession());
 app.use(bodyParser.json());
 // app.use(cors() => could prevent Cross-Origin Resource Sharing... currently not necessary, but could be important for late
