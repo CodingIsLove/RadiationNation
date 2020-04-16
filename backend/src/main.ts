@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
-import express, {Request, Response} from "express";
+dotenv.config();
+import express from "express";
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import expressSession from 'express-session';
@@ -10,6 +11,8 @@ import {userRouter} from './routes/userRoutes';
 import {resourceRouter} from './routes/resourcesRoutes';
 import {chatRouter} from './routes/chatInstanceRoutes';
 import {gameRouter} from './routes/gameInstanceState';
+import path from "path";
+import './db/database' // This is complete DB setup, after that you can just use the mongoose models
 
 // Set up mongo as a session store
 // const MongoSessionStore = require('session-mongoose')(require('connect'));
@@ -17,7 +20,6 @@ import {gameRouter} from './routes/gameInstanceState';
 
 // ---- initialize configuration
 const app = express();
-dotenv.config();
 app.set('port', process.env.PORT || 3000);
 app.disable('x-powered-by'); // omit information, that could help hackers
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -31,6 +33,7 @@ app.get('/',(req,res)=>{
 });
 
 // ---- configure API
+app.use('/static',express.static(path.join(__dirname, 'public')));
 app.use('/api/user', userRouter);
 app.use('/api/resource', resourceRouter);
 app.use('/api/chat', chatRouter);
@@ -44,8 +47,3 @@ app.get('/*',(req,res)=>{
 app.listen(app.get('port'),()=>{
     console.log(`app is listening on port: ${app.get('port')}`);
 });
-
-// Export the application for testing purposes
-export default app;
-
-

@@ -32,7 +32,8 @@
     "session-mongoose": "^0.5.2",
     "socket.io": "^2.3.0",
     "start-server-and-test": "^1.10.11",
-    "static": "^2.0.0"
+    "static": "^2.0.0",
+    "validator": "^13.0.0"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",

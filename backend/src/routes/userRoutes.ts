@@ -1,10 +1,6 @@
 import express from 'express';
-import mongoose from 'mongoose';
-import {User} from '../schema/userSchema'
+import {UserModel} from '../schema/userSchema'
 const userRouter = express.Router();
-
-
-
 
 userRouter.use((req,res,next)=>{
     // todo: implement middleware stuff here if necessary
@@ -26,13 +22,13 @@ userRouter.post("/",(req,res)=>{
 
 // Returns the user date for the user with id:userId
 userRouter.post("/getUserData",(req,res)=>{
-    // define guard, to see if user is already logged in or not
-    mongoose.connect(process.env.CONNECTION_STRING, {useNewUrlParser: true, useUnifiedTopology: true});
-    const db = mongoose.connection;
-    db.on('error', console.error.bind(console, 'connection error:'));
-    db.once('open', () => {
-        User.findById()
-    });
+    UserModel.find({},(err,users)=>{
+        const userMap  = {};
+        users.forEach(user => {
+            userMap[user.id] = user;
+        });
+        res.send(userMap);
+    })
 });
 
 userRouter.post("/login",(req,res)=>{
@@ -44,21 +40,16 @@ userRouter.post("/login",(req,res)=>{
 
 userRouter.post("/register",(req,res)=> {
     // Check if username is not already taken
-
-    mongoose.connect(process.env.CONNECTION_STRING, {useNewUrlParser: true, useUnifiedTopology: true});
-    const db = mongoose.connection;
-    db.on('error', console.error.bind(console, 'connection error:'));
-    db.once('open', () => {
-        new User({
+        const user = new UserModel({
             userId: req.body.userId,
             username: req.body.username,
             password: req.body.password,
             email: req.body.email
-        }).save((err, user) => {
-            if (err) res.send('Missing parameters in the request')
-            res.send(user)
         });
-    });
+
+        user.save()
+            .then(doc=>{res.send(doc)})
+            .catch(err=>{console.error(err)})
 });
 
 userRouter.post("/getVerificationMail",(req,res)=>{
