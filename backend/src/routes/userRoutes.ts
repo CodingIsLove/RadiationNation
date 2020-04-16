@@ -1,48 +1,71 @@
 import express from 'express';
-import mongoose from 'mongoose';
-import {userSchema} from '../schema/userSchema'
+import {UserModel} from '../schema/userSchema'
 const userRouter = express.Router();
-const User = mongoose.model('User',userSchema);
-
-// todo: will be used for email import {credentials} from '../misc/credentials'
-// todo: implement later: import nodeMailer from 'nodeMailer'
 
 userRouter.use((req,res,next)=>{
     // todo: implement middleware stuff here if necessary
+    // todo: remove this middleware if it is not required anymore
     console.log(`You made a user request`);
     next();
 });
 
-// Returns the user date for the user with id:userId
+
 userRouter.post("/getUserData",(req,res)=>{
-    //todo: implement this shit
-    res.send('not implemented yet')
+    UserModel
+        .find({
+            username: req.body.username // search query
+        })
+        .then(userData=>{
+            res.send(userData)
+        })
+        .catch(err=>{
+            res.send(err)
+        })
 });
 
 userRouter.post("/login",(req,res)=>{
-    //TODO: implement
+    // 1, Check, if Profile already exists or not
+    // 2. If profile exists, log in :)
+    // TODO: implement
     res.send('not implemented yet')
 });
 
-userRouter.post("/getVerificationMail",(req,res)=>{
-    // todo: implement this method
-    res.send('not implemented yet')
- });
+userRouter.post("/register",(req,res)=> {
+    // Check if username is not already taken
+        const user = new UserModel({
+            userId: req.body.userId,
+            username: req.body.username,
+            password: req.body.password,
+            email: req.body.email
+        });
 
-userRouter.post("/register",(req,res)=>{
-    //TODO: IMPLEMENT
-    res.send('not implemented yet')
- });
-
-userRouter.put('/updateUser',(req,res)=>{
-    //TODO: IMPLEMENT
-    res.send('not implemented yet')
+        user.save()
+            .then(doc=>{res.send(doc)})
+            .catch(err=>{console.error(err)})
 });
 
 userRouter.post("/getVerificationMail",(req,res)=>{
        // todo: implement this method
     res.send('called the getVerificationMail method... not implemented yet')
  });
+
+userRouter.put('/updateUser',(req,res)=>{
+    // TODO: IMPLEMENT
+    res.send('not implemented yet')
+});
+
+userRouter.put('/delete',(req,res)=>{
+    UserModel
+        .findOneAndRemove({
+            email: req.body.email
+        })
+        .then(response=>{
+            res.send(response)
+        })
+        .catch(err=>{
+            res.send(err)
+        })
+});
 
 export {userRouter};
 

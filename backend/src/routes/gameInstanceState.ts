@@ -8,22 +8,22 @@ gameRouter.use((req,res,next)=>{
 });
 
 gameRouter.post("/getGameState/:gsessionId",(req,res)=>{
-    //todo: implement
+    // todo: implement
     res.send('not implemented yet');
 });
 
 gameRouter.post("/newGame",(req,res)=>{
-    //todo: implement
+    // todo: implement
     res.send('not implemented yet');
 });
 
 gameRouter.put("/updateGameState",(req,res)=>{
-    //todo: implement
+    // todo: implement
     res.send('not implemented yet');
 });
 
 gameRouter.delete("/killGameInstance",(req,res)=>{
-    //todo: implement
+    // todo: implement
     res.send('not implemented yet');
 });
 
