@@ -9,26 +9,18 @@ userRouter.use((req,res,next)=>{
     next();
 });
 
-// todo: delete the "/" call... i only needed it to understand how to generate a test
-userRouter.post("/",(req,res)=>{
-    // todo: implement this shit
-    res.json({
-        userId: "123",
-        username: "chrisiBoy",
-        password: "secret",
-        email: "chris@mail.com"
-    });
-});
 
-// Returns the user date for the user with id:userId
 userRouter.post("/getUserData",(req,res)=>{
-    UserModel.find({},(err,users)=>{
-        const userMap  = {};
-        users.forEach(user => {
-            userMap[user.id] = user;
-        });
-        res.send(userMap);
-    })
+    UserModel
+        .find({
+            username: req.body.username // search query
+        })
+        .then(userData=>{
+            res.send(userData)
+        })
+        .catch(err=>{
+            res.send(err)
+        })
 });
 
 userRouter.post("/login",(req,res)=>{
@@ -60,6 +52,19 @@ userRouter.post("/getVerificationMail",(req,res)=>{
 userRouter.put('/updateUser',(req,res)=>{
     // TODO: IMPLEMENT
     res.send('not implemented yet')
+});
+
+userRouter.put('/delete',(req,res)=>{
+    UserModel
+        .findOneAndRemove({
+            email: req.body.email
+        })
+        .then(response=>{
+            res.send(response)
+        })
+        .catch(err=>{
+            res.send(err)
+        })
 });
 
 export {userRouter};
