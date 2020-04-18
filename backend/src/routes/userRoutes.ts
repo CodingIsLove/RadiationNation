@@ -1,5 +1,5 @@
 import express from 'express';
-import {UserModel} from '../schema/userSchema'
+import {User} from '../model/User'
 const userRouter = express.Router();
 
 userRouter.use((req,res,next)=>{
@@ -11,7 +11,7 @@ userRouter.use((req,res,next)=>{
 
 
 userRouter.post("/getUserData",(req,res)=>{
-    UserModel
+   User
         .find({
             username: req.body.username // search query
         })
@@ -30,18 +30,30 @@ userRouter.post("/login",(req,res)=>{
     res.send('not implemented yet')
 });
 
-userRouter.post("/register",(req,res)=> {
+userRouter.post("/registerNewUser",async (req,res)=> {
     // Check if username is not already taken
-        const user = new UserModel({
-            userId: req.body.userId,
+    try{
+        const userList = await User.find({email:req.body.email});
+        if(userList.length >=1){
+            return res.status(409).json({message:"email already in use"})
+        }else{
+            console.log("This user does not exist already")
+        }
+        const user = new User({
             username: req.body.username,
             password: req.body.password,
             email: req.body.email
         });
 
-        user.save()
-            .then(doc=>{res.send(doc)})
-            .catch(err=>{console.error(err)})
+        const data = await user.save();
+        const token = await user.generateToken();
+        console.log(token);
+        res.status(201).json({data,token});
+    }
+    catch (err) {
+       res.status(400).json({err})
+    }
+
 });
 
 userRouter.post("/getVerificationMail",(req,res)=>{
@@ -55,7 +67,7 @@ userRouter.put('/updateUser',(req,res)=>{
 });
 
 userRouter.put('/delete',(req,res)=>{
-    UserModel
+   User
         .findOneAndRemove({
             email: req.body.email
         })
@@ -68,5 +80,4 @@ userRouter.put('/delete',(req,res)=>{
 });
 
 export {userRouter};
-
 

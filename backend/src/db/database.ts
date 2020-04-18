@@ -11,7 +11,8 @@ class Database {
    }
 
    _connect() {
-       mongoose.connect(connectionString).then(()=>{
+       mongoose.set("useCreateIndex",true);
+       mongoose.connect(connectionString,{useNewUrlParser:true, useUnifiedTopology:true}).then(()=>{
                console.log('Database connection successfully established');
            })
            .catch(error=>{
