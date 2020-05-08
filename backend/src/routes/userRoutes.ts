@@ -1,5 +1,6 @@
 import express from 'express';
 import {User} from '../model/User'
+import {authMiddleware} from '../config/auth';
 const userRouter = express.Router();
 
 userRouter.use((req,res,next)=>{
@@ -23,19 +24,38 @@ userRouter.post("/getUserData",(req,res)=>{
         })
 });
 
-userRouter.post("/login",(req,res)=>{
-    // 1, Check, if Profile already exists or not
-    // 2. If profile exists, log in :)
-    // TODO: implement
-    res.send('not implemented yet')
+userRouter.post("/login",async (req,res)=>{
+    try{
+        const email = req.body.email;
+        const password = req.body.password;
+        const user = await User.findByCredentials(email, password);
+        if(!user){
+           return res.status(401).json({
+               error:"Login failed! Check authentication credentials!"
+           })
+        }
+        const token = await user.generateAuthToken();
+        res.status(201).json({user,token})
+    }catch (err) {
+        res.status(400).json({err})
+
+    }
 });
 
-userRouter.post("/registerNewUser",async (req,res)=> {
+userRouter.get("/me",authMiddleware,async (req,res)=>{
+    // @ts-ignore
+    await res.json(req.userData);
+});
+
+userRouter.post("/register",async (req,res)=> {
     // Check if username is not already taken
     try{
         const userList = await User.find({email:req.body.email});
-        if(userList.length >=1){
-            return res.status(409).json({message:"email already in use"})
+        const userName = await User.find({username:req.body.username});
+        if(userList.length >=1 ){
+            return res.status(409).json({message:"email already in use"});
+        }else if(userName.length >=1){
+            return res.status(409).json({message:"username already in use"})
         }else{
             console.log("This user does not exist already")
         }
@@ -46,7 +66,7 @@ userRouter.post("/registerNewUser",async (req,res)=> {
         });
 
         const data = await user.save();
-        const token = await user.generateToken();
+        const token = await user.generateAuthToken();
         console.log(token);
         res.status(201).json({data,token});
     }
