@@ -9,28 +9,32 @@
                                 <v-toolbar-title>Radiation Nation Login</v-toolbar-title>
                             </v-toolbar>
                             <v-card-text>
-                                <v-form>
+                                <v-form @submit.prevent="loginUser">
                                     <v-text-field
+                                            v-model="email"
                                             label="Login"
                                             name="login"
                                             prepend-icon="mdi-account"
                                             type="text"
+                                            required
                                     />
 
                                     <v-text-field
                                             id="password"
+                                            v-model="password"
                                             label="Password"
                                             name="password"
                                             prepend-icon="mdi-lock"
                                             type="password"
+                                            required
                                     />
                                 </v-form>
                             </v-card-text>
                             <v-card-actions>
                                 <v-spacer/>
-                                <v-btn color="primary" @click="register">Register</v-btn>
+                                <v-btn color="primary" @click="register">Register here!</v-btn>
                                 <v-btn color="primary" @click="guestlogin">Guest</v-btn>
-                                <v-btn color="primary" @click="login">Login</v-btn>
+                                <v-btn color="primary" type="submit" @click="login">Login</v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-col>
@@ -42,25 +46,42 @@
 
 <script>
 
+    import swal from "sweetalert";
+
     export default {
-        name: "Login",
+        data(){
+         return{
+             login: {
+                 email:"",
+                 password:""
+             }
+         }
+        },
         methods: {
-            login: function(){
-                this.$router.push({path:'/lobby'});
+            async loginUser(){
+                try {
+                    let response = await this.$http.post("api/user/login", this.login);
+                    let token = response.data.token;
+                    localStorage.setItem("jwt", token);
+                    if (token) {
+                        await swal("Success", "Login Successful", "success");
+                        await this.$router.push("/lobby");
+                    }
+                } catch (err) {
+                    await swal("Error", "Something Went Wrong", "error");
+                    console.log(err.response);
+                }
             },
-            guestlogin: function(){
-                console.log("Guest login was pressed");
-            },
-            register: () => {
-                console.log("register was pressed");
-            },
+            register: function (){
+                this.$router.push("/register");
+            }
         }
     };
 </script>
 
 <style scoped>
     #inspire {
-        background-image: url("../assets/login_image.jpg");
+        background-image: url('~@/assets/login_image.jpg');
         background-repeat: no-repeat;
         background-position: center;
     }
