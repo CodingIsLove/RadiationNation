@@ -31,9 +31,8 @@
                                 </v-form>
                             </v-card-text>
                             <v-card-actions>
-                                <v-spacer/>
                                 <v-btn color="primary" @click="register">Register here!</v-btn>
-                                <v-btn color="primary" @click="guestlogin">Guest</v-btn>
+                                <v-spacer/>
                                 <v-btn color="primary"  @click="loginUser">Login</v-btn>
                             </v-card-actions>
                         </v-card>
