@@ -6,7 +6,7 @@ import store from "./store";
 import vuetify from "./plugins/vuetify";
 
 const base = axios.create({
-  baseUrl:"http://localhost:8080"
+  baseURL:"http://localhost:8080"
 });
 
 Vue.prototype.$http = base;

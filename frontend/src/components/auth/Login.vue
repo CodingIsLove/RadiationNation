@@ -11,7 +11,7 @@
                             <v-card-text>
                                 <v-form @submit.prevent="loginUser">
                                     <v-text-field
-                                            v-model="email"
+                                            v-model="login.email"
                                             label="Login"
                                             name="login"
                                             prepend-icon="mdi-account"
@@ -21,7 +21,7 @@
 
                                     <v-text-field
                                             id="password"
-                                            v-model="password"
+                                            v-model="login.password"
                                             label="Password"
                                             name="password"
                                             prepend-icon="mdi-lock"
@@ -34,7 +34,7 @@
                                 <v-spacer/>
                                 <v-btn color="primary" @click="register">Register here!</v-btn>
                                 <v-btn color="primary" @click="guestlogin">Guest</v-btn>
-                                <v-btn color="primary" type="submit" @click="login">Login</v-btn>
+                                <v-btn color="primary"  @click="loginUser">Login</v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-col>
