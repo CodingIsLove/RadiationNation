@@ -79,11 +79,12 @@
                     }else{
                         await swal("Error","Something Went Wrong","error");
                     }
-                }catch (error) {
+                }catch (err) {
+                    let error = err.response;
                     if (error.status === 409) {
-                        await swal("Error", error.message, "error");
+                        await swal("Error", error.data.message, "error");
                     } else {
-                        await swal("Error", error.message, "error");
+                        await swal("Error", error.data.message, "error");
                     }
                 }
             }

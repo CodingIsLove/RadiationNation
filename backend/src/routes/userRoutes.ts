@@ -31,14 +31,13 @@ userRouter.post("/login",async (req,res)=>{
         const user = await User.findByCredentials(email, password);
         if(!user){
            return res.status(401).json({
-               error:"Login failed! Check authentication credentials!"
+               message:"Login failed! Check authentication credentials!"
            })
         }
         const token = await user.generateAuthToken();
         res.status(201).json({user,token})
     }catch (err) {
-        res.status(400).json({err})
-
+        res.status(400).json({message:"Shit something went wrong"})
     }
 });
 
@@ -48,7 +47,6 @@ userRouter.get("/me",authMiddleware,async (req,res)=>{
 });
 
 userRouter.post("/register",async (req,res)=> {
-    // Check if username is not already taken
     try{
         const userList = await User.find({email:req.body.email});
         const userName = await User.find({username:req.body.username});
@@ -71,6 +69,7 @@ userRouter.post("/register",async (req,res)=> {
         res.status(201).json({data,token});
     }
     catch (err) {
+        err.message = "something went wrong";
        res.status(400).json({err})
     }
 

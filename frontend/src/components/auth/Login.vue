@@ -18,7 +18,6 @@
                                             type="text"
                                             required
                                     />
-
                                     <v-text-field
                                             id="password"
                                             v-model="login.password"
@@ -67,8 +66,9 @@
                         await this.$router.push("/lobby");
                     }
                 } catch (err) {
-                    await swal("Error", "Something Went Wrong", "error");
-                    console.log(err.response);
+                    let error = err.response;
+                    console.log(error);
+                    await swal("Error",error.data.message , "error");
                 }
             },
             register: function (){
