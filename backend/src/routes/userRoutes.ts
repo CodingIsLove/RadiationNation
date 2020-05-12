@@ -11,6 +11,7 @@ userRouter.use((req,res,next)=>{
 });
 
 
+
 userRouter.post("/getUserData",(req,res)=>{
    User
         .find({
