@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import expressSession from 'express-session'
 import morgan from 'morgan'
+import cors from 'cors'
 
 // Import all the different routes
 import {userRouter} from './routes/userRoutes';
@@ -14,7 +15,7 @@ import {gameRouter} from './routes/gameInstanceState';
 import path from "path";
 
 // This is complete DB setup, after that you can just use the mongoose models
-import './db/database'
+import './config/database'
 
 // todo: Set up mongo as a session store
 
@@ -27,6 +28,7 @@ app.use(expressSession());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 app.use(morgan("dev"));
+app.use(cors());
 
 // ---- primary page routing
 app.get('/',(req,res)=>{

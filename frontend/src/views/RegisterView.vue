@@ -1,14 +1,14 @@
 <template>
   <div class="signIn">
-    <Login />
+    <Register />
   </div>
 </template>
 
 <script>
-import Login from "../components/auth/Login";
+import Register from "../components/auth/Register";
 export default {
-  name: "LoginView",
-  components: { Login }
+  name: "RegisterView",
+  components: { Register}
 };
 </script>
 

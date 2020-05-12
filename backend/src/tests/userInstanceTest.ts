@@ -5,6 +5,11 @@ const assert = chai.assert;
 
 suite('User API Tests', ()=>{
     const base = "http://localhost:8080";
+    const realUser = {
+       username:"ChrisGermann",
+        email:"testtest@gmail.com",
+        password:"thisIsASecret"
+    }
 
     test('this call was generated, to understand how to work with testing',(done)=>{
         rest.post(`${base}/api/user`,{}).on('success',(data)=>{
@@ -16,18 +21,13 @@ suite('User API Tests', ()=>{
         })
     });
 
-    test('/getUserData',(done)=>{
-        // todo: write this test
-        rest.post(`${base}/api/user`,{}).on('success',(data)=>{
-            console.log(data)
-        })
-    });
 
     test('/register',(done)=>{
         // todo: write this test
-        rest.post(`${base}/api/user`,{}).on('success',(data)=>{
+        rest.post(`${base}/api/user/register`,{data:realUser}).on('success',(data)=>{
             console.log(data)
-        })
+        });
+        done();
     });
 
      test('/login',(done)=>{
@@ -37,7 +37,16 @@ suite('User API Tests', ()=>{
         })
     });
 
-     test('/getVerificationMail',(done)=>{
+    test('/getUserData',(done)=>{
+        // todo: write this test
+        rest.post(`${base}/api/user`,{}).on('success',(data)=>{
+            console.log(data)
+        })
+    });
+
+
+    /*
+    test('/getVerificationMail',(done)=>{
         // todo: write this test
         rest.post(`${base}/api/user`,{}).on('success',(data)=>{
             console.log(data)
@@ -50,5 +59,6 @@ suite('User API Tests', ()=>{
             console.log(data)
         })
     });
+     */
 });
 
