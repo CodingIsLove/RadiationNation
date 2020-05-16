@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <div>Welcome {{}}</div>
+        <div>Welcome {{userName}}</div>
         <canvas>
 
         </canvas>
@@ -16,7 +16,9 @@ export default {
       }
     },
     computed:{
-
+        userName(){
+            return this.$store.state.user.username
+        }
     },
     mounted(){
       console.log("mounted mounted mounted mounted")

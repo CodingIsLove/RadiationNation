@@ -43,7 +43,6 @@
 </template>
 
 <script>
-    import swal from "sweetalert";
 
     import swal from "sweetalert";
 
@@ -61,7 +60,10 @@
                 try {
                     let response = await this.$http.post("api/user/login", this.login);
                     let token = response.data.token;
+                    let user= response.data.user;
                     localStorage.setItem("jwt", token);
+                    this.$store.commit('initializeUser',user);
+
                     if (token) {
                         await swal("Success", "Login Successful", "success");
                         await this.$router.push("/lobby");
