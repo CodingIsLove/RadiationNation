@@ -6,6 +6,8 @@ import cookieParser from 'cookie-parser';
 import expressSession from 'express-session'
 import morgan from 'morgan'
 import cors from 'cors'
+import http from 'http'
+import socket from 'socket.io'
 
 // Import all the different routes
 import {userRouter} from './routes/userRoutes';
@@ -29,6 +31,23 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 app.use(morgan("dev"));
 app.use(cors());
+
+
+// ---- Socket Setup
+// @ts-ignore
+const server = http.Server(app);
+const io = socket.io(server);
+
+server.listen(3001);
+
+io.on('connection', (webSocket) => {
+    console.log('Server connection worked')
+    webSocket.emit('news', { hello: 'world'});
+    webSocket.on('my other event', (data) => {
+        console.log(data);
+    });
+});
+
 
 // ---- primary page routing
 app.get('/',(req,res)=>{

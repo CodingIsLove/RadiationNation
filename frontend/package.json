@@ -19,6 +19,7 @@
     "vue-jwt-decode": "^0.1.0",
     "vue-property-decorator": "^8.3.0",
     "vue-router": "^3.1.5",
+    "vue-socket.io": "^3.0.9",
     "vuetify": "^2.2.15",
     "vuex": "^3.1.2"
   },
