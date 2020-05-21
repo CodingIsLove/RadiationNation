@@ -6,23 +6,20 @@ import cookieParser from 'cookie-parser';
 import expressSession from 'express-session'
 import morgan from 'morgan'
 import cors from 'cors'
-import http from 'http'
-import socket from 'socket.io'
-
-// Import all the different routes
+import socketio from 'socket.io'
 import {userRouter} from './routes/userRoutes';
 import {resourceRouter} from './routes/resourcesRoutes';
 import {chatRouter} from './routes/chatInstanceRoutes';
 import {gameRouter} from './routes/gameInstanceState';
 import path from "path";
-
-// This is complete DB setup, after that you can just use the mongoose models
 import './config/database'
-
-// todo: Set up mongo as a session store
 
 // ---- initialize configuration
 const app = express();
+
+const http = require('http').Server(app);
+const io = require("socket.io")(http);
+
 app.set('port', process.env.PORT || 3000);
 app.disable('x-powered-by'); // omit information, that could help hackers
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -31,23 +28,6 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 app.use(morgan("dev"));
 app.use(cors());
-
-
-// ---- Socket Setup
-// @ts-ignore
-const server = http.Server(app);
-const io = socket.io(server);
-
-server.listen(3001);
-
-io.on('connection', (webSocket) => {
-    console.log('Server connection worked')
-    webSocket.emit('news', { hello: 'world'});
-    webSocket.on('my other event', (data) => {
-        console.log(data);
-    });
-});
-
 
 // ---- primary page routing
 app.get('/',(req,res)=>{
@@ -65,7 +45,34 @@ app.get('/*',(req,res)=>{
    res.send('uuups something went wrong');
 });
 
-// ---- Start the server
-app.listen(app.get('port'),()=>{
-    console.log(`app is listening on port: ${app.get('port')}`);
+/*
+const io = skt(server,{
+    path:'/globalChat'
 });
+ */
+
+io.on('connection', (socket)=> {
+    const chatmsg = [];
+    console.log('Server connection worked');
+    console.log('Fucking nice m8t');
+
+    // Connection events
+    socket.on('disconnect', () => {
+        console.log('User Disconnected');
+    });
+    socket.on('sendMessage',(data)=>{
+        chatmsg.push({
+            message: data.message,
+            username: data.username,
+        });
+        socket.emit('newMessage',chatmsg[chatmsg.length-1]);
+        console.log(chatmsg.length);
+        console.log('Fucking shit shche logg');
+        console.log(`And the data is: ${data.message}`);
+    });
+});
+
+const server = http.listen(process.env.PORT,()=>{
+    console.log(`listening on port: ${process.env.PORT}`);
+});
+
