@@ -193,7 +193,21 @@
                 for(let i = 0; i < this.amountOfColumns; i++) {
                     this.map[i] = new Array(this.amountOfRows);
                     for (let j = 0; j < this.amountOfRows; j++) {
-                        this.map[i][j] = Math.floor(Math.random() * 3);
+                        if (i <= 2) {
+                            this.map[i][j] = 0;
+                        }
+                        else if (i === 5 && j === 0) {
+                            this.map[i][j] = 3;
+                        }
+                        else if (i === 5 && j === 7) {
+                            this.map[i][j] = 4;
+                        }
+                        else if (i === 5) {
+                            this.map[i][j] = 2;
+                        }
+                        else {
+                            this.map[i][j] = 1;
+                        }
                     }
                 }
                 this.drawMap();
@@ -210,22 +224,33 @@
                 const coordX = column * this.gsTileWidth;
                 const coordY = row * this.gsTileHeight;
 
+                var img = new Image;
+
                 switch (type) {
                     case 0:
-                        this.ctxGS.fillStyle = 'blue';
+                        img.src = require('@/assets/tiles/sky.png');
                         break;
                     case 1:
-                        this.ctxGS.fillStyle = 'green';
+                        img.src = require('@/assets/tiles/grass.png');
                         break;
                     case 2:
-                        this.ctxGS.fillStyle = 'brown';
+                        img.src = require('@/assets/tiles/path.png');
+                        break;
+                    case 3:
+                        img.src = require('@/assets/tiles/russia_base.png');
+                        break;
+                    case 4:
+                        img.src = require('@/assets/tiles/usa_base.png');
                         break;
                     default:
                         break;
                 }
 
-                // Draw Tiles
-                this.ctxGS.fillRect(coordX, coordY, this.gsTileWidth, this.gsTileHeight);            }
+                img.onload = ()=> {
+                    console.log(this.gsTileWidth);
+                    document.getElementById("gameScreen").getContext('2d').drawImage(img, coordX, coordY, this.gsTileWidth , this.gsTileHeight);
+                };
+            }
         }
     };
 </script>
