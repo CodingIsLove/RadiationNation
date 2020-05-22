@@ -113,40 +113,35 @@
                 let row = Math.ceil(y / this.rectGSTileHeight) -1;
 
                 // Calculate Column (Width)
-                let column = Math.ceil(x / this.rectGSTileHeight) -1;
+                let column = Math.ceil(x / this.rectGSTileWidth) -1;
 
                 const coordX = column * this.rectGSTileWidth;
                 const coordY = row * this.rectGSTileHeight;
 
-                console.log(`We are in p(${coordX}, ${coordY})`)
+                console.log(`Hovering over: (${coordX}, ${coordY})`)
 
             },
             gsClick: function(event) {
                 // Calculate X and Y Position clicked
                 const x = event.clientX - this.rectGS.left;
                 const y = event.clientY - this.rectGS.top;
-                console.log(`You clicked at Position: (${x},${y})`);
+                console.log(`Clicked on: (${x},${y})`);
 
                 // Calculate Row (Height)
                 let row = Math.ceil(y / this.rectGSTileHeight) -1;
 
                 // Calculate Column (Width)
-                let column = Math.ceil(x / this.rectGSTileHeight) -1;
+                let column = Math.ceil(x / this.rectGSTileWidth) -1;
 
                 const coordX = column * this.gsTileWidth;
                 const coordY = row * this.gsTileHeight;
 
-                console.log(`We are in p(${coordX}, ${coordY})`);
+                console.log(`Clicked on (${x}, ${y}) which is in Tile (${coordX}, ${coordY})`);
 
                 // Draw Tiles
-                console.log('Painting Tile');
-
-                this.ctxGS.fillRect(coordX, coordY, this.gsTileWidth, this.gsTileHeight);
                 this.ctxGS.fillStyle = 'red';
-                this.ctxGS.lineWidth = 1;
-                this.ctxGS.strokeStyle = 'yellow';
-                //this.ctxGS.fill();
-                this.ctxGS.stroke()
+                this.ctxGS.fillRect(coordX, coordY, this.gsTileWidth, this.gsTileHeight);
+                //this.ctxGS.stroke()
 
 
             },
