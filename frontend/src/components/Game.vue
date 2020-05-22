@@ -30,7 +30,8 @@
                 cpTileWidth: 0,
                 amountCpTiles: 4,
                 rectCP: undefined,
-                rectCPTileWidth: 0
+                rectCPTileWidth: 0,
+                map: new Array(this.amountOfColumns)
             }
         },
         computed: {
@@ -77,18 +78,7 @@
             initializeGS: function() {
                 // 1. Draw Grid
                 // ---- Canvas Setup
-                for (let j = 0; j < this.vueCanvasGS.width; j += this.gsTileWidth) {
-                    for (let k = 0; k < this.vueCanvasGS.height; k += this.gsTileHeight) {
-                        // Draw Tiles
-                        console.log('Drawing GS');
-                        this.ctxGS.rect(j, k, this.gsTileWidth, this.gsTileHeight);
-                        this.ctxGS.fillStyle = 'blue';
-                        this.ctxGS.lineWidth = 1;
-                        this.ctxGS.strokeStyle = 'green';
-                        this.ctxGS.fill();
-                        this.ctxGS.stroke()
-                    }
-                }
+                this.initializeMap();
 
                 // ---- Add Event Listener
                 // Onmousemove-Event on the GS
@@ -100,10 +90,6 @@
                 this.vueCanvasGS.addEventListener('click',(event)=>{
                     this.gsClick(event);
                 });
-
-
-                // 3. Spawn Figures
-                // 4. Add Game functions: Wincondition, Fight, etc.
             },
             gsMouseHover: function(event) {
                 const x = event.clientX - this.rectGS.left;
@@ -122,26 +108,14 @@
 
             },
             gsClick: function(event) {
+
                 // Calculate X and Y Position clicked
                 const x = event.clientX - this.rectGS.left;
                 const y = event.clientY - this.rectGS.top;
-                console.log(`Clicked on: (${x},${y})`);
-
-                // Calculate Row (Height)
                 let row = Math.ceil(y / this.rectGSTileHeight) -1;
-
-                // Calculate Column (Width)
                 let column = Math.ceil(x / this.rectGSTileWidth) -1;
-
-                const coordX = column * this.gsTileWidth;
-                const coordY = row * this.gsTileHeight;
-
-                console.log(`Clicked on (${x}, ${y}) which is in Tile (${coordX}, ${coordY})`);
-
-                // Draw Tiles
-                this.ctxGS.fillStyle = 'red';
-                this.ctxGS.fillRect(coordX, coordY, this.gsTileWidth, this.gsTileHeight);
-                //this.ctxGS.stroke()
+                console.log(`Clicked on: (${x},${y})`);
+                this.drawTile(row, column, 2);
 
 
             },
@@ -154,6 +128,8 @@
 
                 // ---- Canvas Setup
                 // Setup the panel fields - use Canvas / CP for drawing
+
+
                 for (let i = 0; i < this.vueCanvasCP.width; i += this.cpTileWidth) {
                     console.log('Drawing CS');
                     this.ctxCP.rect(i, 0, this.cpTileWidth, this.vueCanvasCP.height);
@@ -185,8 +161,6 @@
                     this.gsTileWidth = this.vueCanvasGS.width / this.amountOfRows;
                     this.gsTileHeight = this.vueCanvasGS.height / this.amountOfColumns;
                 })
-
-
             },
             move:function(event){
                 const x = event.clientX - this.rectCP.left;
@@ -213,7 +187,45 @@
                 else {
                     alert('Something went wrong! You pressed outside of the Canvas!');
                 }
-            }
+            },
+            // ---- MAP SETUP
+            initializeMap() {
+                for(let i = 0; i < this.amountOfColumns; i++) {
+                    this.map[i] = new Array(this.amountOfRows);
+                    for (let j = 0; j < this.amountOfRows; j++) {
+                        this.map[i][j] = Math.floor(Math.random() * 3);
+                    }
+                }
+                this.drawMap();
+            },
+            drawMap(){
+                for(let i=0; i< this.amountOfColumns; i++) {
+                    for (let j= 0; j < this.amountOfRows; j++) {
+                        this.drawTile(i,j,this.map[i][j]);
+                    }
+                }
+                console.log(this.map)
+            },
+            drawTile(row,column,type){
+                const coordX = column * this.gsTileWidth;
+                const coordY = row * this.gsTileHeight;
+
+                switch (type) {
+                    case 0:
+                        this.ctxGS.fillStyle = 'blue';
+                        break;
+                    case 1:
+                        this.ctxGS.fillStyle = 'green';
+                        break;
+                    case 2:
+                        this.ctxGS.fillStyle = 'brown';
+                        break;
+                    default:
+                        break;
+                }
+
+                // Draw Tiles
+                this.ctxGS.fillRect(coordX, coordY, this.gsTileWidth, this.gsTileHeight);            }
         }
     };
 </script>
