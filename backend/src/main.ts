@@ -1,5 +1,4 @@
 import dotenv from 'dotenv';
-
 dotenv.config();
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
@@ -7,6 +6,7 @@ import express from 'express';
 import expressSession from 'express-session'
 import morgan from 'morgan'
 import cors from 'cors'
+import rp from 'request-promise'
 import {userRouter} from './routes/userRoutes';
 import {resourceRouter} from './routes/resourcesRoutes';
 import {chatRouter} from './routes/chatInstanceRoutes';
@@ -45,31 +45,68 @@ app.get('/*', (req, res) => {
     res.send('uuups something went wrong');
 });
 
-io.on('connection', (socket) => {
-    const chatmsg = [];
-    console.log('New User Connected to the socket');
-    socket.emit('connect',"Fuck off brudi");
-    // Connection events
-    socket.on('disconnect', () => {
-        console.log('User Disconnected');
-    });
-    socket.on('fuck',(data)=>{
-       console.log(data)
-        socket.emit('hello',"Here you go")
-    });
-    socket.on('sendMessage', (data) => {
-        chatmsg.push({
-            message: data.message,
-            username: data.username,
-            id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
-        });
-        console.log(chatmsg.length);
-        console.log(`And the data is: ${data.message}`);
-        io.emit('newMessage',chatmsg[chatmsg.length - 1]);
-    });
-});
+// Events that will be triggered in the global Chat
+const chat = io
+    .of("/chat")
+    .on('connection', (socket) => {
+        const chatmsg = [];
+        console.log('----------- Connected to the Chat Socket----------------------')
 
-server.listen(process.env.PORT, ()=>{
+        socket.on('disconnect', () => {
+            console.log('User Disconnected');
+        });
+        socket.on('fuck', (data) => {
+            console.log(data)
+            socket.emit('hello', "Here you go")
+        });
+        socket.on('sendMessage', (data) => {
+            chatmsg.push({
+                message: data.message,
+                username: data.username,
+                id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+            });
+            console.log(chatmsg.length);
+            console.log(`And the data is: ${data.message}`);
+            io.emit('newMessage', chatmsg[chatmsg.length - 1]);
+        });
+
+        io.emit('welcome', "Hello Fucker")
+    });
+
+const game = io
+    .of("game")
+    .on('connection', (socket) => {
+        console.log('----------- Connected to the Game Socket ----------------------')
+
+        // Load the map from the mongodb
+        // todo: implement here the basic implementation of the map io.emit('initMap', GameState.find({socketId}));
+
+        socket.on('updateGameState', (updatedMap) => {
+            console.log(updatedMap);
+            // update the Map for all participants
+            io.of('/game').emit('newMap', updatedMap)
+
+            // Write the new Map Data into the MongoDb
+            rp({
+                method:'POST',
+                uri: 'http://localhost:8081/api/game/updateGameState',
+                body:{
+                    map: updatedMap,
+                    player1: "ChristofMongitus",
+                    player2: "BeniDoofus",
+                    socketId: "2ssi3lksdf"
+                },
+                json:true
+            })
+                .then((data)=>{
+                    console.log(data)
+                }).catch((err)=>{
+                    console.error(err)
+            });
+        })
+    });
+
+server.listen(process.env.PORT, () => {
     console.log(`Server is running on localhost:${process.env.PORT}`);
 });
 
