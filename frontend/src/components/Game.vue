@@ -73,6 +73,7 @@
             this.initializeGS();
         },
         methods: {
+            // ---- GS FUNCTIONS
             initializeGS: function() {
                 // 1. Draw Grid
                 // ---- Canvas Setup
@@ -88,10 +89,68 @@
                         this.ctxGS.stroke()
                     }
                 }
-                // 2. Fill the Grid Tiles with the corresponding Tile img/layout/status
+
+                // ---- Add Event Listener
+                // Onmousemove-Event on the GS
+                this.vueCanvasGS.addEventListener('mousemove', (event) => {
+                    this.gsMouseHover(event)
+                });
+
+                // Onclick-Event for clicking on the GS
+                this.vueCanvasGS.addEventListener('click',(event)=>{
+                    this.gsClick(event);
+                });
+
+
                 // 3. Spawn Figures
                 // 4. Add Game functions: Wincondition, Fight, etc.
             },
+            gsMouseHover: function(event) {
+                const x = event.clientX - this.rectGS.left;
+                const y = event.clientY - this.rectGS.top;
+                console.log('x: ' + x + ' y: ' + y);
+                // Calculate Row (Height)
+                let row = Math.ceil(y / this.rectGSTileHeight) -1;
+
+                // Calculate Column (Width)
+                let column = Math.ceil(x / this.rectGSTileHeight) -1;
+
+                const coordX = column * this.rectGSTileWidth;
+                const coordY = row * this.rectGSTileHeight;
+
+                console.log(`We are in p(${coordX}, ${coordY})`)
+
+            },
+            gsClick: function(event) {
+                // Calculate X and Y Position clicked
+                const x = event.clientX - this.rectGS.left;
+                const y = event.clientY - this.rectGS.top;
+                console.log(`You clicked at Position: (${x},${y})`);
+
+                // Calculate Row (Height)
+                let row = Math.ceil(y / this.rectGSTileHeight) -1;
+
+                // Calculate Column (Width)
+                let column = Math.ceil(x / this.rectGSTileHeight) -1;
+
+                const coordX = column * this.gsTileWidth;
+                const coordY = row * this.gsTileHeight;
+
+                console.log(`We are in p(${coordX}, ${coordY})`);
+
+                // Draw Tiles
+                console.log('Painting Tile');
+
+                this.ctxGS.fillRect(coordX, coordY, this.gsTileWidth, this.gsTileHeight);
+                this.ctxGS.fillStyle = 'red';
+                this.ctxGS.lineWidth = 1;
+                this.ctxGS.strokeStyle = 'yellow';
+                //this.ctxGS.fill();
+                this.ctxGS.stroke()
+
+
+            },
+            // ---- CP FUNCTIONS
             initializeCP: function () {
                 // 1. Draw 4 fields
                 // 2. Color the fields and make them clickable
