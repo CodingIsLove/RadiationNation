@@ -205,6 +205,12 @@
                         else if (i === 5) {
                             this.map[i][j] = 2;
                         }
+                        else if (i === 7 && j === 5 || i === 3 && j === 3) {
+                            this.map[i][j] = 5;
+                        }
+                        else if (i === 3 && j === 4 || i === 7 && j === 3 || i === 6 && j === 4 || i === 4 && j === 2) {
+                            this.map[i][j] = 6;
+                        }
                         else {
                             this.map[i][j] = 1;
                         }
@@ -228,19 +234,25 @@
 
                 switch (type) {
                     case 0:
-                        img.src = require('@/assets/tiles/sky.png');
+                        img.src = require('@/assets/sprites/background/sky.png');
                         break;
                     case 1:
-                        img.src = require('@/assets/tiles/grass.png');
+                        img.src = require('@/assets/sprites/background/grass.png');
                         break;
                     case 2:
-                        img.src = require('@/assets/tiles/path.png');
+                        img.src = require('@/assets/sprites/background/path.png');
                         break;
                     case 3:
-                        img.src = require('@/assets/tiles/russia_base.png');
+                        img.src = require('@/assets/sprites/background/castle.png');
                         break;
                     case 4:
-                        img.src = require('@/assets/tiles/usa_base.png');
+                        img.src = require('@/assets/sprites/background/castle.png');
+                        break;
+                    case 5:
+                        img.src = require('@/assets/sprites/background/house.png');
+                        break;
+                    case 6:
+                        img.src = require('@/assets/sprites/background/forest.png');
                         break;
                     default:
                         break;
