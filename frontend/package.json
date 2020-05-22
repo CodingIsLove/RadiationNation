@@ -12,6 +12,7 @@
     "@mdi/font": "^4.9.95",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
+    "socket.io-client": "latest",
     "swal": "^0.1.0",
     "sweetalert": "^2.1.2",
     "vue": "^2.6.11",
@@ -19,10 +20,9 @@
     "vue-jwt-decode": "^0.1.0",
     "vue-property-decorator": "^8.3.0",
     "vue-router": "^3.1.5",
+    "vue-socket.io-extended": "^4.0.3",
     "vuetify": "^2.2.15",
-    "vuex": "^3.1.2",
-    "socket.io": "latest",
-    "socket.io-client": "latest"
+    "vuex": "^3.1.2"
   },
   "devDependencies": {
     "@types/chai": "^4.2.8",

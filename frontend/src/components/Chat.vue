@@ -7,20 +7,21 @@
                 <h4>My Chat App <span class="float-right">{{chat.connections}} connections</span></h4>
             </div>
             <ul class="list-group list-group-flush text-right">
-                <li class="list-group-item" v-for="message in chat.messageTable" :key="message">
+                <li class="list-group-item" v-for="message in chat.messageTable" :key="message.id">
                     <span>{{message.message}}
-                        <small>:{{message.user}}</small>
+                        <small>:{{message.username}}</small>
                     </span>
                 </li>
             </ul>
 
             <div class="card-body">
-                <v-form @submit.prevent="sendMessage">
-                    <div class="form-group+">
-                        <input type="text" class="form-control" v-model="chat.message" placeholder="Enter Message...">
-                        <input type="submit" class="v-btn black white--text float-right" value="Send" @click="sendMessage">
-                    </div>
-                </v-form>
+                <div class="form-group">
+                    <input type="text" class="form-control" v-model="chat.message" placeholder="Enter Message...">
+                    <v-btn class="v-btn black white--text float-right" value="Send" @click="sendMessage"></v-btn>
+                    <v-btn @click="fuckOff"></v-btn>
+
+
+                </div>
             </div>
 
         </div>
@@ -29,41 +30,42 @@
 
 <script>
     export default {
-        el: '#chat',
-        data(){
-            return{
+        data() {
+            return {
                 chat: {
-                    message: null,
+                    message: "",
                     messageTable: [],
-                    username: null,
+                    username: "",
                     connections: 0,
                 },
-                socket: isUndefined,
-            }
-        },
-        methods: {
-            sendMessage: function() {
-                this.$socket.emit('sendMessage', this.chat)
-            },
-            userConnected: function () {
-                this.$socket.emit('userConnected', this.chat.username)
-            },
-            configureSocket: function () {
-                this.socket = io.connect('http//localhost');
-                socket.on('news', (data) => {
-                    console.log(data);
-                    socket.emit('myotherevent', {my:'data'})
-                });
+                socket: undefined,
             }
         },
         sockets: {
-            connection: function () {
-                console.log('socket connected');
+            connect: function () {
+                console.log('Connected to Socket');
             },
-            /*customEmit: function (data) {
-                console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)')
-            }*/
-        }
+            hello:function(){
+                console.log("Finally this shit is working")
+            },
+            newMessage: function(data){
+                this.chat.messageTable.push(data)
+            }
+        },
+        methods: {
+            sendMessage: function () {
+                this.$socket.client.emit('sendMessage', this.chat);
+                this.chat.messageTable.push({
+                    message:this.message,
+                    username:this.username,
+                });
+                console.log('Sent message to socket')
+            },
+            fuckOff: function () {
+                console.log("Fuck was called");
+                this.$socket.client.emit('fuck', {msg: "fuck"});
+            }
+        },
     };
 </script>
 
