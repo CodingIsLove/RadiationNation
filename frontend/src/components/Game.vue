@@ -1,4 +1,3 @@
-import io from "socket.io-client";
 <template>
     <v-app>
         <div>Welcome {{userName}}</div>
@@ -93,7 +92,7 @@ import io from "socket.io-client";
                 })
             },
             // ---- GS FUNCTIONS
-            initializeGS: function () {
+            initializeGS: function() {
                 // 1. Draw Grid
                 // ---- Canvas Setup
                 this.initializeMap();
@@ -105,20 +104,19 @@ import io from "socket.io-client";
                 });
 
                 // Onclick-Event for clicking on the GS
-                this.vueCanvasGS.addEventListener('click', (event) => {
+                this.vueCanvasGS.addEventListener('click',(event)=>{
                     this.gsClick(event);
-
                 });
             },
-            gsMouseHover: function (event) {
+            gsMouseHover: function(event) {
                 const x = event.clientX - this.rectGS.left;
                 const y = event.clientY - this.rectGS.top;
                 console.log('x: ' + x + ' y: ' + y);
                 // Calculate Row (Height)
-                let row = Math.ceil(y / this.rectGSTileHeight) - 1;
+                let row = Math.ceil(y / this.rectGSTileHeight) -1;
 
                 // Calculate Column (Width)
-                let column = Math.ceil(x / this.rectGSTileWidth) - 1;
+                let column = Math.ceil(x / this.rectGSTileWidth) -1;
 
                 const coordX = column * this.rectGSTileWidth;
                 const coordY = row * this.rectGSTileHeight;
@@ -126,12 +124,13 @@ import io from "socket.io-client";
                 console.log(`Hovering over: (${coordX}, ${coordY})`)
 
             },
-            gsClick: function (event) {
+            gsClick: function(event) {
+
                 // Calculate X and Y Position clicked
                 const x = event.clientX - this.rectGS.left;
                 const y = event.clientY - this.rectGS.top;
-                let row = Math.ceil(y / this.rectGSTileHeight) - 1;
-                let column = Math.ceil(x / this.rectGSTileWidth) - 1;
+                let row = Math.ceil(y / this.rectGSTileHeight) -1;
+                let column = Math.ceil(x / this.rectGSTileWidth) -1;
                 console.log(`Clicked on: (${x},${y})`);
                 this.drawTile(row, column, 2);
                 this.map[row][column] = 2;
@@ -147,15 +146,53 @@ import io from "socket.io-client";
                 // ---- Canvas Setup
                 // Setup the panel fields - use Canvas / CP for drawing
 
+                var cp_warrior_1 = new Image();
+                var cp_warrior_2 = new Image();
+                var cp_warrior_3 = new Image();
+                var cp_warrior_4 = new Image();
+                var offset = 10;
 
                 for (let i = 0; i < this.vueCanvasCP.width; i += this.cpTileWidth) {
-                    console.log('Drawing CS');
+                    console.log(i);
+                    if (i === 0) {
+                        cp_warrior_1.src = require('@/assets/sprites/warriors/cp_usa_warrior_1.png');
+                        console.log('drawing 1');
+                        cp_warrior_1.onload = () => {
+                            console.log('drawing image');
+                            document.getElementById("controlPanel").getContext('2d').drawImage(cp_warrior_1, i + offset/2, offset / 2, this.cpTileWidth - offset, this.vueCanvasCP.height - offset);
+                        };
+                    }
+                    else if (i === this.cpTileWidth) {
+                        cp_warrior_2.src = require('@/assets/sprites/warriors/cp_usa_warrior_2.png');
+                        console.log('drawing 2');
+                        cp_warrior_2.onload = () => {
+                            console.log('drawing image');
+                            document.getElementById("controlPanel").getContext('2d').drawImage(cp_warrior_2, i + offset/2, offset / 2, this.cpTileWidth - offset, this.vueCanvasCP.height - offset);
+                        };
+                    }
+                    else if (i === this.cpTileWidth * 2) {
+                        cp_warrior_3.src = require('@/assets/sprites/warriors/cp_usa_warrior_3.png');
+                        console.log('drawing 3');
+                        cp_warrior_3.onload = () => {
+                            console.log('drawing image');
+                            document.getElementById("controlPanel").getContext('2d').drawImage(cp_warrior_3, i + offset/2, offset / 2, this.cpTileWidth - offset, this.vueCanvasCP.height - offset);
+                        };
+                    }
+                    else if (i === this.cpTileWidth * 3) {
+                        cp_warrior_4.src = require('@/assets/sprites/warriors/cp_usa_warrior_4.png');
+                        console.log('drawing 4');
+                        cp_warrior_4.onload = () => {
+                            console.log('drawing image');
+                            document.getElementById("controlPanel").getContext('2d').drawImage(cp_warrior_4, i + offset/2, offset / 2, this.cpTileWidth - offset, this.vueCanvasCP.height - offset);
+                        };
+                    }
+
                     this.ctxCP.rect(i, 0, this.cpTileWidth, this.vueCanvasCP.height);
-                    this.ctxCP.fillStyle = 'orange';
+                    this.ctxCP.fillStyle = 'grey';
                     this.ctxCP.lineWidth = 1;
                     this.ctxCP.strokeStyle = 'black';
                     this.ctxCP.fill();
-                    this.ctxCP.stroke()
+                    this.ctxCP.stroke();
                 }
 
                 // ---- Add Event Listener
@@ -165,13 +202,12 @@ import io from "socket.io-client";
                 });
 
                 // Onclick-Event for clicking on the CP
-                this.vueCanvasCP.addEventListener('click', (event) => {
+                this.vueCanvasCP.addEventListener('click',(event)=>{
                     this.cpClick(event);
-
                 });
 
                 // Re-Calculate CP Width and Tile Width after Window resizing
-                window.addEventListener('resize', () => {
+                window.addEventListener('resize',()=>{
                     // CP
                     this.rectCP = this.vueCanvasCP.getBoundingClientRect();
                     this.rectCPTileWidth = this.rectCP.width / this.amountCpTiles;
@@ -181,25 +217,29 @@ import io from "socket.io-client";
                     this.gsTileHeight = this.vueCanvasGS.height / this.amountOfColumns;
                 })
             },
-            move: function (event) {
+            move:function(event){
                 const x = event.clientX - this.rectCP.left;
                 const y = event.clientY - this.rectCP.top;
                 console.log('x: ' + x + ' y: ' + y);
             },
-            cpClick: function (event) {
+            cpClick:function(event){
                 const x = event.clientX - this.rectCP.left;
                 const y = event.clientY - this.rectCP.top;
                 console.log(`You clicked at Position: (${x},${y})`);
                 console.log('The Tile width / Total width is: ' + this.rectCP.width / this.amountCpTiles + ' / ' + this.rectCP.width + '.');
                 if (x < this.rectCPTileWidth) {
                     alert('You pressed on Tile 1  (Left most Tile)');
-                } else if (x < this.rectCPTileWidth * 2) {
+                }
+                else if (x < this.rectCPTileWidth * 2) {
                     alert('You pressed on Tile 2 (Second from Left)');
-                } else if (x < this.rectCPTileWidth * 3) {
+                }
+                else if (x < this.rectCPTileWidth * 3) {
                     alert('You pressed on Tile 3 (Third from Left)');
-                } else if (x < this.rectCPTileWidth * 4) {
+                }
+                else if (x < this.rectCPTileWidth * 4) {
                     alert('You pressed on Tile 4 (Right most Tile)');
-                } else {
+                }
+                else {
                     alert('Something went wrong! You pressed outside of the Canvas!');
                 }
             },
@@ -208,7 +248,27 @@ import io from "socket.io-client";
                 for (let i = 0; i < this.amountOfColumns; i++) {
                     this.map[i] = new Array(this.amountOfRows);
                     for (let j = 0; j < this.amountOfRows; j++) {
-                        this.map[i][j] = Math.floor(Math.random() * 3);
+                        if (i <= 2) {
+                            this.map[i][j] = 0;
+                        }
+                        else if (i === 5 && j === 0) {
+                            this.map[i][j] = 3;
+                        }
+                        else if (i === 5 && j === 7) {
+                            this.map[i][j] = 4;
+                        }
+                        else if (i === 5) {
+                            this.map[i][j] = 2;
+                        }
+                        else if (i === 7 && j === 5 || i === 3 && j === 3) {
+                            this.map[i][j] = 5;
+                        }
+                        else if (i === 3 && j === 4 || i === 7 && j === 3 || i === 6 && j === 4 || i === 4 && j === 2) {
+                            this.map[i][j] = 6;
+                        }
+                        else {
+                            this.map[i][j] = 1;
+                        }
                     }
                 }
                 this.drawMap();
@@ -225,9 +285,48 @@ import io from "socket.io-client";
                 const coordX = column * this.gsTileWidth;
                 const coordY = row * this.gsTileHeight;
 
+                var img = new Image;
+
                 switch (type) {
                     case 0:
-                        this.ctxGS.fillStyle = 'blue';
+                        img.src = require('@/assets/sprites/background/sky.png');
+                        break;
+                    case 1:
+                        img.src = require('@/assets/sprites/background/grass.png');
+                        break;
+                    case 2:
+                        img.src = require('@/assets/sprites/background/path.png');
+                        break;
+                    case 3:
+                        img.src = require('@/assets/sprites/background/castle.png');
+                        break;
+                    case 4:
+                        img.src = require('@/assets/sprites/background/castle.png');
+                        break;
+                    case 5:
+                        img.src = require('@/assets/sprites/background/house.png');
+                        break;
+                    case 6:
+                        img.src = require('@/assets/sprites/background/forest.png');
+                        break;
+                    default:
+                        break;
+                }
+
+                img.onload = ()=> {
+                    console.log(this.gsTileWidth);
+                    document.getElementById("gameScreen").getContext('2d').drawImage(img, coordX, coordY, this.gsTileWidth , this.gsTileHeight);
+                };
+            },
+            drawUnits(row,column,unitType) {
+                const coordX = column * this.gsTileWidth;
+                const coordY = row * this.gsTileHeight;
+
+                var img = new Image;
+
+                switch (unitType) {
+                    case 0:
+                        img.src = require('@/assets/sprites/warriors/usa_knight.png');
                         break;
                     case 1:
                         this.ctxGS.fillStyle = 'green';
@@ -239,8 +338,10 @@ import io from "socket.io-client";
                         break;
                 }
 
-                // Draw Tiles
-                this.ctxGS.fillRect(coordX, coordY, this.gsTileWidth, this.gsTileHeight);
+                img.onload = ()=> {
+                    console.log(this.gsTileWidth);
+                    document.getElementById("gameScreen").getContext('2d').drawImage(img, coordX, coordY, this.gsTileWidth , this.gsTileHeight);
+                };
             }
         }
     };
