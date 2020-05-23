@@ -129,15 +129,53 @@
                 // ---- Canvas Setup
                 // Setup the panel fields - use Canvas / CP for drawing
 
+                var cp_warrior_1 = new Image();
+                var cp_warrior_2 = new Image();
+                var cp_warrior_3 = new Image();
+                var cp_warrior_4 = new Image();
+                var offset = 10;
 
                 for (let i = 0; i < this.vueCanvasCP.width; i += this.cpTileWidth) {
-                    console.log('Drawing CS');
+                    console.log(i);
+                    if (i === 0) {
+                        cp_warrior_1.src = require('@/assets/sprites/warriors/cp_usa_warrior_1.png');
+                        console.log('drawing 1');
+                        cp_warrior_1.onload = () => {
+                            console.log('drawing image');
+                            document.getElementById("controlPanel").getContext('2d').drawImage(cp_warrior_1, i + offset/2, offset / 2, this.cpTileWidth - offset, this.vueCanvasCP.height - offset);
+                        };
+                    }
+                    else if (i === this.cpTileWidth) {
+                        cp_warrior_2.src = require('@/assets/sprites/warriors/cp_usa_warrior_2.png');
+                        console.log('drawing 2');
+                        cp_warrior_2.onload = () => {
+                            console.log('drawing image');
+                            document.getElementById("controlPanel").getContext('2d').drawImage(cp_warrior_2, i + offset/2, offset / 2, this.cpTileWidth - offset, this.vueCanvasCP.height - offset);
+                        };
+                    }
+                    else if (i === this.cpTileWidth * 2) {
+                        cp_warrior_3.src = require('@/assets/sprites/warriors/cp_usa_warrior_3.png');
+                        console.log('drawing 3');
+                        cp_warrior_3.onload = () => {
+                            console.log('drawing image');
+                            document.getElementById("controlPanel").getContext('2d').drawImage(cp_warrior_3, i + offset/2, offset / 2, this.cpTileWidth - offset, this.vueCanvasCP.height - offset);
+                        };
+                    }
+                    else if (i === this.cpTileWidth * 3) {
+                        cp_warrior_4.src = require('@/assets/sprites/warriors/cp_usa_warrior_4.png');
+                        console.log('drawing 4');
+                        cp_warrior_4.onload = () => {
+                            console.log('drawing image');
+                            document.getElementById("controlPanel").getContext('2d').drawImage(cp_warrior_4, i + offset/2, offset / 2, this.cpTileWidth - offset, this.vueCanvasCP.height - offset);
+                        };
+                    }
+
                     this.ctxCP.rect(i, 0, this.cpTileWidth, this.vueCanvasCP.height);
-                    this.ctxCP.fillStyle = 'orange';
+                    this.ctxCP.fillStyle = 'grey';
                     this.ctxCP.lineWidth = 1;
                     this.ctxCP.strokeStyle = 'black';
                     this.ctxCP.fill();
-                    this.ctxCP.stroke()
+                    this.ctxCP.stroke();
                 }
 
                 // ---- Add Event Listener
@@ -224,7 +262,6 @@
                         this.drawTile(i,j,this.map[i][j]);
                     }
                 }
-                console.log(this.map)
             },
             drawTile(row,column,type){
                 const coordX = column * this.gsTileWidth;
@@ -253,6 +290,34 @@
                         break;
                     case 6:
                         img.src = require('@/assets/sprites/background/forest.png');
+                        break;
+                    default:
+                        break;
+                }
+
+                img.onload = ()=> {
+                    console.log(this.gsTileWidth);
+                    document.getElementById("gameScreen").getContext('2d').drawImage(img, coordX, coordY, this.gsTileWidth , this.gsTileHeight);
+                };
+            },
+            drawUnits(row,column,unitType) {
+                const coordX = column * this.gsTileWidth;
+                const coordY = row * this.gsTileHeight;
+
+                var img = new Image;
+
+                switch (unitType) {
+                    case 0:
+                        img.src = require('@/assets/sprites/warriors/usa_knight.png');
+                        break;
+                    case 1:
+                        img.src = require('@/assets/sprites/warriors/russia_knight.png');
+                        break;
+                    case 2:
+
+                        break;
+                    case 3:
+
                         break;
                     default:
                         break;
