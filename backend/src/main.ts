@@ -10,6 +10,7 @@ import {userRouter} from './routes/userRoutes';
 import {resourceRouter} from './routes/resourcesRoutes';
 import {chatRouter} from './routes/chatInstanceRoutes';
 import {gameRouter} from './routes/gameInstanceState';
+import {lobbyRouter} from './routes/lobbyRoutes'
 import {getChatSocket} from './sockets/chatSocket'
 import {getGameSocket} from './sockets/gameSocket';
 import {getLobbySocket} from './sockets/lobbySocket'
@@ -40,6 +41,7 @@ app.use('/api/user', userRouter);
 app.use('/api/resource', resourceRouter);
 app.use('/api/chat', chatRouter);
 app.use('/api/game', gameRouter);
+app.use('/api/lobby',lobbyRouter);
 app.get('/*', (req, res) => {res.send('uuups something went wrong');});
 
 // ------ Configure Sockets

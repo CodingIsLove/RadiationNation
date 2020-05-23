@@ -1,3 +1,4 @@
+import io from "socket.io-client";
 <template>
     <v-app>
         <div>Welcome {{userName}}</div>
@@ -10,6 +11,8 @@
 </template>
 
 <script>
+    import io from 'socket.io-client';
+
     export default {
         name: "Game",
         data() {
@@ -31,7 +34,8 @@
                 amountCpTiles: 4,
                 rectCP: undefined,
                 rectCPTileWidth: 0,
-                map: new Array(this.amountOfColumns)
+                map: new Array(this.amountOfColumns),
+                gameSocket: null
             }
         },
         computed: {
@@ -46,6 +50,10 @@
             }
         },
         mounted() {
+            // Setup Socket
+            this.newSocket();
+
+            // Setup Canvas
             let canvasGS = document.getElementById("gameScreen");
             let ctxGS = canvasGS.getContext('2d');
             let canvasCP = document.getElementById('controlPanel');
@@ -74,8 +82,18 @@
             this.initializeGS();
         },
         methods: {
+            newSocket() {
+                this.gameSocket = io.connect('localhost:8081/game');
+                this.gameSocket.on('welcome', (data) => {
+                    console.log(`The received data is: ${data}`)
+                });
+                this.gameSocket.on('newMap',(newMap)=>{
+                    this.map = newMap;
+                    this.drawMap();
+                })
+            },
             // ---- GS FUNCTIONS
-            initializeGS: function() {
+            initializeGS: function () {
                 // 1. Draw Grid
                 // ---- Canvas Setup
                 this.initializeMap();
@@ -87,19 +105,20 @@
                 });
 
                 // Onclick-Event for clicking on the GS
-                this.vueCanvasGS.addEventListener('click',(event)=>{
+                this.vueCanvasGS.addEventListener('click', (event) => {
                     this.gsClick(event);
+
                 });
             },
-            gsMouseHover: function(event) {
+            gsMouseHover: function (event) {
                 const x = event.clientX - this.rectGS.left;
                 const y = event.clientY - this.rectGS.top;
                 console.log('x: ' + x + ' y: ' + y);
                 // Calculate Row (Height)
-                let row = Math.ceil(y / this.rectGSTileHeight) -1;
+                let row = Math.ceil(y / this.rectGSTileHeight) - 1;
 
                 // Calculate Column (Width)
-                let column = Math.ceil(x / this.rectGSTileWidth) -1;
+                let column = Math.ceil(x / this.rectGSTileWidth) - 1;
 
                 const coordX = column * this.rectGSTileWidth;
                 const coordY = row * this.rectGSTileHeight;
@@ -107,17 +126,16 @@
                 console.log(`Hovering over: (${coordX}, ${coordY})`)
 
             },
-            gsClick: function(event) {
-
+            gsClick: function (event) {
                 // Calculate X and Y Position clicked
                 const x = event.clientX - this.rectGS.left;
                 const y = event.clientY - this.rectGS.top;
-                let row = Math.ceil(y / this.rectGSTileHeight) -1;
-                let column = Math.ceil(x / this.rectGSTileWidth) -1;
+                let row = Math.ceil(y / this.rectGSTileHeight) - 1;
+                let column = Math.ceil(x / this.rectGSTileWidth) - 1;
                 console.log(`Clicked on: (${x},${y})`);
                 this.drawTile(row, column, 2);
-
-
+                this.map[row][column] = 2;
+                this.gameSocket.emit('updateGameState',this.map);
             },
             // ---- CP FUNCTIONS
             initializeCP: function () {
@@ -147,12 +165,13 @@
                 });
 
                 // Onclick-Event for clicking on the CP
-                this.vueCanvasCP.addEventListener('click',(event)=>{
+                this.vueCanvasCP.addEventListener('click', (event) => {
                     this.cpClick(event);
+
                 });
 
                 // Re-Calculate CP Width and Tile Width after Window resizing
-                window.addEventListener('resize',()=>{
+                window.addEventListener('resize', () => {
                     // CP
                     this.rectCP = this.vueCanvasCP.getBoundingClientRect();
                     this.rectCPTileWidth = this.rectCP.width / this.amountCpTiles;
@@ -162,35 +181,31 @@
                     this.gsTileHeight = this.vueCanvasGS.height / this.amountOfColumns;
                 })
             },
-            move:function(event){
+            move: function (event) {
                 const x = event.clientX - this.rectCP.left;
                 const y = event.clientY - this.rectCP.top;
                 console.log('x: ' + x + ' y: ' + y);
             },
-            cpClick:function(event){
+            cpClick: function (event) {
                 const x = event.clientX - this.rectCP.left;
                 const y = event.clientY - this.rectCP.top;
                 console.log(`You clicked at Position: (${x},${y})`);
                 console.log('The Tile width / Total width is: ' + this.rectCP.width / this.amountCpTiles + ' / ' + this.rectCP.width + '.');
                 if (x < this.rectCPTileWidth) {
                     alert('You pressed on Tile 1  (Left most Tile)');
-                }
-                else if (x < this.rectCPTileWidth * 2) {
+                } else if (x < this.rectCPTileWidth * 2) {
                     alert('You pressed on Tile 2 (Second from Left)');
-                }
-                else if (x < this.rectCPTileWidth * 3) {
+                } else if (x < this.rectCPTileWidth * 3) {
                     alert('You pressed on Tile 3 (Third from Left)');
-                }
-                else if (x < this.rectCPTileWidth * 4) {
+                } else if (x < this.rectCPTileWidth * 4) {
                     alert('You pressed on Tile 4 (Right most Tile)');
-                }
-                else {
+                } else {
                     alert('Something went wrong! You pressed outside of the Canvas!');
                 }
             },
             // ---- MAP SETUP
             initializeMap() {
-                for(let i = 0; i < this.amountOfColumns; i++) {
+                for (let i = 0; i < this.amountOfColumns; i++) {
                     this.map[i] = new Array(this.amountOfRows);
                     for (let j = 0; j < this.amountOfRows; j++) {
                         this.map[i][j] = Math.floor(Math.random() * 3);
@@ -198,15 +213,15 @@
                 }
                 this.drawMap();
             },
-            drawMap(){
-                for(let i=0; i< this.amountOfColumns; i++) {
-                    for (let j= 0; j < this.amountOfRows; j++) {
-                        this.drawTile(i,j,this.map[i][j]);
+            drawMap() {
+                for (let i = 0; i < this.amountOfColumns; i++) {
+                    for (let j = 0; j < this.amountOfRows; j++) {
+                        this.drawTile(i, j, this.map[i][j]);
                     }
                 }
                 console.log(this.map)
             },
-            drawTile(row,column,type){
+            drawTile(row, column, type) {
                 const coordX = column * this.gsTileWidth;
                 const coordY = row * this.gsTileHeight;
 
@@ -225,7 +240,8 @@
                 }
 
                 // Draw Tiles
-                this.ctxGS.fillRect(coordX, coordY, this.gsTileWidth, this.gsTileHeight);            }
+                this.ctxGS.fillRect(coordX, coordY, this.gsTileWidth, this.gsTileHeight);
+            }
         }
     };
 </script>

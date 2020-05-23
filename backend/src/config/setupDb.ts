@@ -8,7 +8,7 @@ const setupDb = ()=>{
             console.log(`Sucessfully deleted all Entries`)
         })
     }
-    for(let i=0; i<10; i++){
+    for(let i=0; i<5; i++){
         const game = new GameRoom({
             player1: "free Game Slot",
             player2: "free Game Slot",

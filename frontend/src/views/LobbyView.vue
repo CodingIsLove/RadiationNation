@@ -20,13 +20,21 @@ import Chat from "../components/Chat";
 import Navbar from "../components/Navbar";
 export default {
   name: "LobbyView",
-  components: {Navbar, Lobby,Chat }
+  components: {Navbar, Lobby,Chat },
+    methods:{
+      joinGame(){
+         console.log("Hello hello, time to join a game")
+      }
+    }
 };
 </script>
 
 <style scoped>
     #container{
         height: 100%;
+    }
+    #joinBttn{
+        width: 100%;
     }
 
     .lobbyView{
