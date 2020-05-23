@@ -1,5 +1,4 @@
 import dotenv from 'dotenv';
-
 dotenv.config();
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
@@ -11,15 +10,21 @@ import {userRouter} from './routes/userRoutes';
 import {resourceRouter} from './routes/resourcesRoutes';
 import {chatRouter} from './routes/chatInstanceRoutes';
 import {gameRouter} from './routes/gameInstanceState';
+import {lobbyRouter} from './routes/lobbyRoutes'
+import {getChatSocket} from './sockets/chatSocket'
+import {getGameSocket} from './sockets/gameSocket';
+import {getLobbySocket} from './sockets/lobbySocket'
 import path from "path";
 import './config/database'
+import './config/setupDb'
+
 
 // ---- initialize configuration
 const app = require('express')();
 const server = require('http').Server(app);
 const io = require('socket.io')(server); // todo: Add later the routes for the socket
 
-
+// --- configure app
 app.set('port', process.env.PORT || 3000);
 app.disable('x-powered-by'); // omit information, that could help hackers
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -29,47 +34,22 @@ app.use(bodyParser.json());
 app.use(morgan("dev"));
 app.use(cors());
 
-// ---- primary page routing
-app.get('/', (req, res) => {
-    res.send('Main thing of requests is working')
-});
-
-// ---- configure API
+// ---- configure REST API
+app.get('/', (req, res) => {res.send('Main thing of requests is working')});
 app.use('/static', express.static(path.join(__dirname, 'public')));
 app.use('/api/user', userRouter);
 app.use('/api/resource', resourceRouter);
 app.use('/api/chat', chatRouter);
 app.use('/api/game', gameRouter);
+app.use('/api/lobby',lobbyRouter);
+app.get('/*', (req, res) => {res.send('uuups something went wrong');});
 
-app.get('/*', (req, res) => {
-    res.send('uuups something went wrong');
-});
+// ------ Configure Sockets
+const chatSocket = getChatSocket(io);
+const gameSocket = getGameSocket(io);
+const lobbySocket = getLobbySocket(io);
 
-io.on('connection', (socket) => {
-    const chatmsg = [];
-    console.log('New User Connected to the socket');
-    socket.emit('connect',"Fuck off brudi");
-    // Connection events
-    socket.on('disconnect', () => {
-        console.log('User Disconnected');
-    });
-    socket.on('fuck',(data)=>{
-       console.log(data)
-        socket.emit('hello',"Here you go")
-    });
-    socket.on('sendMessage', (data) => {
-        chatmsg.push({
-            message: data.message,
-            username: data.username,
-            id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
-        });
-        console.log(chatmsg.length);
-        console.log(`And the data is: ${data.message}`);
-        io.emit('newMessage',chatmsg[chatmsg.length - 1]);
-    });
-});
-
-server.listen(process.env.PORT, ()=>{
+server.listen(process.env.PORT, () => {
     console.log(`Server is running on localhost:${process.env.PORT}`);
 });
 

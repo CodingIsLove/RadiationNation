@@ -10,6 +10,8 @@
 </template>
 
 <script>
+    import io from 'socket.io-client';
+
     export default {
         name: "Game",
         data() {
@@ -31,7 +33,8 @@
                 amountCpTiles: 4,
                 rectCP: undefined,
                 rectCPTileWidth: 0,
-                map: new Array(this.amountOfColumns)
+                map: new Array(this.amountOfColumns),
+                gameSocket: null
             }
         },
         computed: {
@@ -46,6 +49,10 @@
             }
         },
         mounted() {
+            // Setup Socket
+            this.newSocket();
+
+            // Setup Canvas
             let canvasGS = document.getElementById("gameScreen");
             let ctxGS = canvasGS.getContext('2d');
             let canvasCP = document.getElementById('controlPanel');
@@ -74,6 +81,16 @@
             this.initializeGS();
         },
         methods: {
+            newSocket() {
+                this.gameSocket = io.connect('localhost:8081/game');
+                this.gameSocket.on('welcome', (data) => {
+                    console.log(`The received data is: ${data}`)
+                });
+                this.gameSocket.on('newMap',(newMap)=>{
+                    this.map = newMap;
+                    this.drawMap();
+                })
+            },
             // ---- GS FUNCTIONS
             initializeGS: function() {
                 // 1. Draw Grid
@@ -116,8 +133,8 @@
                 let column = Math.ceil(x / this.rectGSTileWidth) -1;
                 console.log(`Clicked on: (${x},${y})`);
                 this.drawTile(row, column, 2);
-
-
+                this.map[row][column] = 2;
+                this.gameSocket.emit('updateGameState',this.map);
             },
             // ---- CP FUNCTIONS
             initializeCP: function () {
@@ -228,7 +245,7 @@
             },
             // ---- MAP SETUP
             initializeMap() {
-                for(let i = 0; i < this.amountOfColumns; i++) {
+                for (let i = 0; i < this.amountOfColumns; i++) {
                     this.map[i] = new Array(this.amountOfRows);
                     for (let j = 0; j < this.amountOfRows; j++) {
                         if (i <= 2) {
@@ -256,14 +273,15 @@
                 }
                 this.drawMap();
             },
-            drawMap(){
-                for(let i=0; i< this.amountOfColumns; i++) {
-                    for (let j= 0; j < this.amountOfRows; j++) {
-                        this.drawTile(i,j,this.map[i][j]);
+            drawMap() {
+                for (let i = 0; i < this.amountOfColumns; i++) {
+                    for (let j = 0; j < this.amountOfRows; j++) {
+                        this.drawTile(i, j, this.map[i][j]);
                     }
                 }
+                console.log(this.map)
             },
-            drawTile(row,column,type){
+            drawTile(row, column, type) {
                 const coordX = column * this.gsTileWidth;
                 const coordY = row * this.gsTileHeight;
 
@@ -311,13 +329,10 @@
                         img.src = require('@/assets/sprites/warriors/usa_knight.png');
                         break;
                     case 1:
-                        img.src = require('@/assets/sprites/warriors/russia_knight.png');
+                        this.ctxGS.fillStyle = 'green';
                         break;
                     case 2:
-
-                        break;
-                    case 3:
-
+                        this.ctxGS.fillStyle = 'brown';
                         break;
                     default:
                         break;

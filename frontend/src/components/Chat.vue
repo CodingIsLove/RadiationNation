@@ -1,6 +1,5 @@
 <template>
     <v-app class="chat">
-
         <h2>{{chat.username}}</h2>
         <div class="card bg-info">
             <div class="card-header grey text--white">
@@ -18,9 +17,6 @@
                 <div class="form-group">
                     <input type="text" class="form-control" v-model="chat.message" placeholder="Enter Message...">
                     <v-btn class="v-btn black white--text float-right" value="Send" @click="sendMessage"></v-btn>
-                    <v-btn @click="fuckOff"></v-btn>
-
-
                 </div>
             </div>
 
@@ -29,6 +25,7 @@
 </template>
 
 <script>
+    import io  from 'socket.io-client'
     export default {
         data() {
             return {
@@ -38,34 +35,42 @@
                     username: "",
                     connections: 0,
                 },
-                socket: undefined,
-            }
-        },
-        sockets: {
-            connect: function () {
-                console.log('Connected to Socket');
-            },
-            hello:function(){
-                console.log("Finally this shit is working")
-            },
-            newMessage: function(data){
-                this.chat.messageTable.push(data)
+                chatSocket: null,
+                //todo: add lobby socket
             }
         },
         methods: {
-            sendMessage: function () {
-                this.$socket.client.emit('sendMessage', this.chat);
+            newSocket() {
+                this.chatSocket = io.connect('localhost:8081/chat');
+                this.chatSocket.on('welcome',(data)=>{
+                    console.log(`The received data is: ${data}`)
+                });
+                this.chatSocket.on('connect', () => {
+                    this.chatSocket.emit('fuck', "Seems to work i gues")
+                });
+                this.chatSocket.on('hello',()=>{
+                    console.log("Finally this shit is working")
+                });
+                this.chatSocket.on('newMessage',(data)=>{
+                    this.chat.messageTable.push(data)
+                });
+            },
+            sendMessage() {
+                this.chatSocket.emit('sendMessage', this.chat);
                 this.chat.messageTable.push({
-                    message:this.message,
-                    username:this.username,
+                    message: this.message,
+                    username: this.username,
                 });
                 console.log('Sent message to socket')
             },
             fuckOff: function () {
                 console.log("Fuck was called");
-                this.$socket.client.emit('fuck', {msg: "fuck"});
+                this.chatSocket.emit('fuck', {msg: "fuck"});
             }
         },
+        mounted() {
+            this.newSocket()
+        }
     };
 </script>
 
