@@ -5,7 +5,6 @@ const getChatSocket = (io)=>{
         .on('connection', (socket) => {
             const chatmsg = [];
             console.log('----------- Connected to the Chat Socket----------------------')
-
             socket.on('disconnect', () => {
                 console.log('User Disconnected');
             });
@@ -21,7 +20,7 @@ const getChatSocket = (io)=>{
                 });
                 console.log(chatmsg.length);
                 console.log(`And the data is: ${data.message}`);
-                io.emit('newMessage', chatmsg[chatmsg.length - 1]);
+                socket.broadcast.emit('newMessage', chatmsg[chatmsg.length - 1]);
             });
 
             io.emit('welcome', "Hello Fucker")
