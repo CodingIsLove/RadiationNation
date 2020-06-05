@@ -4,7 +4,7 @@ import rest from 'restler'
 const assert = chai.assert;
 
 suite('ChatInstance API Testing', ()=>{
-    const base = "http://localhost:8080";
+    const base = "http://localhost:8081";
 
 
     test('/connectToGameInstance',(done)=>{

@@ -50,7 +50,6 @@ export default new Vuex.Store({
         updateChatroomData(state, userPayload) {
             state.user.chatRoomId = userPayload.chatRoomId;
         },
-
     },
     getters: {
         user: state => {
@@ -66,10 +65,8 @@ export default new Vuex.Store({
                 let sorted =data.sort((a,b)=> a.roomId - b.roomId )
                 console.log('soerted');
                context.commit('updateChatroomData',sorted);
-
             })
         }
-
     },
     modules: {}
 });

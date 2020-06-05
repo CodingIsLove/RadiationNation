@@ -41,7 +41,7 @@
         },
         methods: {
             newSocket() {
-                this.chatSocket = io.connect('localhost:8081/chat');
+                this.chatSocket = io.connect('localhost:8081/chat',{origin: '*:*'});
                 this.chatSocket.on('welcome',(data)=>{
                     console.log(`The received data is: ${data}`)
                 });
