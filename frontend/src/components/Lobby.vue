@@ -1,7 +1,7 @@
 <template>
     <v-app class="lobby">
         <div class="chatRoomList" v-for="room in rooms" :key="room.roomId">
-            <div class="chatRoom" v-bind:id="hello" >
+            <div class="chatRoom" >
                 <div class="details">
                     <div>Player 1: {{room.player1}}</div>
                     <div>Player 2: {{room.player2}}</div>
@@ -33,7 +33,7 @@
                 this.$router.push({path: '/game'})
             },
             newSockets(){
-                this.lobbySocket = io.connect('localhost:8081/lobby',{origin: '*:*'});
+                this.lobbySocket = io.connect('localhost:8081/lobby');
                 this.lobbySocket.on('connect',()=>{
                     this.$store.dispatch('updateChatroomData')
                     console.log('--------- You are connected to the lobby socket -------------------------')
