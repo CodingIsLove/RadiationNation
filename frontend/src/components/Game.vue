@@ -85,7 +85,7 @@
             newSocket() {
                 this.gameSocket = io.connect('localhost:8081/game');
                 this.gameSocket.on('connect',()=>{
-                    this.gameSocket.emit('room',this.$route.params.roomId)
+                    this.gameSocket.emit('room',this.gameRoom)
                 })
                 this.gameSocket.on('welcome', (data) => {
                     console.log(`The received data is: ${data}`)
