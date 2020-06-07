@@ -5,11 +5,11 @@ const getGameSocket = (io)=>{
         .of("/game")
         .on('connection', (socket) => {
             console.log('----------- Connected to the Game Socket ----------------------')
-            const roomId = null;
+            let roomId = null;
 
             socket.on('room', (room)=>{
                 console.log(`You just entered the GameSocket number: ${room}`)
-                this.roomId = room;
+                roomId = room;
                 socket.join(roomId);
             })
             socket.on('updateGameState', (updatedMap) => {
