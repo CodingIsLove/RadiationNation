@@ -16,6 +16,7 @@
         name: "Game",
         data() {
             return {
+                gameRoom: this.$route.params.gameRoom,
                 vueCanvasGS: {},
                 ctxGS: {},
                 amountOfColumns: 8,
@@ -83,6 +84,9 @@
         methods: {
             newSocket() {
                 this.gameSocket = io.connect('localhost:8081/game');
+                this.gameSocket.on('connect',()=>{
+                    this.gameSocket.emit('room',this.$route.params.roomId)
+                })
                 this.gameSocket.on('welcome', (data) => {
                     console.log(`The received data is: ${data}`)
                 });

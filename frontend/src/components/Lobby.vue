@@ -7,7 +7,7 @@
                     <div>Player 2: {{room.player2}}</div>
                     <div>RoomId is: {{room.roomId}}</div>
                 </div>
-                <v-btn >Join Game Room {{room.roomId}}</v-btn>
+                <v-btn @click="join(room.roomId)" >Join Game Room {{room.roomId}}</v-btn>
             </div>
         </div>
     </v-app>
@@ -28,9 +28,10 @@
             }
         },
         methods: {
-            join() {
+            join(roomId) {
+                console.log(roomId)
                 this.lobbySocket.emit('join');
-                this.$router.push({path: '/game'})
+                this.$router.push({path: `/game/${roomId}`})
             },
             newSockets(){
                 this.lobbySocket = io.connect('localhost:8081/lobby');

@@ -5,10 +5,6 @@ const getGameSocket = (io)=>{
         .of("/game")
         .on('connection', (socket) => {
             console.log('----------- Connected to the Game Socket ----------------------')
-
-            // Load the map from the mongodb
-            // todo: implement here the basic implementation of the map io.emit('initMap', GameState.find({socketId}));
-
             socket.on('updateGameState', (updatedMap) => {
                 console.log(updatedMap);
                 // update the Map for all participants
@@ -27,7 +23,7 @@ const getGameSocket = (io)=>{
                     json:true
                 })
                     .then((data)=>{
-                        console.log(data)
+                        console.log('Map data could be read out here')
                     }).catch((err)=>{
                     console.error(err)
                 });

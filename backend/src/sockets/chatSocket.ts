@@ -1,16 +1,17 @@
-
-const getChatSocket = (io)=>{
+const getChatSocket = (io) => {
     const chat = io
         .of("/chat")
         .on('connection', (socket) => {
             const chatmsg = [];
+            let roomId = null;
             console.log('----------- Connected to the Chat Socket----------------------')
             socket.on('disconnect', () => {
                 console.log('User Disconnected');
             });
-            socket.on('fuck', (data) => {
-                console.log(data)
-                socket.emit('hello', "Here you go")
+            socket.on('room', (room) => {
+                console.log(`You joined the room: ${room}`)
+                roomId = room
+                socket.join(room)
             });
             socket.on('sendMessage', (data) => {
                 chatmsg.push({
@@ -20,10 +21,8 @@ const getChatSocket = (io)=>{
                 });
                 console.log(chatmsg.length);
                 console.log(`And the data is: ${data.message}`);
-                socket.broadcast.emit('newMessage', chatmsg[chatmsg.length - 1]);
+                socket.in(roomId).emit('newMessage', chatmsg[chatmsg.length - 1]);
             });
-
-            io.emit('welcome', "Hello Fucker")
         });
     return chat;
 };
