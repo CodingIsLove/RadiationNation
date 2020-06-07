@@ -6,8 +6,6 @@ const getLobbySocket = (io) => {
         .on('connection', (socket) => {
             console.log('----------- Connected to the LobbySocket ----------------------')
             socket.on('join', (updatedMap) => {
-
-                // Write the new Map Data into the MongoDb
                 rp({
                     method: 'POST',
                     uri: 'http://localhost:8081/api/joinRoom',

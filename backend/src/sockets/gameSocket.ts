@@ -5,14 +5,17 @@ const getGameSocket = (io)=>{
         .of("/game")
         .on('connection', (socket) => {
             console.log('----------- Connected to the Game Socket ----------------------')
+            let roomId = null;
 
-            // Load the map from the mongodb
-            // todo: implement here the basic implementation of the map io.emit('initMap', GameState.find({socketId}));
-
+            socket.on('room', (room)=>{
+                console.log(`You just entered the GameSocket number: ${room}`)
+                roomId = room;
+                socket.join(roomId);
+            })
             socket.on('updateGameState', (updatedMap) => {
                 console.log(updatedMap);
                 // update the Map for all participants
-                io.of('/game').emit('newMap', updatedMap)
+                socket.in(roomId).emit('newMap', updatedMap)
 
                 // Write the new Map Data into the MongoDb
                 rp({
@@ -27,7 +30,7 @@ const getGameSocket = (io)=>{
                     json:true
                 })
                     .then((data)=>{
-                        console.log(data)
+                        console.log('Map data could be read out here')
                     }).catch((err)=>{
                     console.error(err)
                 });

@@ -36,18 +36,20 @@
                     connections: 0,
                 },
                 chatSocket: null,
-                //todo: add lobby socket
+                roomId: this.$route.params.gameRoom || 'global'
             }
         },
         methods: {
             newSocket() {
                 this.chatSocket = io.connect('localhost:8081/chat');
+                this.chatSocket.on('connect', () => {
+                    console.log('Chat socket is connected')
+                    this.chatSocket.emit('room',this.roomId )
+                });
                 this.chatSocket.on('welcome',(data)=>{
                     console.log(`The received data is: ${data}`)
                 });
-                this.chatSocket.on('connect', () => {
-                    this.chatSocket.emit('fuck', "Seems to work i gues")
-                });
+
                 this.chatSocket.on('hello',()=>{
                     console.log("Finally this shit is working")
                 });
@@ -62,10 +64,6 @@
                     username: this.username,
                 });
                 console.log('Sent message to socket')
-            },
-            fuckOff: function () {
-                console.log("Fuck was called");
-                this.chatSocket.emit('fuck', {msg: "fuck"});
             }
         },
         mounted() {

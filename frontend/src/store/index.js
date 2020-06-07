@@ -48,9 +48,8 @@ export default new Vuex.Store({
             state.chatRooms = payload;
         },
         updateChatroomData(state, userPayload) {
-            state.user.chatRoomId = userPayload.chatRoomId;
+            state. chatRooms= userPayload
         },
-
     },
     getters: {
         user: state => {
@@ -64,12 +63,10 @@ export default new Vuex.Store({
         updateChatroomData: (context)=>{
             http.get('/api/lobby/getLobbyRooms').then(({data})=>{
                 let sorted =data.sort((a,b)=> a.roomId - b.roomId )
-                console.log('soerted');
+                console.log('sorted');
                context.commit('updateChatroomData',sorted);
-
             })
         }
-
     },
     modules: {}
 });
