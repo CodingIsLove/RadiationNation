@@ -1,12 +1,6 @@
 import express from 'express';
 const chatRouter = express.Router();
 
-chatRouter.use((req,res,next)=>{
-    console.log("Middleware: This is a request for Users");
-
-    next()
-});
-
 chatRouter.post("/connectToGameInstance",(req,res)=>{
     // TODO: IMPLEMENT
 

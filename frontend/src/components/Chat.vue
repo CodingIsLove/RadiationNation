@@ -25,7 +25,8 @@
 </template>
 
 <script>
-    import io  from 'socket.io-client'
+    import io from 'socket.io-client'
+
     export default {
         data() {
             return {
@@ -44,18 +45,16 @@
                 this.chatSocket = io.connect('localhost:8081/chat');
                 this.chatSocket.on('connect', () => {
                     console.log('Chat socket is connected')
-                    this.chatSocket.emit('room',this.roomId )
-                });
-                this.chatSocket.on('welcome',(data)=>{
-                    console.log(`The received data is: ${data}`)
+                    this.chatSocket.emit('room', this.roomId)
                 });
 
-                this.chatSocket.on('hello',()=>{
-                    console.log("Finally this shit is working")
-                });
-                this.chatSocket.on('newMessage',(data)=>{
+                this.chatSocket.on('newMessage', (data) => {
                     this.chat.messageTable.push(data)
                 });
+
+                this.chatSocket.on('userUpdate',(data)=>{
+                    this.chat.connections = data
+                })
             },
             sendMessage() {
                 this.chatSocket.emit('sendMessage', this.chat);
@@ -68,6 +67,7 @@
         },
         mounted() {
             this.newSocket()
+            //todo: Get all the information from the VueX St
         }
     };
 </script>

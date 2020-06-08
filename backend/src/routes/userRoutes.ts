@@ -3,15 +3,6 @@ import {User} from '../model/User'
 import {authMiddleware} from '../config/auth';
 const userRouter = express.Router();
 
-userRouter.use((req,res,next)=>{
-    // todo: implement middleware stuff here if necessary
-    // todo: remove this middleware if it is not required anymore
-    console.log(`You made a user request`);
-    next();
-});
-
-
-
 userRouter.post("/getUserData",(req,res)=>{
    User
         .find({
