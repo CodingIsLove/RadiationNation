@@ -85,7 +85,7 @@
             newSocket() {
                 this.gameSocket = io.connect('localhost:8081/game');
                 this.gameSocket.on('connect',()=>{
-                    this.gameSocket.emit('room',this.gameRoom)
+                    this.gameSocket.emit('room',2 ) //todo: replace 2 with the real mount of users
                 })
                 this.gameSocket.on('welcome', (data) => {
                     console.log(`The received data is: ${data}`)
@@ -275,6 +275,7 @@
                         }
                     }
                 }
+                console.log(this.map)
                 this.drawMap();
             },
             drawMap() {

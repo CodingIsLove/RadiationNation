@@ -1,8 +1,10 @@
 import mongoose from 'mongoose'
-let connectionString = process.env.TEST_DATABASE;
+let connectionString = null
 
 if(process.env.NODE_ENV === 'production'){
     connectionString = process.env.PROD_DATABASE;
+}else{
+    connectionString = process.env.TEST_DATABASE
 }
 
 class Database {

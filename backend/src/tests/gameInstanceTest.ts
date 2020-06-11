@@ -1,37 +1,60 @@
 import chai from 'chai'
 import {describe,it} from "mocha";
 import rest from 'restler'
-const assert = chai.assert;
+import {baseUrl} from "./testingVariables";
+import {mockData} from '../misc/mockData'
+const should = chai.should()
+const users = mockData.users
 
-suite('GameInstance API Testing', ()=>{
-    const base = "http://localhost:8080";
 
-
-    test('/getGameState',(done)=>{
-        // todo: write this test
-        rest.post(`${base}/api/user`,{}).on('success',(data)=>{
-            console.log(data);
-        })
+describe('GameInstance API Testing', function () {
+    it('should return the gameState',function(done){
+        rest.get(`${baseUrl}/api/game/status/1`,)
+            .on('success',(data,response)=>{
+                console.log(data);
+               done()
+            })
+            .on('error',(error,response)=>{
+                console.log(error);
+                done(error)
+            })
     });
 
-    test('/newGame',(done)=>{
+
+    it('should not find a user, because  the db is empty', function (done) {
+        rest.get(`${baseUrl}/api/user/getUserData`)
+            .on('fail',(data,response)=>{
+                done() // Call should return error msg 404
+            })
+            .on('success',(data,response)=>{
+                done(response)
+            })
+            .on('error', (err) => {
+                done(err)
+            })
+    })
+
+    it('should return a brand new map',(done)=>{
         // todo: write this test
-        rest.post(`${base}/api/user`,{}).on('success',(data)=>{
+        rest.put(`${baseUrl}/api/user`,{}).on('success',(data)=>{
             console.log(data);
         })
+        done()
     });
 
-    test('/updateGameState',(done)=>{
+    it('should update the map (and answer with the new map)',(done)=>{
         // todo: write this test
-        rest.post(`${base}/api/user`,{}).on('success',(data)=>{
+        rest.put(`${baseUrl}/api/user`,{}).on('success',(data)=>{
             console.log(data);
         })
+        done()
     });
 
-    test('/killGameInstance',(done)=>{
+    it('should reset the gamestate to the initial conditions',(done)=>{
         // todo: write this test
-        rest.post(`${base}/api/user`,{}).on('success',(data)=>{
+        rest.put(`${baseUrl}/api/user`,{}).on('success',(data)=>{
             console.log(data);
         })
+        done()
     });
 });

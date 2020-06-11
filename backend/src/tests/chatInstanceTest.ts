@@ -6,7 +6,6 @@ const assert = chai.assert;
 suite('ChatInstance API Testing', ()=>{
     const base = "http://localhost:8081";
 
-
     test('/connectToGameInstance',(done)=>{
         // todo: write this test
         rest.post(`${base}/api/user`,{}).on('success',(data)=>{

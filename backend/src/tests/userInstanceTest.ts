@@ -1,64 +1,71 @@
 import chai from 'chai'
-import {describe,it} from "mocha";
+import {describe, it, before} from "mocha";
 import rest from 'restler'
-const assert = chai.assert;
+import {mockData} from '../misc/mockData'
+import {User} from "../model/User";
+import {baseUrl} from './testingVariables'
 
-suite('User API Tests', ()=>{
-    const base = "http://localhost:8080";
-    const realUser = {
-       username:"ChrisGermann",
-        email:"testtest@gmail.com",
-        password:"thisIsASecret"
-    }
+const should = chai.should()
 
-    test('this call was generated, to understand how to work with testing',(done)=>{
-        rest.post(`${base}/api/user`,{}).on('success',(data)=>{
-            assert(data.userId,"123");
-            assert(data.username, "chrisiBoy");
-            assert(data.password, "secret");
-            assert(data.email, "chris@gmail.com");
-            done();
-        })
-    });
+describe('User API Tests', function () {
 
-
-    test('/register',(done)=>{
-        // todo: write this test
-        rest.post(`${base}/api/user/register`,{data:realUser}).on('success',(data)=>{
-            console.log(data)
-        });
-        done();
-    });
-
-     test('/login',(done)=>{
-        // todo: write this test
-        rest.post(`${base}/api/user`,{}).on('success',(data)=>{
-            console.log(data)
-        })
-    });
-
-    test('/getUserData',(done)=>{
-        // todo: write this test
-        rest.post(`${base}/api/user`,{}).on('success',(data)=>{
-            console.log(data)
-        })
-    });
-
-
-    /*
-    test('/getVerificationMail',(done)=>{
-        // todo: write this test
-        rest.post(`${base}/api/user`,{}).on('success',(data)=>{
-            console.log(data)
-        })
-    });
-
-     test('/updateUser',(done)=>{
-        // todo: write this test
-        rest.post(`${base}/api/user`,{}).on('success',(data)=>{
-            console.log(data)
-        })
-    });
-     */
+    const users = mockData.users;
+    before(function (done) {
+        if (User.count()) {
+            User.deleteMany({}, (err) => {
+                if (err) {
+                    done(err)
+                }
+            })
+        }
+        console.log(`Wiped the user database`)
+        done()
+    })
+    it('should not find a user, because  the db is empty (=> throw err: 404)', function (done) {
+        rest.get(`${baseUrl}/api/user/getUserData`)
+            .on('fail', (data, response) => {
+                response.statusCode.should.be.equal(404);
+                done()
+            })
+            .on('success', (data, response) => {
+                throw new Error('User should not be found!')
+            })
+            .on('error', (err) => {
+                done(err)
+            })
+    })
+    it('should register a new user', function (done) {
+        rest.post(`${baseUrl}/api/user/register`, users[0])
+            .on('fail', (data, response) => {
+                throw new Error('this function should work')
+            })
+            .on('success', (data, response) => {
+                data.statusCode.should.be.equal(201);
+                console.log(response);
+                done()
+            })
+            .on('error', (err) => {
+                done(err)
+            })
+    })
+    it('should throw an error, since this user is already registered', function (done) {
+        rest.post(`${baseUrl}/api/user/register`, users[0])
+            .on('fail', (data, response) => {
+                response.statusCode.should.be.equal(400)
+                done()
+            })
+            .on('success', (data, response) => {
+                throw new Error('user should be already registered... why did that work?')
+            })
+            .on('error', (err) => {
+                done(err)
+            })
+    })
+    it('should find an already registered user', function (done) {
+        throw new Error('not implemented yet')
+    })
+    it('should delete the already registered user', function(done){
+        throw new Error('not implemented')
+    })
 });
 

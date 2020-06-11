@@ -13,7 +13,7 @@ const getGameSocket = (io)=>{
 
                 // join room and initialize Map from mongodb
                 socket.join(roomId);
-                //todo: implement this request, that i can use it here
+                // todo: implement this request, that i can use it here
             })
             socket.on('updateGameState', (updatedMap) => {
                 console.log(updatedMap);
