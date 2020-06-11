@@ -8,7 +8,7 @@ import {baseUrl} from './testingVariables'
 const should = chai.should()
 
 describe('User API Tests', function () {
-
+    // setup
     const users = mockData.users;
     before(function (done) {
         if (User.count()) {
@@ -21,6 +21,8 @@ describe('User API Tests', function () {
         console.log(`Wiped the user database`)
         done()
     })
+
+    // testing
     it('should not find a user, because  the db is empty (=> throw err: 404)', function (done) {
         rest.get(`${baseUrl}/api/user/getUserData`)
             .on('fail', (data, response) => {
@@ -35,12 +37,12 @@ describe('User API Tests', function () {
             })
     })
     it('should register a new user', function (done) {
-        rest.post(`${baseUrl}/api/user/register`, users[0])
+        rest.post(`${baseUrl}/api/user/register`, {data:users[0]})
             .on('fail', (data, response) => {
-                throw new Error('this function should work')
+                throw new Error(`could not create a new user... Error Code => ${response.statusCode} and response: ${JSON.stringify(data)}`)
             })
             .on('success', (data, response) => {
-                data.statusCode.should.be.equal(201);
+                response.statusCode.should.be.equal(201);
                 console.log(response);
                 done()
             })
@@ -49,7 +51,7 @@ describe('User API Tests', function () {
             })
     })
     it('should throw an error, since this user is already registered', function (done) {
-        rest.post(`${baseUrl}/api/user/register`, users[0])
+        rest.post(`${baseUrl}/api/user/register`, {data:users[0]})
             .on('fail', (data, response) => {
                 response.statusCode.should.be.equal(400)
                 done()
