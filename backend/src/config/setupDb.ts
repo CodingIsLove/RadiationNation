@@ -38,7 +38,7 @@ export const defaultSetupRooms = ()=>{
             player1: "freeSlot",
             player2: "freeSlot",
             roomId: i,
-            map: gameRoomTemplates.default_level
+            map: gameRoomTemplates.maps.default_level
         });
 
         game.save((err, doc) => {

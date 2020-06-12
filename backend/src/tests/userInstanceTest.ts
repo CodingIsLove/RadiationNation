@@ -64,10 +64,30 @@ describe('User API Tests', function () {
             })
     })
     it('should find an already registered user', function (done) {
-        throw new Error('not implemented yet')
+        rest.post(`${baseUrl}/api/user/register`, {data: users[0]})
+            .on('fail', (data, response) => {
+                response.statusCode.should.be.equal(409)
+                done()
+            })
+            .on('success', (data, response) => {
+                throw new Error('user should be already registered... why did that work?')
+            })
+            .on('error', (err) => {
+                done(err)
+            })
     })
     it('should delete the already registered user', function (done) {
-        throw new Error('not implemented')
+        rest.del(`${baseUrl}/api/user/allUsers`)
+            .on('fail',(data,response)=>{
+                throw new Error(`Could not delete all users because of: ${response}`)
+            })
+            .on('success', (data,response)=>{
+                done()
+            })
+            .on('error',(err)=>{
+                done(err)
+            })
+
     })
 })
 ;

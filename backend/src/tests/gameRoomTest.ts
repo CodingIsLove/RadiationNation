@@ -3,41 +3,73 @@ import {describe, it, before} from "mocha";
 import rest from 'restler'
 import {baseUrl} from "./testingVariables";
 import {mockData} from '../misc/mockData'
-import {GameRoom} from "../model/GameRoom";
 import {gameRoomTemplates} from "../misc/roomTemplates";
-
 const should = chai.should()
-const users = mockData.users
-import {setupDb} from '../config/setupDb'
 
 describe('Gameroom API testing', function () {
-    /**
-     * What should happen?
-     * 0. You can read data from an existing room (default conditions)
-     * 1. Person 1 enters the room
-     * 2. Request the new DB state and verify, that now you have a differnt user 1
-     * 3. Write the second user to the Dh
-     * 4. Update the map to a new version
-     * 5. Validate all the changes
-     * 6. Close the room and set all the values on default
-     * 7. Verify the default state of the Gameroom
-     */
+    const users = mockData.users
 
     // Clean up the records
     before(function (done) {
-        done()
+        rest.del(`${baseUrl}/api/game/allRooms`)
+            .on('success',(data,response)=>{
+                rest.put(`${baseUrl}/api/game/resetAllRooms`)
+                    .on('fail', (data2, response2) => {
+                        throw new Error(`Failed to delete all rooms with error: ${response2}`)
+                    })
+                    .on('success', (data2, response2) => {
+                        done()
+                    })
+                    .on('error', (err) => {
+                        done(err)
+                    })
+            })
+            .on('fail',(data,response)=>{
+                throw new Error(`DelAllUserError: statusCode:${response.statusCode} and errmsg: ${data}`)
+            })
+            .on('error', (err)=>{
+                done(err)
+            })
     })
 
-    it('Read the default data from an existing Room (Room 0)', function () {
+    it('Read the default data from an existing Room (Room 0)', function (done) {
+        rest.get(`${baseUrl}/api/game/gameState/0` )
+            .on('fail', (data, response) => {
+                throw new Error(`Could not get state from room 0 bcs of ${data} \n further infos ${response}`)
+            })
+            .on('success', (data, response) => {
+                console.log(data)
+                data.roomId.should.be.eql("0")
+                data.player1.should.be.eql('freeSlot')
+                data.player2.should.be.eql('freeSlot')
+                data.map.should.be.eql(gameRoomTemplates.maps.default_level)
+                done()
+            })
+            .on('error', (err) => {
+                done(err)
+            })
+    })
+
+    it('should update the room for User 1 entered the room', function (done) {
         throw new Error('not implemented yet')
     })
 
-    it('should update the room for User 1 entered the room', function () {
-        throw new Error('not implemented yet')
-    })
-
-    it('should return the updated DB state', function () {
-        throw new Error('not implemented yet')
+    it('should return the updated DB state', function (done) {
+        rest.get(`${baseUrl}/api/game/gameState/0` )
+            .on('fail', (data, response) => {
+                throw new Error(`Could not get state from room 0 bcs of ${data} \n further infos ${response}`)
+            })
+            .on('success', (data, response) => {
+                console.log(data)
+                data.roomId.should.be.eql("0")
+                data.player1.should.be.eql(users[0].username)
+                data.player2.should.be.eql('freeSlot')
+                data.map.should.be.eql(gameRoomTemplates.maps.default_level)
+                done()
+            })
+            .on('error', (err) => {
+                done(err)
+            })
     })
 
     it('Write a second user to the db', function () {
@@ -48,8 +80,22 @@ describe('Gameroom API testing', function () {
         throw new Error('not implemented yet')
     })
 
-    it('should validate all the changes', function () {
-        throw new Error('not implemented yet')
+    it('should validate all the changes', function (done) {
+        rest.get(`${baseUrl}/api/game/gameState/0` )
+            .on('fail', (data, response) => {
+                throw new Error(`Could not get state from room 0 bcs of ${data} \n further infos ${response}`)
+            })
+            .on('success', (data, response) => {
+                console.log(data)
+                data.roomId.should.be.eql("0")
+                data.player1.should.be.eql(users[0].username)
+                data.player2.should.be.eql(users[1].username)
+                data.map.should.be.eql(gameRoomTemplates.maps.other_level)
+                done()
+            })
+            .on('error', (err) => {
+                done(err)
+            })
     })
 
     it('should close the room and set all the values back to default', function () {
