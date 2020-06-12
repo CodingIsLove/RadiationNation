@@ -1,6 +1,7 @@
 import express from 'express';
 import {User} from '../model/User'
 import {authMiddleware} from '../config/auth';
+import {dummyUserSetup} from '../config/setupDb'
 
 const userRouter = express.Router();
 
@@ -72,7 +73,7 @@ userRouter.put('/updateUser', (req, res) => {
     res.send('not implemented yet')
 });
 
-userRouter.put('/delete', (req, res) => {
+userRouter.delete('/delete', (req, res) => {
     User
         .findOneAndRemove({
             email: req.body.email
@@ -84,6 +85,28 @@ userRouter.put('/delete', (req, res) => {
             res.send(err)
         })
 });
+
+userRouter.delete('/allUsers', (req,res)=>{
+    User.deleteMany({},(err)=>{
+        if(err) res.status(423).send(`DeleteAllUser failed with error: ${err}`)
+        res.status(200).send('Sucessfully deleted all Users')
+    })
+});
+
+userRouter.get('/allUsers',(req,res)=>{
+    User.find({},(err, users)=>{
+        if(err) res.status(404).send('Error when requesting all the users')
+        res.status(200).send(users)
+    })
+});
+
+
+// Upload a few test users to the db; only for testing purposes
+userRouter.post('/testUsers', (req,res)=>{
+    console.log('At least the api call was working')
+    dummyUserSetup()
+    res.send('Hope this worked')
+})
 
 export {userRouter};
 
