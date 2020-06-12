@@ -3,8 +3,7 @@ import {GameState} from '../model/GameState'
 const gameRouter = express.Router();
 
 gameRouter.get("/getGameState/:gsessionId", (req, res) => {
-    // todo: implement
-    res.send('not implemented yet');
+    res.status(404).send('not implemented yet');
 });
 
 gameRouter.post("/newGame", async (req, res) => {
