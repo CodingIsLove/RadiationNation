@@ -5,10 +5,9 @@ import {baseUrl} from "./testingVariables";
 import {mockData} from '../misc/mockData'
 import {GameRoom} from "../model/GameRoom";
 import {gameRoomTemplates} from "../misc/roomTemplates";
-
 const should = chai.should()
 const users = mockData.users
-
+import {setupDb} from '../config/setupDb'
 
 describe('Gameroom API testing', function () {
     /**
@@ -22,28 +21,10 @@ describe('Gameroom API testing', function () {
      * 6. Close the room and set all the values on default
      * 7. Verify the default state of the Gameroom
      */
-    //Clean up the records
+
+    // Clean up the records
     before(function (done) {
-        // wipe gameRoom Collection
-        GameRoom.deleteMany({}, (err) => {
-            if (err) console.log(done(err));
-            console.log(`Sucessfully cleaned all Gamerooms`)
-            // insert default values
-            for (let i = -1; i < 5; i++) {
-                const game = new GameRoom({
-                    player0: "free Game Slot",
-                    player1: "free Game Slot",
-                    roomId: i,
-                    map: gameRoomTemplates.default_level
-                });
-                game.save((err, doc) => {
-                    if (err) {
-                        console.log(`Could not save GameRoom to MongoDb because of error: ${err}`);
-                        done(err)
-                    }
-                })
-            }
-        })
+        setupDb()
         done()
     })
 
