@@ -1,4 +1,4 @@
-import rp from 'request-promise';
+const rp = require('request-promise')
 
 const getGameSocket = (io)=>{
     const game = io

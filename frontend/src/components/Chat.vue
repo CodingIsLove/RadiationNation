@@ -1,26 +1,27 @@
 <template>
-    <v-app class="chat">
+    <v-app class="chat" app>
         <h2>{{chat.username}}</h2>
-        <div class="card bg-info">
-            <div class="card-header grey text--white">
-                <h4>My Chat App <span class="float-right">{{chat.connections}} connections</span></h4>
-            </div>
-            <ul class="list-group list-group-flush text-right">
-                <li class="list-group-item" v-for="message in chat.messageTable" :key="message.id">
+        <v-card class="card bg-info">
+            <v-card-title>
+                <h4>Radiation Nation Chat <span class="float-right">{{chat.connections}} {{ $t("message.Connections") }}</span></h4>
+            </v-card-title>
+
+            <v-list-group class="list-group list-group-flush text-right">
+                <v-list-item-group class="list-group-item" v-for="message in chat.messageTable" :key="message.id">
                     <span>{{message.message}}
                         <small>:{{message.username}}</small>
                     </span>
-                </li>
-            </ul>
+                </v-list-item-group>
+            </v-list-group>
 
-            <div class="card-body">
+            <v-card-actions class="card-body">
                 <div class="form-group">
-                    <input type="text" class="form-control" v-model="chat.message" placeholder="Enter Message...">
-                    <v-btn class="v-btn black white--text float-right" value="Send" @click="sendMessage"></v-btn>
+                    <input type="text" class="form-control" v-model="chat.message" v-bind:placeholder="$t('message.EnterMessage')">
+                    <v-btn class="v-btn black white--text float-right" v-bind:value="$t('message.Send')" @click="sendMessage"></v-btn>
                 </div>
-            </div>
+            </v-card-actions>
 
-        </div>
+        </v-card>
     </v-app>
 </template>
 
@@ -74,7 +75,7 @@
 
 <style scoped>
     .chat {
-        height: 100%;
-        background-color: white;
+        height: 100vh;
+        background-color: blue;
     }
 </style>

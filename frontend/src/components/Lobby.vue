@@ -56,8 +56,8 @@
 
 <style scoped>
     .lobby {
-        height: 95%;
-        background-color: grey;
+        height: 100%;
+        background-color: red;
     }
 
     .chatRoom {
@@ -75,5 +75,8 @@
         width: 70%;
     }
 
+    .v-application--wrap {
+        min-height: 83vh;
+    }
 
 </style>

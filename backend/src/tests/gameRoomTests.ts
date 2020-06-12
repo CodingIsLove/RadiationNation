@@ -36,10 +36,10 @@ describe('Gameroom API testing', function () {
                     roomId: i,
                     map: gameRoomTemplates.default_level
                 });
-                game.save((err, doc) => {
-                    if (err) {
-                        console.log(`Could not save GameRoom to MongoDb because of error: ${err}`);
-                        done(err)
+                game.save((error, doc) => {
+                    if (error) {
+                        console.log(`Could not save GameRoom to MongoDb because of error: ${error}`);
+                        done(error)
                     }
                 })
             }
