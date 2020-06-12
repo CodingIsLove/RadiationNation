@@ -10,7 +10,9 @@
     ],
     "no-console": false,
     "no-var-requires":false,
-    "no-require-imports":false
+    "no-require-imports":false,
+    "only-arrow-functions": false
+
   },
   "semicolon": [
     "never"

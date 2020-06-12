@@ -8,9 +8,7 @@ import morgan from 'morgan'
 import cors from 'cors'
 import {userRouter} from './routes/userRoutes';
 import {resourceRouter} from './routes/resourcesRoutes';
-import {chatRouter} from './routes/chatInstanceRoutes';
 import {gameRouter} from './routes/gameInstanceState';
-import {lobbyRouter} from './routes/lobbyRoutes'
 import {getChatSocket} from './sockets/chatSocket'
 import {getGameSocket} from './sockets/gameSocket';
 import {getLobbySocket} from './sockets/lobbySocket'
@@ -39,10 +37,8 @@ app.get('/', (req, res) => {res.send('Main thing of requests is working')});
 app.use('/static', express.static(path.join(__dirname, 'public')));
 app.use('/api/user', userRouter);
 app.use('/api/resource', resourceRouter);
-app.use('/api/chat', chatRouter);
 app.use('/api/game', gameRouter);
-app.use('/api/lobby',lobbyRouter);
-app.get('/*', (req, res) => {res.send('uuups something went wrong');});
+app.get('/*', (req, res) => {res.status(404).send('uuups something went wrong');});
 
 // ------ Configure Sockets
 const chatSocket = getChatSocket(io);

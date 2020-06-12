@@ -1,17 +1,9 @@
 import express from 'express';
-
-const gameRouter = express.Router();
 import {GameState} from '../model/GameState'
+const gameRouter = express.Router();
 
-
-gameRouter.use((req, res, next) => {
-    console.log("Middleware GameInstanceRouter: This is a request for Users")
-    next()
-});
-
-gameRouter.post("/getGameState/:gsessionId", (req, res) => {
-    // todo: implement
-    res.send('not implemented yet');
+gameRouter.get("/getGameState/:gsessionId", (req, res) => {
+    res.status(404).send('not implemented yet');
 });
 
 gameRouter.post("/newGame", async (req, res) => {
@@ -22,7 +14,6 @@ gameRouter.post("/newGame", async (req, res) => {
             player2: req.body.player2,
             socketId: req.body.socketId
         });
-
         const data = await gameState.save();
         res.status(201).json(data);
     } catch (e) {
@@ -37,15 +28,15 @@ gameRouter.post("/updateGameState", async (req, res) => {
             return res.status(409).json({message: "shit... it looks like this socket has more than one instance!"})
         } else if (gameStateList.length === 0) {
             return res.status(409).json({message: "It looks, like there does not exist any instance of this socketId"})
-        }else{
+        } else {
             console.log("Looks good to this point")
         }
 
         const gameState = new GameState({
             map: req.body.map,
-            player1:req.body.player1,
-            player2:req.body.player2,
-            socketId:req.body.socketId
+            player1: req.body.player1,
+            player2: req.body.player2,
+            socketId: req.body.socketId
         });
 
         const data = await gameState.save();

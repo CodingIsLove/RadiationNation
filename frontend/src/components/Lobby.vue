@@ -37,7 +37,6 @@
                 this.lobbySocket = io.connect('localhost:8081/lobby');
                 this.lobbySocket.on('connect',()=>{
                     this.$store.dispatch('updateChatroomData')
-                    console.log('--------- You are connected to the lobby socket -------------------------')
                 });
                 this.lobbySocket.on('userLeftChat',()=>{
                     console.log("Sweet some user left a fucking chat")

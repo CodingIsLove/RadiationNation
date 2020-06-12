@@ -4,14 +4,15 @@ const getChatSocket = (io) => {
         .on('connection', (socket) => {
             const chatmsg = [];
             let roomId = null;
-            console.log('----------- Connected to the Chat Socket----------------------')
             socket.on('disconnect', () => {
                 console.log('User Disconnected');
+                socket.in(roomId).emit('userUpdate',2) // todo: should be amount of connected users... tis number is just temporarily
             });
             socket.on('room', (room) => {
                 console.log(`You joined the room: ${room}`)
                 roomId = room
                 socket.join(room)
+                socket.in(roomId).emit('userUpdate',socket.client.conn.server.clientsCount)
             });
             socket.on('sendMessage', (data) => {
                 chatmsg.push({

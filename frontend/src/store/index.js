@@ -9,35 +9,10 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         user: {
-            username: "Unknown user",
-            email: "",
+            username: null,
+            email: null,
         },
-        chatRooms: []
-
-            /*[{
-                player1: "Christopher Germann",
-                player2: "BeniWyss",
-                roomId: 0
-            },
-            {
-                player1: "Somebody who is not Chris",
-                player2: "Somebody who is not Beni",
-                roomId: 1
-            }, {
-                player1: "Ilir Fetai",
-                player2: "En geile siach",
-                roomId: 2
-            }, {
-                player1: "Mr. Robot",
-                player2: "Ultrahäcker",
-                roomId: 3
-            }, {
-                player1: "Christopher Germann",
-                player2: "BeniWyss",
-                roomId: 4
-            }]
-        /*
-             */
+        chatRooms: [],
     },
     mutations: {
         initializeUser(state, userPayload) {
@@ -48,7 +23,7 @@ export default new Vuex.Store({
             state.chatRooms = payload;
         },
         updateChatroomData(state, userPayload) {
-            state. chatRooms= userPayload
+            state.chatRooms= userPayload
         },
     },
     getters: {
@@ -57,7 +32,7 @@ export default new Vuex.Store({
         },
         chatRooms: (state) => {
             return state.chatRooms;
-        }
+        },
     },
     actions: {
         updateChatroomData: (context)=>{
@@ -66,7 +41,7 @@ export default new Vuex.Store({
                 console.log('sorted');
                context.commit('updateChatroomData',sorted);
             })
-        }
+        },
     },
     modules: {}
 });
