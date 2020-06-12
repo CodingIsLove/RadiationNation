@@ -86,7 +86,7 @@
                 this.gameSocket = io.connect('localhost:8081/game');
                 this.gameSocket.on('connect',()=>{
                     this.gameSocket.emit('room',2 ) //todo: replace 2 with the real mount of users
-                })
+                });
                 this.gameSocket.on('welcome', (data) => {
                     console.log(`The received data is: ${data}`)
                 });
@@ -249,34 +249,94 @@
             },
             // ---- MAP SETUP
             initializeMap() {
-                for (let i = 0; i < this.amountOfColumns; i++) {
-                    this.map[i] = new Array(this.amountOfRows);
-                    for (let j = 0; j < this.amountOfRows; j++) {
-                        if (i <= 2) {
-                            this.map[i][j] = 0;
-                        }
-                        else if (i === 5 && j === 0) {
-                            this.map[i][j] = 3;
-                        }
-                        else if (i === 5 && j === 7) {
-                            this.map[i][j] = 4;
-                        }
-                        else if (i === 5) {
-                            this.map[i][j] = 2;
-                        }
-                        else if (i === 7 && j === 5 || i === 3 && j === 3) {
-                            this.map[i][j] = 5;
-                        }
-                        else if (i === 3 && j === 4 || i === 7 && j === 3 || i === 6 && j === 4 || i === 4 && j === 2) {
-                            this.map[i][j] = 6;
-                        }
-                        else {
-                            this.map[i][j] = 1;
+                this.selectMap(2);
+                console.log(this.map);
+                this.drawMap();
+            },
+            selectMap(int) {
+              switch (int) {
+                  // STANDARD MAP
+                case 0:
+                    for (let i = 0; i < this.amountOfColumns; i++) {
+                        this.map[i] = new Array(this.amountOfRows);
+                        for (let j = 0; j < this.amountOfRows; j++) {
+                            if (i <= 2) {
+                                this.map[i][j] = 0;
+                            }
+                            else if (i === 5 && j === 0) {
+                                this.map[i][j] = 3;
+                            }
+                            else if (i === 5 && j === 7) {
+                                this.map[i][j] = 4;
+                            }
+                            else if (i === 5) {
+                                this.map[i][j] = 2;
+                            }
+                            else if (i === 7 && j === 5 || i === 3 && j === 3) {
+                                this.map[i][j] = 5;
+                            }
+                            else if (i === 3 && j === 4 || i === 7 && j === 3 || i === 6 && j === 4 || i === 4 && j === 2) {
+                                this.map[i][j] = 6;
+                            }
+                            else {
+                                this.map[i][j] = 1;
+                            }
                         }
                     }
-                }
-                console.log(this.map)
-                this.drawMap();
+                    break;
+                    //FOREST MAP
+                case 1:
+                    for (let i = 0; i < this.amountOfColumns; i++) {
+                        this.map[i] = new Array(this.amountOfRows);
+                        for (let j = 0; j < this.amountOfRows; j++) {
+                            if (i <= 2) {
+                                this.map[i][j] = 0;
+                            }
+                            else if (i === 5 && j === 0) {
+                                this.map[i][j] = 3;
+                            }
+                            else if (i === 5 && j === 7) {
+                                this.map[i][j] = 4;
+                            }
+                            else if (i === 5) {
+                                this.map[i][j] = 2;
+                            }
+                            else {
+                                this.map[i][j] = 6;
+                            }
+                        }
+                    }
+                    break;
+                    // Forest vs Forest Map
+                case 2:
+                    for (let i = 0; i < this.amountOfColumns; i++) {
+                        this.map[i] = new Array(this.amountOfRows);
+                        for (let j = 0; j < this.amountOfRows; j++) {
+                            if (i <= 2) {
+                                this.map[i][j] = 0;
+                            }
+                            else if (i === 5 && j === 0) {
+                                this.map[i][j] = 3;
+                            }
+                            else if (i === 5 && j === 7) {
+                                this.map[i][j] = 4;
+                            }
+                            else if (i === 5) {
+                                this.map[i][j] = 2;
+                            }
+                            else if (i === 7 && j === 5 || i === 4 && j === 6 || i === 6 && j === 1 || i === 4 && j === 2) {
+                                this.map[i][j] = 5;
+                            }
+                            else if (j === 0 || j === 1 || j === 2 || j === 5 || j === 6 || j === 7) {
+                                this.map[i][j] = 6;
+                            }
+                            else {
+                                this.map[i][j] = 1;
+                            }
+                        }
+                    }
+                    break;
+              }
             },
             drawMap() {
                 for (let i = 0; i < this.amountOfColumns; i++) {

@@ -22,7 +22,7 @@ describe('Gameroom API testing', function () {
      * 6. Close the room and set all the values on default
      * 7. Verify the default state of the Gameroom
      */
-    //Clean up the records
+    // Clean up the records
     before(function (done) {
         // wipe gameRoom Collection
         GameRoom.deleteMany({}, (err) => {
