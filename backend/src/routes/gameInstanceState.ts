@@ -5,8 +5,8 @@ import {gameRoomTemplates} from "../misc/roomTemplates";
 const gameRouter = express.Router();
 
 gameRouter.get("/gameState/:gsessionId", (req, res) => {
-    GameRoom.findOne({roomId:req.params.gsessionId},(err,docs)=>{
-        if(err) res.status(404).send(`Gamesession does not exist. raised error: ${err}`)
+    GameRoom.findOne({roomId: req.params.gsessionId}, (err, docs) => {
+        if (err) res.status(404).send(`Gamesession does not exist. raised error: ${err}`)
         res.status(200).json(docs)
     })
 });
@@ -25,6 +25,36 @@ gameRouter.post("/newGame/:roomId", async (req, res) => {
         res.status(400).json({message: "Could not create a new Game"})
     }
 });
+
+
+gameRouter.put('/joinGameRoom/:roomId', (req, res) => {
+    try {
+        if (Object.keys(req.body).length === 0) {
+            res.status(402).send('To join a room, you have to provide User data in the body')
+        }else{
+            GameRoom.findOne({roomId: req.params.roomId}, async (err, doc) => {
+                if (err) {
+                    res.status(404).send(`joinGameRoom failed with error: ${err}`)
+                }
+                if (doc.player1 === "freeSlot") {
+                    doc.player1 = req.body.username
+                    await doc.save()
+                } else if (doc.player2 === "freeSlot" && doc.player2 !== doc.player1) {
+                    doc.player2 = req.body.username
+                    await doc.save()
+                } else if (doc.player2 !== "freeSlot") {
+                    if (doc.player1 === doc.player2) {
+                        res.status(400).send('You are already in the GameInstance')
+                    }
+                    res.status(400).send('GameRoom is already full')
+                }
+                res.status(200).json(doc)
+            })
+        }
+    } catch (err) {
+        res.status(404).json({err})
+    }
+})
 
 gameRouter.post("/updateGameState/:roomId", async (req, res) => {
     try {
@@ -74,9 +104,9 @@ gameRouter.put("/resetAllRooms", async (req, res) => {
     }
 )
 
-gameRouter.delete('/allRooms',(req,res)=>{
-    GameRoom.deleteMany({}, (err)=>{
-        if(err) res.status(400).send(`Could not del all rooms because of err: ${err}`)
+gameRouter.delete('/allRooms', (req, res) => {
+    GameRoom.deleteMany({}, (err) => {
+        if (err) res.status(400).send(`Could not del all rooms because of err: ${err}`)
         res.status(200).send('Sucessfully deleted all RoomInstances')
     })
 })
