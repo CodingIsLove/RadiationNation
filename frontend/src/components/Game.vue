@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <div>{{ $t('message.Welcome') }} {{userName}}</div>
+        <div>{{ $t('welcome') }} {{userName}}</div>
         <v-btn @click="initializeCP">Some stupid content here</v-btn>
         <div id="gameContainer">
             <canvas id="gameScreen">Seems that your browser does not support canvas :(</canvas>

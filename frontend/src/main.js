@@ -5,52 +5,18 @@ import axios from "axios";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 import vuei18n from "vue-i18n";
+import en from "./locales/en.json";
+import de from "./locales/de.json";
+import ru from "./locales/ru.json";
+import zh from "./locales/zh.json";
+import ch from "./locales/ch.json";
 
 const base = axios.create({
     baseURL: "http://localhost:8081"
 });
 
 const messages = {
-    en: {
-        message: {
-            Yes: 'Yes',
-            No: 'No',
-            Connections: 'Connections',
-            EnterMessage: 'Enter a Message',
-            Send: 'Send',
-            Welcome: 'Welcome'
-        }
-    },
-    zh: {
-        message: {
-            Yes: '是的，是的',
-            No: '没有',
-            Connections: '连接',
-            EnterMessage: '输入信息',
-            Send: '发送',
-            Welcome: '欢迎光临'
-        }
-    },
-    ru: {
-        message: {
-            Yes: 'да',
-            No: 'нет',
-            Connections: 'связи',
-            EnterMessage: 'введите сообщение',
-            Send: 'послать',
-            Welcome: 'приветствие'
-        }
-    },
-    de: {
-        message: {
-            Yes: 'Ja',
-            No: 'Nein',
-            Connections: 'Verbindungen',
-            EnterMessage: 'Gib eine Nachricht ein',
-            Send: 'Senden',
-            Welcome: 'Willkommen'
-        }
-    },
+    en, ru, zh, de, ch
 };
 
 Vue.prototype.$http = base;

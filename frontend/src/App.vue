@@ -14,8 +14,3 @@ export default {
 };
 </script>
 
-<style>
-    #app {
-        max-height: 100%;
-    }
-</style>

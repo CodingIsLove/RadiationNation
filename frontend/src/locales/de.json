@@ -1,8 +1,8 @@
 {
-  "Ja": "Ja",
-  "Nein": "Nein",
-  "Verbindungen": "Verbindungen",
-  "Gib eine Nachricht ein": "Gib eine Nachricht ein",
-  "Senden": "Senden",
-  "Willkommen": "Willkommen"
+  "yes": "Ja",
+  "no": "Nein",
+  "connections": "Verbindungen",
+  "enterMessage": "Gib eine Nachricht ein",
+  "send": "Senden",
+  "welcome": "Willkommen"
 }

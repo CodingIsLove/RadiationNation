@@ -3,7 +3,7 @@
         <h2>{{chat.username}}</h2>
         <v-card class="card bg-info">
             <v-card-title>
-                <h4>Radiation Nation Chat <span class="float-right">{{chat.connections}} {{ $t("message.Connections") }}</span></h4>
+                <h4>Radiation Nation Chat <span class="float-right">{{chat.connections}} {{ $t("connections") }}</span></h4>
             </v-card-title>
 
             <v-list-group class="list-group list-group-flush text-right">
@@ -16,8 +16,8 @@
 
             <v-card-actions class="card-body">
                 <div class="form-group">
-                    <input type="text" class="form-control" v-model="chat.message" v-bind:placeholder="$t('message.EnterMessage')">
-                    <v-btn class="v-btn black white--text float-right" v-bind:value="$t('message.Send')" @click="sendMessage"></v-btn>
+                    <input type="text" class="form-control" v-model="chat.message" v-bind:placeholder="$t('enterMessage')">
+                    <v-btn class="v-btn black white--text float-right" v-bind:value="$t('send')" @click="sendMessage"></v-btn>
                 </div>
             </v-card-actions>
 
