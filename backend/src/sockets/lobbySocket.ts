@@ -1,4 +1,5 @@
-import rp from 'request-promise';
+const rp = require('request-promise')
+
 
 const getLobbySocket = (io) => {
     const lobby = io
