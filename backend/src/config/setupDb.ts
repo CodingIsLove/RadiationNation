@@ -24,7 +24,6 @@ export const wipeUser = ()=>{
 
 export const wipeGameRoom = ()=>{
  if (GameRoom.count()) {
-        console.log("Reset all Gamerooms");
         GameRoom.deleteMany({}, (err) => {
             if (err) console.log(`Error is: ${err}`);
             console.log(`Sucessfully cleaned all Gamerooms`)

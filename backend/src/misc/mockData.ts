@@ -33,5 +33,5 @@ export const mockData = {
             email: "kevin.hablützel@mail.com"
         }
     ],
-    map: gameRoomTemplates.maps.default_level
+    map: gameRoomTemplates.maps.default_level.map
 }
