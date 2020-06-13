@@ -33,9 +33,3 @@
         }
     }
 </script>
-
-<style scoped>
-    #toolbar {
-        height: 100px;
-    }
-</style>
