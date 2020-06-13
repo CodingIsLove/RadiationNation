@@ -56,16 +56,17 @@
 
 <style scoped>
     .lobby {
-        height: 100%;
+        max-height: 93vh;
         background-color: red;
     }
 
     .chatRoom {
         display: flex;
+        height: 100%;
         width: 100%;
         justify-content: center;
         align-items: center;
-        background-color: blue;
+        background-color: green;
         padding: 20px;
         font-size: 1.5rem;
         margin-bottom: 10px;

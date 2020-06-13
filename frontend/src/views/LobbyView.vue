@@ -1,16 +1,14 @@
 <template>
     <v-app class="lobbyView">
-        <Navbar class="navigation"/>
-        <v-container id="container">
-            <v-row align="center">
-                <v-col align-self="start" cols="8">
-                    <Lobby class="lobbyComponent"/>
-                </v-col>
-                <v-col align-self="end" cols="4">
-                    <Chat class="chatComponent"/>
-                </v-col>
-            </v-row>
-        </v-container>
+        <Navbar/>
+        <v-row align="start">
+            <v-col align-self="start" cols="8">
+                <Lobby class="lobbyComponent"/>
+            </v-col>
+            <v-col align-self="end" cols="4">
+                <Chat class="chatComponent"/>
+            </v-col>
+        </v-row>
     </v-app>
 </template>
 
@@ -31,18 +29,6 @@ export default {
 
 <style scoped>
     #container{
-        height: 93vh;
-    }
-
-    .navigation {
-        height: 7vh;
-    }
-
-    .lobbyComponent {
-        align-self: start;
-    }
-
-    .chatComponent {
         height: 93vh;
     }
 

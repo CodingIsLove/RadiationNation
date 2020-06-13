@@ -75,7 +75,7 @@
 
 <style scoped>
     .chat {
-        height: 100vh;
-        background-color: blue;
+        max-height: 93vh;
+        background-color: green;
     }
 </style>

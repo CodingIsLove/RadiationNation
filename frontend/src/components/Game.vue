@@ -159,7 +159,7 @@
                 for (let i = 0; i < this.vueCanvasCP.width; i += this.cpTileWidth) {
                     console.log(i);
                     if (i === 0) {
-                        cp_warrior_1.src = require('@/assets/sprites/warriors/cp_usa_warrior_1.png');
+                        cp_warrior_1.src = require('@/assets/sprites/warriors/cp_rus_warrior_1.png');
                         console.log('drawing 1');
                         cp_warrior_1.onload = () => {
                             console.log('drawing image');
@@ -167,7 +167,7 @@
                         };
                     }
                     else if (i === this.cpTileWidth) {
-                        cp_warrior_2.src = require('@/assets/sprites/warriors/cp_usa_warrior_2.png');
+                        cp_warrior_2.src = require('@/assets/sprites/warriors/cp_rus_warrior_2.png');
                         console.log('drawing 2');
                         cp_warrior_2.onload = () => {
                             console.log('drawing image');
@@ -175,7 +175,7 @@
                         };
                     }
                     else if (i === this.cpTileWidth * 2) {
-                        cp_warrior_3.src = require('@/assets/sprites/warriors/cp_usa_warrior_3.png');
+                        cp_warrior_3.src = require('@/assets/sprites/warriors/cp_rus_warrior_3.png');
                         console.log('drawing 3');
                         cp_warrior_3.onload = () => {
                             console.log('drawing image');
@@ -183,7 +183,7 @@
                         };
                     }
                     else if (i === this.cpTileWidth * 3) {
-                        cp_warrior_4.src = require('@/assets/sprites/warriors/cp_usa_warrior_4.png');
+                        cp_warrior_4.src = require('@/assets/sprites/warriors/cp_rus_warrior_4.png');
                         console.log('drawing 4');
                         cp_warrior_4.onload = () => {
                             console.log('drawing image');
