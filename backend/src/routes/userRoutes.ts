@@ -1,7 +1,7 @@
 import express from 'express';
 import {User} from '../model/User'
 import {authMiddleware} from '../config/auth';
-import {dummyUserSetup} from '../config/setupDb'
+import {mockData} from "../misc/mockData";
 
 const userRouter = express.Router();
 
@@ -86,26 +86,31 @@ userRouter.delete('/delete', (req, res) => {
         })
 });
 
-userRouter.delete('/allUsers', (req,res)=>{
-    User.deleteMany({},(err)=>{
-        if(err) res.status(423).send(`DeleteAllUser failed with error: ${err}`)
+userRouter.delete('/allUsers', (req, res) => {
+    User.deleteMany({}, (err) => {
+        if (err) res.status(423).send(`DeleteAllUser failed with error: ${err}`)
         res.status(200).send('Sucessfully deleted all Users')
     })
 });
 
-userRouter.get('/allUsers',(req,res)=>{
-    User.find({},(err, users)=>{
-        if(err) res.status(404).send('Error when requesting all the users')
+userRouter.get('/allUsers', (req, res) => {
+    User.find({}, (err, users) => {
+        if (err) res.status(404).send('Error when requesting all the users')
         res.status(200).send(users)
     })
 });
 
 
 // Upload a few test users to the db; only for testing purposes
-userRouter.post('/testUsers', (req,res)=>{
-    console.log('At least the api call was working')
-    dummyUserSetup()
-    res.send('Hope this worked')
+userRouter.post('/testUsers',async (req, res) => {
+    const dummyUsers = mockData.users
+    for (const element of dummyUsers) {
+        const user = User(element)
+        await user.save((err, doc) => {
+            if (err) {res.status(400).send(`There was en issue creating the test users`)}
+        })
+    }
+    res.status(201).send(`Saved all the dummy user to the db`)
 })
 
 export {userRouter};

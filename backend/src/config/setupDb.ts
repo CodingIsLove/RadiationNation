@@ -47,15 +47,3 @@ export const defaultSetupRooms = ()=>{
         })
     }
 }
-
-export const dummyUserSetup = ()=>{
-    const dummyUsers = mockData.users
-    dummyUsers.forEach(element=>{
-        const user = User(element)
-           user.save((err, doc) => {
-               if (err) {
-                   console.log(`Could not save GameRoom to MongoDb because of error: ${err}`);
-               }
-           })
-    })
-}
