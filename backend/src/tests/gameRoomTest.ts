@@ -153,6 +153,19 @@ describe('Game Room Test', function () {
                 })
         })
 
+        it('should get all the Rooms, that exist',function(done){
+            rest.get(`${baseUrl}/api/game/allGamerooms`)
+                .on('fail', (data, response) => {
+                    throw new Error(`get all Gamerooms error: ${data} \n further infos ${response}`)
+                })
+                .on('success', (data, response) => {
+                    done()
+                })
+                .on('error', (err) => {
+                    done(err)
+                })
+        })
+
         it('Read the default data from an existing Room (Room 0)', function (done) {
             rest.get(`${baseUrl}/api/game/gameState/0`)
                 .on('fail', (data, response) => {

@@ -7,15 +7,7 @@ const should = chai.should()
 
 
 describe('Beispiel für FFHS Präsentation', function () {
-    it('This can', (done) => {
+    it('This can be used as Todolist', (done) => {
         throw new Error('NOT IMPLEMENTED YET')
     })
-    it('be used', (done) => {
-        throw new Error('NOT IMPLEMENTED YET')
-    })
-    it('as a ', (done) => {
-        throw new Error('NOT IMPLEMENTED YET')
-    })
-    it('todolist ', (done) => {
-        throw new Error('NOT IMPLEMENTED YET') })
 })
