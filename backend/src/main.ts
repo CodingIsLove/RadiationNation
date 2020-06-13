@@ -14,10 +14,11 @@ import {getGameSocket} from './sockets/gameSocket';
 import {getLobbySocket} from './sockets/lobbySocket'
 import path from "path";
 import './config/database'
-import './config/setupDb'
+import {setupDb} from './config/setupDb'
 
 
 // ---- initialize configuration
+setupDb();
 const app = require('express')();
 const server = require('http').Server(app);
 const io = require('socket.io')(server); // todo: Add later the routes for the socket

@@ -1,30 +1,43 @@
 import {GameRoom} from "../model/GameRoom";
 import {gameRoomTemplates} from '../misc/roomTemplates'
 import {User} from "../model/User";
+import {mockData} from "../misc/mockData"
+export const setupDb = ()=>{
+    wipeDB()
+    defaultSetupRooms()
+};
 
-const setupDb = () => {
-    if (GameRoom.count()) {
-        console.log("Reset all Gamerooms");
-        GameRoom.deleteMany({}, (err) => {
-            if (err) console.log(`Error is: ${err}`);
-            console.log(`Sucessfully cleaned all Gamerooms`)
-        })
-    }
+export const wipeDB = ()=>{
+    wipeGameRoom()
+    wipeUser()
+}
 
-    if(User.count()){
+export const wipeUser = ()=>{
+ if(User.count()){
        console.log("Delete all the users")
         User.deleteMany({}, (err) => {
             if (err) console.log(`Error is: ${err}`);
             console.log(`Sucessfully cleaned all Users`)
         })
     }
+}
 
+export const wipeGameRoom = ()=>{
+ if (GameRoom.count()) {
+        GameRoom.deleteMany({}, (err) => {
+            if (err) console.log(`Error is: ${err}`);
+            console.log(`Sucessfully cleaned all Gamerooms`)
+        })
+    }
+}
+
+export const defaultSetupRooms = ()=>{
     for (let i = 0; i < 5; i++) {
         const game = new GameRoom({
-            player1: "free Game Slot",
-            player2: "free Game Slot",
+            player1: "freeSlot",
+            player2: "freeSlot",
             roomId: i,
-            map: gameRoomTemplates.default_level
+            map: gameRoomTemplates.maps.default_level
         });
 
         game.save((err, doc) => {
@@ -33,6 +46,16 @@ const setupDb = () => {
             }
         })
     }
-};
+}
 
-module.exports = setupDb();
+export const dummyUserSetup = ()=>{
+    const dummyUsers = mockData.users
+    dummyUsers.forEach(element=>{
+        const user = User(element)
+           user.save((err, doc) => {
+               if (err) {
+                   console.log(`Could not save GameRoom to MongoDb because of error: ${err}`);
+               }
+           })
+    })
+}
