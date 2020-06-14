@@ -94,7 +94,7 @@
     .v-card {
         margin: 10px;
         padding: 5px;
-        transition: all .2s ease-in-out
+        transition: all .2s ease-in-out;
     }
 
     .v-card:hover{
