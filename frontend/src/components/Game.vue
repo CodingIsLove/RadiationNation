@@ -232,21 +232,74 @@
                 console.log(`You clicked at Position: (${x},${y})`);
                 console.log('The Tile width / Total width is: ' + this.rectCP.width / this.amountCpTiles + ' / ' + this.rectCP.width + '.');
                 if (x < this.rectCPTileWidth) {
+                    //SwordFighter
+                    this.spawnUnit('Swordfighter', 0);
                     alert('You pressed on Tile 1  (Left most Tile)');
                 }
                 else if (x < this.rectCPTileWidth * 2) {
+                    this.spawnUnit('Knight', 0);
                     alert('You pressed on Tile 2 (Second from Left)');
                 }
                 else if (x < this.rectCPTileWidth * 3) {
+                    this.spawnUnit('Spearfighter', 0);
                     alert('You pressed on Tile 3 (Third from Left)');
                 }
                 else if (x < this.rectCPTileWidth * 4) {
+                    this.spawnUnit('Archer', 0);
                     alert('You pressed on Tile 4 (Right most Tile)');
                 }
                 else {
                     alert('Something went wrong! You pressed outside of the Canvas!');
                 }
             },
+            // ---- Game Functions
+            spawnUnit(unitType, player) {
+                var unitToSpawn = new Image();
+
+                if (player === 1) {
+                    switch(unitType) {
+                        case 'Swordfighter':
+                            unitToSpawn.src = require('@/assets/sprites/warriors/cp_rus_warrior_1.png');
+                            break;
+                        case 'Knight':
+                            unitToSpawn.src = require('@/assets/sprites/warriors/cp_rus_warrior_2.png');
+                            break;
+                        case 'Spearfighter':
+                            unitToSpawn.src = require('@/assets/sprites/warriors/cp_rus_warrior_3.png');
+                            break;
+                        case 'Archer':
+                            unitToSpawn.src = require('@/assets/sprites/warriors/cp_rus_warrior_4.png');
+                            break;
+                        default:
+                            return;
+                    }
+                    unitToSpawn.onload = () => {
+                        document.getElementById("gameScreen").getContext('2d').drawImage(unitToSpawn, 6 * this.gsTileWidth, 5 * this.gsTileHeight, this.gsTileWidth, this.gsTileHeight);
+                    };
+                }
+                else {
+                    switch(unitType) {
+                        case 'Swordfighter':
+                            unitToSpawn.src = require('@/assets/sprites/warriors/cp_usa_warrior_1.png');
+                            break;
+                        case 'Knight':
+                            unitToSpawn.src = require('@/assets/sprites/warriors/cp_usa_warrior_2.png');
+                            break;
+                        case 'Spearfighter':
+                            unitToSpawn.src = require('@/assets/sprites/warriors/cp_usa_warrior_3.png');
+                            break;
+                        case 'Archer':
+                            unitToSpawn.src = require('@/assets/sprites/warriors/cp_usa_warrior_4.png');
+                            break;
+                        default:
+                            return;
+                    }
+                    unitToSpawn.onload = () => {
+                        document.getElementById("gameScreen").getContext('2d').drawImage(unitToSpawn, this.gsTileWidth, 5 * this.gsTileHeight, this.gsTileWidth, this.gsTileHeight);
+                    };
+                }
+            },
+
             // ---- MAP SETUP
             initializeMap() {
                 this.selectMap(2);
