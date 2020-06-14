@@ -1,6 +1,9 @@
 <template>
     <v-container fluid class="chat">
-        <v-card class="card bg-info" id="chatContainer">
+        <v-card
+                class="card bg-info"
+                id="chatContainer"
+                min-height="100%">
             <v-card-title>
                 <h4>Chat - <span class="text-right">{{connections}} {{ $t("connections") }}</span></h4>
             </v-card-title>
@@ -12,7 +15,8 @@
             </v-list>
 
             <v-card-actions class="card-actions" id="chatAction">
-                <v-text-field class="float-left" id="textfield" type="text" v-model="chat.message" v-bind:placeholder="$t('enterMessage')"></v-text-field>
+                <v-text-field class="float-left" id="textfield" type="text" v-model="chat.message"
+                              v-bind:placeholder="$t('enterMessage')"></v-text-field>
                 <v-btn class="v-btn grey white--text float-right" @click="sendMessage">{{$t("send")}}</v-btn>
             </v-card-actions>
         </v-card>
@@ -34,8 +38,8 @@
                 roomId: this.$route.params.gameRoom || 'global'
             }
         },
-        computed:{
-            connections:function(){
+        computed: {
+            connections: function () {
                 return this.$store.getters.amountOfClients
             }
         },
@@ -51,11 +55,11 @@
                     this.chat.messageTable.push(data)
                 });
 
-                this.chatSocket.on('userUpdate',(data)=>{
+                this.chatSocket.on('userUpdate', (data) => {
                     this.$store.commit('updateAmountOfClients', data.amountOfClients)
                 });
 
-                this.chatSocket.on('error',(data)=>{
+                this.chatSocket.on('error', (data) => {
                     alert(`ChatSocket: Error in Backend with Socket: ${data}`)
                 })
             },
@@ -88,8 +92,7 @@
     }
 
     .chat {
-        background-color: green;
-        overflow-y:auto ;
+        overflow-y: auto;
         height: 100%;
     }
 </style>

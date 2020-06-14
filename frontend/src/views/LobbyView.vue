@@ -6,7 +6,7 @@
                 <v-col align-self="start" cols="8">
                     <Lobby/>
                 </v-col>
-                <v-col align-self="end" cols="4">
+                <v-col id="chat" align-self="stretch" cols="4">
                     <Chat/>
                 </v-col>
             </v-row>
@@ -30,11 +30,6 @@ export default {
 </script>
 
 <style scoped>
-
-    .lobbyContainer {
-
-    }
-
     .lobbyView{
         height: 100vh;
         background-image: url("../assets/battle_background.jpg");
