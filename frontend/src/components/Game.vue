@@ -115,18 +115,6 @@
                     this.gsClick(event);
                 });
             },
-            gsClick: function(event) {
-
-                // Calculate X and Y Position clicked
-                const x = event.clientX - this.rectGS.left;
-                const y = event.clientY - this.rectGS.top;
-                let row = Math.ceil(y / this.rectGSTileHeight) -1;
-                let column = Math.ceil(x / this.rectGSTileWidth) -1;
-                console.log(`Clicked on: (${x},${y})`);
-                this.drawTile(row, column, 2);
-                this.map[row][column] = 2;
-                this.gameSocket.emit('updateGameState',this.map);
-            },
             // ---- CP FUNCTIONS
             initializeCP: function () {
 
