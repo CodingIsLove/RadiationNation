@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+
 dotenv.config();
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
@@ -9,6 +10,7 @@ import cors from 'cors'
 import {userRouter} from './routes/userRoutes';
 import {resourceRouter} from './routes/resourcesRoutes';
 import {gameRouter} from './routes/gameInstanceState';
+import {socketDataRouter} from './routes/socketDataRoutes'
 import {getChatSocket} from './sockets/chatSocket'
 import {getGameSocket} from './sockets/gameSocket';
 import {getLobbySocket} from './sockets/lobbySocket'
@@ -34,12 +36,17 @@ app.use(morgan("dev"));
 app.use(cors());
 
 // ---- configure REST API
-app.get('/', (req, res) => {res.send('Main thing of requests is working')});
+app.get('/', (req, res) => {
+    res.send('Main thing of requests is working')
+});
 app.use('/static', express.static(path.join(__dirname, 'public')));
 app.use('/api/user', userRouter);
 app.use('/api/resource', resourceRouter);
 app.use('/api/game', gameRouter);
-app.get('/*', (req, res) => {res.status(404).send('uuups something went wrong');});
+app.use('/api/socket_data', socketDataRouter)
+app.get('/*', (req, res) => {
+    res.status(404).send('uuups something went wrong');
+});
 
 // ------ Configure Sockets
 const chatSocket = getChatSocket(io);

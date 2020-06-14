@@ -4,16 +4,13 @@ const getGameSocket = (io)=>{
     const game = io
         .of("/game")
         .on('connection', (socket) => {
-            console.log('----------- Connected to the Game Socket ----------------------')
             let roomId = null;
 
             socket.on('room', (room)=>{
                 console.log(`You just entered the GameSocket number: ${room}`)
                 roomId = room;
 
-                // join room and initialize Map from mongodb
                 socket.join(roomId);
-                // todo: implement this request, that i can use it here
             })
             socket.on('updateGameState', (updatedMap) => {
                 console.log(updatedMap);

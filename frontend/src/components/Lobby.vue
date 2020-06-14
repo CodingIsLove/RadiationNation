@@ -30,18 +30,30 @@
         methods: {
             join(roomId) {
                 console.log(roomId)
-                this.lobbySocket.emit('join');
+                this.lobbySocket.emit('join',{
+                    roomId:roomId,
+                    username: this.$store.getters.userName
+                });
+                this.lobbySocket.emit('')
                 this.$router.push({path: `/game/${roomId}`})
             },
             newSockets(){
                 this.lobbySocket = io.connect('localhost:8081/lobby');
                 this.lobbySocket.on('connect',()=>{
-                    this.$store.dispatch('updateChatroomData')
+                    console.info('Socket connected')
                 });
                 this.lobbySocket.on('userLeftChat',()=>{
                     console.log("Sweet some user left a fucking chat")
                     //this.store.dispatch('gameRoomUpdate',)
                 });
+
+                this.lobbySocket.on('updateLobby', ()=>{
+                    this.$store.dispatch('updateChatroomData')
+                })
+
+                this.lobbySocket.on('error',(data)=>{
+                    alert(`LobbySocket: Error in Backend with Socket: ${data}`)
+                })
             }
         },
         beforeMount(){
