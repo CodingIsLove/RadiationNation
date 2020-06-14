@@ -86,5 +86,6 @@
         background-image: url('~@/assets/login_image.jpg');
         background-repeat: no-repeat;
         background-position: center;
+        background-size: cover;
     }
 </style>

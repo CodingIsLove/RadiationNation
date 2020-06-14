@@ -1,7 +1,7 @@
 <template>
-  <v-app class="gameView">
+  <v-container fluid class="gameView">
     <Navbar/>
-    <v-container id="container">
+    <v-container fluid id="container">
       <v-row align="center">
         <v-col align-self="start" cols="8">
           <Game/>
@@ -11,7 +11,7 @@
         </v-col>
       </v-row>
     </v-container>
-  </v-app>
+  </v-container>
 </template>
 
 
@@ -27,8 +27,10 @@ export default {
 </script>
 
 <style scoped>
-  .gameView{
+  #container{
     background-image: url("../assets/battle_background.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
     background-position: center;
   }
 </style>

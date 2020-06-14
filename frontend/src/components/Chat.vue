@@ -1,5 +1,5 @@
 <template>
-    <v-app class="chat" app>
+    <v-container fluid class="chat">
         <v-card class="card bg-info" id="chatContainer">
             <v-card-title>
                 <h4>Chat - <span class="text-right">{{connections}} {{ $t("connections") }}</span></h4>
@@ -16,7 +16,7 @@
                 <v-btn class="v-btn grey white--text float-right" @click="sendMessage">{{$t("send")}}</v-btn>
             </v-card-actions>
         </v-card>
-    </v-app>
+    </v-container>
 </template>
 
 <script>
@@ -81,18 +81,6 @@
 </script>
 
 <style scoped>
-    #chatContainer {
-        height: 80vh;
-    }
-
-    #chatMessages {
-
-    }
-
-    #chatAction {
-
-    }
-
     .card-actions {
         position: absolute;
         bottom: 0;
@@ -101,5 +89,7 @@
 
     .chat {
         background-color: green;
+        overflow-y:auto ;
+        height: 100%;
     }
 </style>

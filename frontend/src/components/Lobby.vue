@@ -1,66 +1,86 @@
 <template>
-    <v-app class="lobby">
+    <v-container fluid class="lobby">
         <div class="chatRoomList" v-for="room in rooms" :key="room.roomId">
-            <div class="chatRoom" >
-                <div class="details">
-                    <div>Player 1: {{room.player1}}</div>
-                    <div>Player 2: {{room.player2}}</div>
-                    <div>RoomId is: {{room.roomId}}</div>
-                </div>
-                <v-btn @click="join(room.roomId)" >Join Game Room {{room.roomId}}</v-btn>
-            </div>
+                <v-card
+                        class="v-card"
+                        color="white"
+                        raised="true"
+                        hover="true"
+                        ripple="true"
+                        rounded="true"
+                        @click="join(room.roomId)"
+                >
+                    <v-card-title>GameRoom: {{room.roomId}}</v-card-title>
+                    <v-card-text>
+                        <div>Player One is: {{room.player1}}</div>
+                        <div>Player One is: {{room.player2}}</div>
+
+                        <v-card-actions v-if="room.player1">
+                            <v-btn
+                                    text
+                                    @click="join(room.roomId)"
+                                    color="deep-purple accent-4"
+                            >Join Game</v-btn>
+                        </v-card-actions>
+                    </v-card-text>
+                </v-card>
         </div>
-    </v-app>
+    </v-container>
 </template>
 
 <script>
     import io from 'socket.io-client'
+
     export default {
         name: "Lobby",
-        data(){
-            return{
-                lobbySocket:null,
+        data() {
+            return {
+                lobbySocket: null,
             }
         },
-        computed:{
-            rooms(){
+        computed: {
+            rooms() {
                 return this.$store.getters.chatRooms;
+            },
+            roomIsFull() {
+                console.log(this.room.player1 === "freeSlot" && this.room.player2 === "freeSlot")
+                return this.room.player1 === "freeSlot" && this.room.player2 === "freeSlot"
             }
         },
         methods: {
             join(roomId) {
                 console.log(roomId)
-                this.lobbySocket.emit('join',{
-                    roomId:roomId,
+                this.lobbySocket.emit('join', {
+                    roomId: roomId,
                     username: this.$store.getters.userName
                 });
                 this.lobbySocket.emit('')
                 this.$router.push({path: `/game/${roomId}`})
             },
-            newSockets(){
+            newSockets() {
                 this.lobbySocket = io.connect('localhost:8081/lobby');
-                this.lobbySocket.on('connect',()=>{
+                this.lobbySocket.on('connect', () => {
                     console.info('Socket connected')
                 });
-                this.lobbySocket.on('userLeftChat',()=>{
+                this.lobbySocket.on('userLeftChat', () => {
                     console.log("Sweet some user left a fucking chat")
                     //this.store.dispatch('gameRoomUpdate',)
                 });
 
-                this.lobbySocket.on('updateLobby', ()=>{
+                this.lobbySocket.on('updateLobby', () => {
                     this.$store.dispatch('updateChatroomData')
                 })
 
-                this.lobbySocket.on('error',(data)=>{
+                this.lobbySocket.on('error', (data) => {
                     alert(`LobbySocket: Error in Backend with Socket: ${data}`)
                 })
             }
         },
-        beforeMount(){
+        beforeMount() {
             console.log('Before Mount was called');
             this.$store.dispatch('updateChatroomData');
         },
-        mounted(){
+        mounted() {
             this.newSockets()
         }
     };
@@ -68,26 +88,18 @@
 
 <style scoped>
     .lobby {
-        max-height: 93vh;
-        background-color: red;
+        background-color: rgba(0, 0, 0, 0);
     }
 
-    .chatRoom {
-        display: flex;
-        height: 100%;
-        width: 100%;
-        justify-content: center;
-        align-items: center;
-        background-color: green;
-        padding: 20px;
-        font-size: 1.5rem;
-        margin-bottom: 10px;
+    .v-card {
+        margin: 10px;
+        padding: 5px;
+        transition: all .2s ease-in-out
     }
 
-    .details {
-        width: 70%;
+    .v-card:hover{
+        transform: scale(1.05);
     }
-
     .v-application--wrap {
         min-height: 83vh;
     }

@@ -1,7 +1,7 @@
 <template>
-    <v-app class="lobbyView">
+    <v-content class="lobbyView">
         <Navbar/>
-        <v-container class="lobbyContainer">
+        <v-container fluid class="lobbyContainer">
             <v-row align="start">
                 <v-col align-self="start" cols="8">
                     <Lobby/>
@@ -11,7 +11,7 @@
                 </v-col>
             </v-row>
         </v-container>
-    </v-app>
+    </v-content>
 </template>
 
 <script>
@@ -39,5 +39,7 @@ export default {
         height: 100vh;
         background-image: url("../assets/battle_background.jpg");
         background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
     }
 </style>

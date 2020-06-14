@@ -1,12 +1,11 @@
 <template>
-    <v-app>
+    <v-container fluid>
         <div>{{ $t('welcome') }} {{userName}}</div>
-        <v-btn @click="initializeCP">Some stupid content here</v-btn>
         <div id="gameContainer">
             <canvas id="gameScreen">Seems that your browser does not support canvas :(</canvas>
             <canvas id="controlPanel">Seems that your browser does not support canvas :(</canvas>
         </div>
-    </v-app>
+    </v-container>
 </template>
 
 <script>
@@ -482,7 +481,7 @@
 
     #controlPanel {
         width: 100%;
-        height: 10%;
+        height: 5%;
         border: 1px solid black;
     }
 </style>
