@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <div class="text-center"><span class="float-left red--text">USA: 30 {{$t("money")}} | 50 {{$t("life")}}</span>{{ $t('welcome') }} {{userName}}<span class="float-right blue--text">RUS: 30 {{$t("money")}} | 50 {{$t("life")}}</span></div>
+        <div class="text-center"><span class="float-left red--text">USA: {{this.usaGold}} {{$t("money")}} | {{this.usaHealth}} {{$t("life")}}</span>{{ $t('welcome') }} {{userName}}<span class="float-right blue--text">RUS: {{this.rusGold}} {{$t("money")}} | {{this.rusHealth}} {{$t("life")}}</span></div>
         <div id="gameContainer">
             <canvas id="gameScreen">Seems that your browser does not support canvas :(</canvas>
             <canvas id="controlPanel">Seems that your browser does not support canvas :(</canvas>
@@ -35,7 +35,11 @@
                 gameSocket: null,
                 xSpawn_One: this.gsTileWidth,
                 imgToAnimate: new Image(),
-                xSpawn_Two: this.gsTileWidth * 7
+                xSpawn_Two: this.gsTileWidth * 7,
+                usaGold: 100,
+                rusGold: 100,
+                usaHealth: 50,
+                rusHealth: 50
             }
         },
         computed: {
@@ -248,6 +252,7 @@
                     }
                     console.log('Player = RUS');
                     unitToSpawn.onload = () => {
+                        this.rusGold -= 10;
                         this.imgToAnimate = unitToSpawn;
                         this.animateRightToLeft();
                     }
@@ -271,6 +276,7 @@
                     }
                     console.log('Player = USA');
                     unitToSpawn.onload = () => {
+                        this.usaGold -= 10;
                         this.imgToAnimate = unitToSpawn;
                         this.animateLeftToRight();
                     }
@@ -285,6 +291,10 @@
                 }
                 else {
                     this.xSpawn_One = this.gsTileWidth;
+                    this.rusHealth -= 10;
+                    if (this.rusHealth === 0) {
+                        this.playerWon('USA WON!');
+                    }
                 }
             },
             animateRightToLeft() {
@@ -296,9 +306,15 @@
                 }
                 else {
                     this.xSpawn_Two = this.gsTileWidth * 7;
+                    this.usaHealth -= 10;
+                    if (this.usaHealth === 0) {
+                        this.playerWon('RUSSIA WON!');
+                    }
                 }
             },
-
+            playerWon(winner) {
+                alert(winner)
+            },
             // ---- MAP SETUP
             initializeMap() {
                 this.selectMap(2);
@@ -395,12 +411,6 @@
                         this.drawTile(i, j, this.map[i][j]);
                     }
                 }
-                this.drawPlayerMoney();
-            },
-            drawPlayerMoney() {
-                document.getElementById('gameScreen').getContext('2d').font = "10px Arial";
-                document.getElementById('gameScreen').getContext('2d').fillText("USA: 30 Gold", 10, 10);
-                document.getElementById('gameScreen').getContext('2d').fillText("RUS: 30 Gold", this.gsTileWidth * 6, 10);
             },
             drawTile(row, column, type) {
                 const coordX = column * this.gsTileWidth;
