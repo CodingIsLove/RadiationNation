@@ -5,9 +5,6 @@
         <v-btn icon @click="lobbyRoute">
             <v-icon>mdi-home</v-icon>
         </v-btn>
-        <v-btn icon @click="gameRoute" >
-            <v-icon>mdi-gamepad</v-icon>
-        </v-btn>
         <v-menu offset-y :close-on-click="false" :close-on-content-click="false" v-model="menuOpen">
             <template v-slot:activator="{ on }">
                 <v-btn icon v-on="on" class="ma-4">
@@ -25,9 +22,6 @@
                 </v-card-actions>
             </v-card>
         </v-menu>
-        <v-btn icon @click="loginRoute" >
-            <v-icon>mdi-account</v-icon>
-        </v-btn>
     </v-toolbar>
 </template>
 
@@ -35,14 +29,8 @@
     export default {
         name: "Navbar",
         methods:{
-            gameRoute:function () {
-                this.$router.push({path:'/game'})
-            },
             lobbyRoute:function () {
                 this.$router.push({path:'/lobby'})
-            },
-            loginRoute:function () {
-                this.$router.push({path:'/'})
             },
             changeLanguage:function(locale) {
                 this.$i18n.locale = locale;
