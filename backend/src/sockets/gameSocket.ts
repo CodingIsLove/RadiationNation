@@ -7,10 +7,13 @@ const getGameSocket = (io)=>{
             let roomId = null;
 
             socket.on('room', (room)=>{
-                console.log(`You just entered the GameSocket number: ${room}`)
+                console.log('room function was called')
                 roomId = room;
-
                 socket.join(roomId);
+                console.log('Room was joined')
+                socket.emit('currentPlayerPosition',{
+                    playerPosition:2
+                })
             })
             socket.on('updateGameState', (updatedMap) => {
                 console.log(updatedMap);

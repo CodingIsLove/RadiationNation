@@ -11,7 +11,8 @@ export default new Vuex.Store({
         user: {
             username: "Random Random RAndom",
             email: null,
-            roomId: 'global'
+            roomId: 'global',
+            currentPlayerPosition: 1
         },
         chatRooms: [],
         amountOfClients:0
@@ -32,6 +33,9 @@ export default new Vuex.Store({
         userName: state => {
             return state.user.username;
         },
+        playerPosition: state =>{
+            return state.user.currentPlayerPosition
+        }
     },
     mutations: {
         initializeUser(state, userPayload) {
@@ -48,9 +52,12 @@ export default new Vuex.Store({
             state.user.roomId = userPayload
         },
         updateAmountOfClients(state, userPayload) {
-            console.log('updateAmountTiles was triggered in vue store')
             state.amountOfClients = userPayload
+        },
+        updateCurrentPlayerPosition(state, userPayload){
+            state.user.currentPlayerPosition = userPayload
         }
+
     },
     actions: {
         updateChatroomData: (context) => {

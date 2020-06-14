@@ -85,6 +85,7 @@
             newSocket() {
                 this.gameSocket = io.connect('localhost:8081/game');
                 this.gameSocket.on('connect',()=>{
+                    console.log('shit was connected')
                     this.gameSocket.emit('room',2 ) //todo: replace 2 with the real mount of users
                 });
                 this.gameSocket.on('welcome', (data) => {
@@ -93,6 +94,9 @@
                 this.gameSocket.on('newMap',(newMap)=>{
                     this.map = newMap;
                     this.drawMap();
+                })
+                this.gameSocket.on('currentPlayerPosition', (data)=>{
+                    this.$store.commit('updateCurrentPlayerPosition',data.playerPosition)
                 })
             },
             // ---- GS FUNCTIONS
@@ -253,10 +257,10 @@
                 }
             },
             // ---- Game Functions
-            spawnUnit(unitType, player) {
+            spawnUnit(unitType) {
                 var unitToSpawn = new Image();
 
-                if (player === 1) {
+                if (this.$store.getters.playerPosition === 1) {
                     switch(unitType) {
                         case 'Swordfighter':
                             unitToSpawn.src = require('@/assets/sprites/warriors/cp_rus_warrior_1.png');
