@@ -11,6 +11,15 @@ gameRouter.get("/gameState/:gsessionId", (req, res) => {
     })
 });
 
+gameRouter.get("/allGamerooms", (req,res)=>{
+    GameRoom.find({},(err,rooms)=>{
+        if(err){
+            res.status(400).send(`Could not Get Gamerooms because of err: ${err}`)
+        }
+        res.status(200).json(rooms)
+    })
+})
+
 gameRouter.put('/joinGameRoom/:roomId', (req, res) => {
     try {
         if (Object.keys(req.body).length === 0) {

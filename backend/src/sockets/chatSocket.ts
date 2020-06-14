@@ -1,28 +1,51 @@
+import rest from 'restler'
+
 const getChatSocket = (io) => {
     const chat = io
         .of("/chat")
         .on('connection', (socket) => {
             const chatmsg = [];
             let roomId = null;
-            socket.on('disconnect', () => {
+
+            socket.on('disconnect', async() => {
                 console.log('User Disconnected');
-                socket.in(roomId).emit('userUpdate',2) // todo: should be amount of connected users... tis number is just temporarily
+                rest.put(`${process.env.BASE_URL}/api/socket_data/dec/${roomId}`)
+                    .on('fail',(data,response)=>{
+                        chat.in(roomId).emit('error', data)
+                    })
+                    .on('success',(data)=>{
+                        console.log(data.amountOfClients)
+                        chat.in(roomId).emit('userUpdate', {amountOfClients: data.amountOfClients})
+                    })
+                    .on('error',(err)=>{
+                        console.error(err)
+                    })
             });
-            socket.on('room', (room) => {
-                console.log(`You joined the room: ${room}`)
+
+            socket.on('room', async(room) => {
                 roomId = room
-                socket.join(room)
-                socket.in(roomId).emit('userUpdate',socket.client.conn.server.clientsCount)
+                socket.join(roomId, () => {
+                    rest.put(`${process.env.BASE_URL}/api/socket_data/inc/${roomId}`)
+                        .on('fail',(data,response)=>{
+                            chat.in(roomId).emit('error',data)
+                        })
+                        .on('success',(data)=>{
+                            console.log(data.amountOfClients)
+                            chat.in(roomId).emit('userUpdate', {amountOfClients: data.amountOfClients})
+                        })
+                        .on('error',(err)=>{
+                            console.error(err)
+                        })
+                })
             });
+
             socket.on('sendMessage', (data) => {
                 chatmsg.push({
                     message: data.message,
                     username: data.username,
                     id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
                 });
-                console.log(chatmsg.length);
-                console.log(`And the data is: ${data.message}`);
-                socket.in(roomId).emit('newMessage', chatmsg[chatmsg.length - 1]);
+                chat.in(roomId).emit('newMessage', chatmsg[chatmsg.length - 1]);
             });
         });
     return chat;

@@ -3,7 +3,7 @@
         <h2>{{chat.username}}</h2>
         <v-card class="card bg-info">
             <v-card-title>
-                <h4>Radiation Nation Chat <span class="float-right">{{chat.connections}} {{ $t("connections") }}</span></h4>
+                <h4>Radiation Nation Chat <span class="float-right">{{connections}} {{ $t("connections") }}</span></h4>
             </v-card-title>
 
             <v-list-group class="list-group list-group-flush text-right">
@@ -35,10 +35,14 @@
                     message: "",
                     messageTable: [],
                     username: "",
-                    connections: 0,
                 },
                 chatSocket: null,
                 roomId: this.$route.params.gameRoom || 'global'
+            }
+        },
+        computed:{
+            connections:function(){
+                return this.$store.getters.amountOfClients
             }
         },
         methods: {
@@ -54,7 +58,11 @@
                 });
 
                 this.chatSocket.on('userUpdate',(data)=>{
-                    this.chat.connections = data
+                    this.$store.commit('updateAmountOfClients', data.amountOfClients)
+                })
+
+                this.chatSocket.on('error',(data)=>{
+                    alert(`ChatSocket: Error in Backend with Socket: ${data}`)
                 })
             },
             sendMessage() {
@@ -68,7 +76,7 @@
         },
         mounted() {
             this.newSocket()
-            //todo: Get all the information from the VueX St
+            console.log(this.connections)
         }
     };
 </script>
