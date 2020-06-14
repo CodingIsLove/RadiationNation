@@ -101,17 +101,5 @@ userRouter.get('/allUsers', (req, res) => {
 });
 
 
-// Upload a few test users to the db; only for testing purposes
-userRouter.post('/testUsers',async (req, res) => {
-    const dummyUsers = mockData.users
-    for (const element of dummyUsers) {
-        const user = User(element)
-        await user.save((err, doc) => {
-            if (err) {res.status(400).send(`There was en issue creating the test users`)}
-        })
-    }
-    res.status(201).send(`Saved all the dummy user to the db`)
-})
-
 export {userRouter};
 

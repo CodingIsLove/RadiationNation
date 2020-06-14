@@ -5,32 +5,32 @@ export const mockData = {
         {
             username: "chris",
             password: "chris",
-            email: "christopher.germann@mail.com"
+            email: "chris@mail.com"
         },
         {
             username: "beni",
             password: "beni",
-            email: "beni.wyss@mail.com"
+            email: "beni@mail.com"
         },
         {
             username: "armin",
             password: "armin",
-            email: "armin.windlin@mail.com"
+            email: "armin@mail.com"
         } ,
         {
             username: "jonas",
             password: "jonas",
-            email: "jonas.augsburger@mail.com"
+            email: "jonas@mail.com"
         } ,
         {
             username: "mary",
             password: "mary",
-            email: "mary.germann@mail.com"
+            email: "mary@mail.com"
         } ,
         {
             username: "kevin",
             password: "kevin",
-            email: "kevin.hablützel@mail.com"
+            email: "kevin@mail.com"
         }
     ],
     map: gameRoomTemplates.maps.default_level.map

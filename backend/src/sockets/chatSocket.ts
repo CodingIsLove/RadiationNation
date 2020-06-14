@@ -14,7 +14,7 @@ const getChatSocket = (io) => {
                         chat.in(roomId).emit('error', data)
                     })
                     .on('success',(data)=>{
-                        console.log(data.amountOfClients)
+                        console.log(`User left room. Remaining are: ${data.amountOfClients}`)
                         chat.in(roomId).emit('userUpdate', {amountOfClients: data.amountOfClients})
                     })
                     .on('error',(err)=>{
@@ -30,7 +30,7 @@ const getChatSocket = (io) => {
                             chat.in(roomId).emit('error',data)
                         })
                         .on('success',(data)=>{
-                            console.log(data.amountOfClients)
+                            console.log(`Succesfully joined room ${roomId}. Room has now ${data.amountOfClients} users`)
                             chat.in(roomId).emit('userUpdate', {amountOfClients: data.amountOfClients})
                         })
                         .on('error',(err)=>{
