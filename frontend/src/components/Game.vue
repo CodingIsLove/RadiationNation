@@ -1,6 +1,6 @@
 <template>
     <v-container fluid>
-        <div>{{ $t('welcome') }} {{userName}}</div>
+        <div class="text-center white"><span class="float-left red--text">USA: {{this.usaGold}} {{$t("money")}} | {{this.usaHealth}} {{$t("life")}}</span>{{ $t('welcome') }} {{userName}}<span class="float-right blue--text">RUS: {{this.rusGold}} {{$t("money")}} | {{this.rusHealth}} {{$t("life")}}</span></div>
         <div id="gameContainer">
             <canvas id="gameScreen">Seems that your browser does not support canvas :(</canvas>
             <canvas id="controlPanel">Seems that your browser does not support canvas :(</canvas>
