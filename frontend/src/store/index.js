@@ -62,7 +62,7 @@ export default new Vuex.Store({
     actions: {
         updateChatroomData: (context) => {
             http.get('/api/game/allGameRooms').then(({data}) => {
-                let sorted = data.sort((a, b) => a.roomId - b.roomId)
+                let sorted = data.sort((a, b) => a.roomId - b.roomId);
                 console.log('sorted');
                 context.commit('updateChatroomData', sorted);
             })

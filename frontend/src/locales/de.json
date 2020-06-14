@@ -4,5 +4,7 @@
   "connections": "Verbindungen",
   "enterMessage": "Gib eine Nachricht ein",
   "send": "Senden",
-  "welcome": "Willkommen"
+  "welcome": "Willkommen",
+  "life": "Leben",
+  "money": "Gold"
 }

@@ -25,16 +25,21 @@
                 rectGSTileHeight: 0,
                 gsTileHeight: 0,
                 gsTileWidth: 0,
-
                 vueCanvasCP: {},
-
                 ctxCP: {},
                 cpTileWidth: 0,
                 amountCpTiles: 4,
                 rectCP: undefined,
                 rectCPTileWidth: 0,
                 map: new Array(this.amountOfColumns),
-                gameSocket: null
+                gameSocket: null,
+                xSpawn_One: this.gsTileWidth,
+                imgToAnimate: new Image(),
+                xSpawn_Two: this.gsTileWidth * 7,
+                usaGold: 100,
+                rusGold: 100,
+                usaHealth: 50,
+                rusHealth: 50
             }
         },
         computed: {
@@ -84,7 +89,7 @@
             newSocket() {
                 this.gameSocket = io.connect('localhost:8081/game');
                 this.gameSocket.on('connect',()=>{
-                    console.log('shit was connected')
+                    console.log('shit was connected');
                     this.gameSocket.emit('room',2 ) //todo: replace 2 with the real mount of users
                 });
                 this.gameSocket.on('welcome', (data) => {
@@ -93,7 +98,7 @@
                 this.gameSocket.on('newMap',(newMap)=>{
                     this.map = newMap;
                     this.drawMap();
-                })
+                });
                 this.gameSocket.on('currentPlayerPosition', (data)=>{
                     this.$store.commit('updateCurrentPlayerPosition',data.playerPosition)
                 })
@@ -105,31 +110,10 @@
                 this.initializeMap();
 
                 // ---- Add Event Listener
-                // Onmousemove-Event on the GS
-                this.vueCanvasGS.addEventListener('mousemove', (event) => {
-                    this.gsMouseHover(event)
-                });
-
                 // Onclick-Event for clicking on the GS
                 this.vueCanvasGS.addEventListener('click',(event)=>{
                     this.gsClick(event);
                 });
-            },
-            gsMouseHover: function(event) {
-                const x = event.clientX - this.rectGS.left;
-                const y = event.clientY - this.rectGS.top;
-                console.log('x: ' + x + ' y: ' + y);
-                // Calculate Row (Height)
-                let row = Math.ceil(y / this.rectGSTileHeight) -1;
-
-                // Calculate Column (Width)
-                let column = Math.ceil(x / this.rectGSTileWidth) -1;
-
-                const coordX = column * this.rectGSTileWidth;
-                const coordY = row * this.rectGSTileHeight;
-
-                console.log(`Hovering over: (${coordX}, ${coordY})`)
-
             },
             gsClick: function(event) {
 
@@ -145,13 +129,6 @@
             },
             // ---- CP FUNCTIONS
             initializeCP: function () {
-                // 1. Draw 4 fields
-                // 2. Color the fields and make them clickable
-                // 3. Set images into the fields
-                // 4. Add the price tag for each element
-
-                // ---- Canvas Setup
-                // Setup the panel fields - use Canvas / CP for drawing
 
                 var cp_warrior_1 = new Image();
                 var cp_warrior_2 = new Image();
@@ -160,36 +137,47 @@
                 var offset = 10;
 
                 for (let i = 0; i < this.vueCanvasCP.width; i += this.cpTileWidth) {
-                    console.log(i);
                     if (i === 0) {
-                        cp_warrior_1.src = require('@/assets/sprites/warriors/cp_rus_warrior_1.png');
-                        console.log('drawing 1');
+                        if (this.$store.getters.playerPosition === 1) {
+                            cp_warrior_1.src = require('@/assets/sprites/warriors/cp_rus_warrior_1.png');
+                        }
+                        else if (this.$store.getters.playerPosition === 2) {
+                            cp_warrior_1.src = require('@/assets/sprites/warriors/cp_usa_warrior_1.png');
+                        }
                         cp_warrior_1.onload = () => {
-                            console.log('drawing image');
                             document.getElementById("controlPanel").getContext('2d').drawImage(cp_warrior_1, i + offset/2, offset / 2, this.cpTileWidth - offset, this.vueCanvasCP.height - offset);
                         };
                     }
                     else if (i === this.cpTileWidth) {
-                        cp_warrior_2.src = require('@/assets/sprites/warriors/cp_rus_warrior_2.png');
-                        console.log('drawing 2');
+                        if (this.$store.getters.playerPosition === 1) {
+                            cp_warrior_2.src = require('@/assets/sprites/warriors/cp_rus_warrior_2.png');
+                        }
+                        else if (this.$store.getters.playerPosition === 2) {
+                            cp_warrior_2.src = require('@/assets/sprites/warriors/cp_usa_warrior_2.png');
+                        }
                         cp_warrior_2.onload = () => {
-                            console.log('drawing image');
                             document.getElementById("controlPanel").getContext('2d').drawImage(cp_warrior_2, i + offset/2, offset / 2, this.cpTileWidth - offset, this.vueCanvasCP.height - offset);
                         };
                     }
                     else if (i === this.cpTileWidth * 2) {
-                        cp_warrior_3.src = require('@/assets/sprites/warriors/cp_rus_warrior_3.png');
-                        console.log('drawing 3');
+                        if (this.$store.getters.playerPosition === 1) {
+                            cp_warrior_3.src = require('@/assets/sprites/warriors/cp_rus_warrior_3.png');
+                        }
+                        else if (this.$store.getters.playerPosition === 2) {
+                            cp_warrior_3.src = require('@/assets/sprites/warriors/cp_usa_warrior_3.png');
+                        }
                         cp_warrior_3.onload = () => {
-                            console.log('drawing image');
                             document.getElementById("controlPanel").getContext('2d').drawImage(cp_warrior_3, i + offset/2, offset / 2, this.cpTileWidth - offset, this.vueCanvasCP.height - offset);
                         };
                     }
                     else if (i === this.cpTileWidth * 3) {
-                        cp_warrior_4.src = require('@/assets/sprites/warriors/cp_rus_warrior_4.png');
-                        console.log('drawing 4');
+                        if (this.$store.getters.playerPosition === 1) {
+                            cp_warrior_4.src = require('@/assets/sprites/warriors/cp_rus_warrior_4.png');
+                        }
+                        else if (this.$store.getters.playerPosition === 2) {
+                            cp_warrior_4.src = require('@/assets/sprites/warriors/cp_usa_warrior_4.png');
+                        }
                         cp_warrior_4.onload = () => {
-                            console.log('drawing image');
                             document.getElementById("controlPanel").getContext('2d').drawImage(cp_warrior_4, i + offset/2, offset / 2, this.cpTileWidth - offset, this.vueCanvasCP.height - offset);
                         };
                     }
@@ -203,11 +191,6 @@
                 }
 
                 // ---- Add Event Listener
-                // Onmousemove-Event on the CP
-                this.vueCanvasCP.addEventListener('mousemove', (event) => {
-                    this.move(event)
-                });
-
                 // Onclick-Event for clicking on the CP
                 this.vueCanvasCP.addEventListener('click',(event)=>{
                     this.cpClick(event);
@@ -224,32 +207,21 @@
                     this.gsTileHeight = this.vueCanvasGS.height / this.amountOfColumns;
                 })
             },
-            move:function(event){
-                const x = event.clientX - this.rectCP.left;
-                const y = event.clientY - this.rectCP.top;
-                console.log('x: ' + x + ' y: ' + y);
-            },
             cpClick:function(event){
                 const x = event.clientX - this.rectCP.left;
-                const y = event.clientY - this.rectCP.top;
-                console.log(`You clicked at Position: (${x},${y})`);
-                console.log('The Tile width / Total width is: ' + this.rectCP.width / this.amountCpTiles + ' / ' + this.rectCP.width + '.');
+                //const y = event.clientY - this.rectCP.top;
+
                 if (x < this.rectCPTileWidth) {
-                    //SwordFighter
                     this.spawnUnit('Swordfighter', 0);
-                    alert('You pressed on Tile 1  (Left most Tile)');
                 }
                 else if (x < this.rectCPTileWidth * 2) {
                     this.spawnUnit('Knight', 0);
-                    alert('You pressed on Tile 2 (Second from Left)');
                 }
                 else if (x < this.rectCPTileWidth * 3) {
                     this.spawnUnit('Spearfighter', 0);
-                    alert('You pressed on Tile 3 (Third from Left)');
                 }
                 else if (x < this.rectCPTileWidth * 4) {
                     this.spawnUnit('Archer', 0);
-                    alert('You pressed on Tile 4 (Right most Tile)');
                 }
                 else {
                     alert('Something went wrong! You pressed outside of the Canvas!');
@@ -258,6 +230,8 @@
             // ---- Game Functions
             spawnUnit(unitType) {
                 var unitToSpawn = new Image();
+
+                console.log(this.$store.getters.playerPosition);
 
                 if (this.$store.getters.playerPosition === 1) {
                     switch(unitType) {
@@ -276,11 +250,14 @@
                         default:
                             return;
                     }
+                    console.log('Player = RUS');
                     unitToSpawn.onload = () => {
-                        document.getElementById("gameScreen").getContext('2d').drawImage(unitToSpawn, 6 * this.gsTileWidth, 5 * this.gsTileHeight, this.gsTileWidth, this.gsTileHeight);
-                    };
+                        this.rusGold -= 10;
+                        this.imgToAnimate = unitToSpawn;
+                        this.animateRightToLeft();
+                    }
                 }
-                else {
+                else if (this.$store.getters.playerPosition === 2) {
                     switch(unitType) {
                         case 'Swordfighter':
                             unitToSpawn.src = require('@/assets/sprites/warriors/cp_usa_warrior_1.png');
@@ -297,16 +274,50 @@
                         default:
                             return;
                     }
+                    console.log('Player = USA');
                     unitToSpawn.onload = () => {
-                        document.getElementById("gameScreen").getContext('2d').drawImage(unitToSpawn, this.gsTileWidth, 5 * this.gsTileHeight, this.gsTileWidth, this.gsTileHeight);
-                    };
+                        this.usaGold -= 10;
+                        this.imgToAnimate = unitToSpawn;
+                        this.animateLeftToRight();
+                    }
                 }
             },
-
+            animateLeftToRight() {
+                this.initializeMap();
+                document.getElementById('gameScreen').getContext('2d').drawImage(this.imgToAnimate, this.xSpawn_One, 5 * this.gsTileHeight);
+                this.xSpawn_One += 1;
+                if (this.xSpawn_One < this.gsTileWidth * 7) {
+                    requestAnimationFrame(this.animateLeftToRight);
+                }
+                else {
+                    this.xSpawn_One = this.gsTileWidth;
+                    this.rusHealth -= 10;
+                    if (this.rusHealth === 0) {
+                        this.playerWon('USA WON!');
+                    }
+                }
+            },
+            animateRightToLeft() {
+                this.initializeMap();
+                document.getElementById('gameScreen').getContext('2d').drawImage(this.imgToAnimate, this.xSpawn_Two, 5 * this.gsTileHeight);
+                this.xSpawn_Two -= 1;
+                if (this.xSpawn_Two > this.gsTileWidth) {
+                    requestAnimationFrame(this.animateRightToLeft);
+                }
+                else {
+                    this.xSpawn_Two = this.gsTileWidth * 7;
+                    this.usaHealth -= 10;
+                    if (this.usaHealth === 0) {
+                        this.playerWon('RUSSIA WON!');
+                    }
+                }
+            },
+            playerWon(winner) {
+                alert(winner)
+            },
             // ---- MAP SETUP
             initializeMap() {
                 this.selectMap(2);
-                console.log(this.map);
                 this.drawMap();
             },
             selectMap(int) {
@@ -400,7 +411,6 @@
                         this.drawTile(i, j, this.map[i][j]);
                     }
                 }
-                console.log(this.map)
             },
             drawTile(row, column, type) {
                 const coordX = column * this.gsTileWidth;
@@ -435,32 +445,6 @@
                 }
 
                 img.onload = ()=> {
-                    console.log(this.gsTileWidth);
-                    document.getElementById("gameScreen").getContext('2d').drawImage(img, coordX, coordY, this.gsTileWidth , this.gsTileHeight);
-                };
-            },
-            drawUnits(row,column,unitType) {
-                const coordX = column * this.gsTileWidth;
-                const coordY = row * this.gsTileHeight;
-
-                var img = new Image;
-
-                switch (unitType) {
-                    case 0:
-                        img.src = require('@/assets/sprites/warriors/usa_knight.png');
-                        break;
-                    case 1:
-                        this.ctxGS.fillStyle = 'green';
-                        break;
-                    case 2:
-                        this.ctxGS.fillStyle = 'brown';
-                        break;
-                    default:
-                        break;
-                }
-
-                img.onload = ()=> {
-                    console.log(this.gsTileWidth);
                     document.getElementById("gameScreen").getContext('2d').drawImage(img, coordX, coordY, this.gsTileWidth , this.gsTileHeight);
                 };
             }

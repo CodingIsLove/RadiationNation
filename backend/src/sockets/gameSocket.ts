@@ -1,4 +1,4 @@
-const rp = require('request-promise')
+const rp = require('request-promise');
 
 const getGameSocket = (io)=>{
     const game = io
@@ -7,18 +7,18 @@ const getGameSocket = (io)=>{
             let roomId = null;
 
             socket.on('room', (room)=>{
-                console.log('room function was called')
+                console.log('room function was called');
                 roomId = room;
                 socket.join(roomId);
-                console.log('Room was joined')
+                console.log('Room was joined');
                 socket.emit('currentPlayerPosition',{
-                    playerPosition:2
+                    playerPosition:1
                 })
-            })
+            });
             socket.on('updateGameState', (updatedMap) => {
                 console.log(updatedMap);
                 // update the Map for all participants
-                socket.in(roomId).emit('newMap', updatedMap)
+                socket.in(roomId).emit('newMap', updatedMap);
 
                 // Write the new Map Data into the MongoDb
                 rp({
@@ -39,6 +39,6 @@ const getGameSocket = (io)=>{
                 });
             })
         });
-}
+};
 
 export {getGameSocket}
