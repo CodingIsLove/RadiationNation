@@ -1,14 +1,16 @@
 <template>
     <v-app class="lobbyView">
         <Navbar/>
-        <v-row align="start">
-            <v-col align-self="start" cols="8">
-                <Lobby class="lobbyComponent"/>
-            </v-col>
-            <v-col align-self="end" cols="4">
-                <Chat class="chatComponent"/>
-            </v-col>
-        </v-row>
+        <v-container class="lobbyContainer">
+            <v-row align="start">
+                <v-col align-self="start" cols="8">
+                    <Lobby/>
+                </v-col>
+                <v-col align-self="end" cols="4">
+                    <Chat/>
+                </v-col>
+            </v-row>
+        </v-container>
     </v-app>
 </template>
 
@@ -28,12 +30,13 @@ export default {
 </script>
 
 <style scoped>
-    #container{
-        height: 93vh;
+
+    .lobbyContainer {
+
     }
 
     .lobbyView{
-        height: 100%;
+        height: 100vh;
         background-image: url("../assets/battle_background.jpg");
         background-position: center;
     }
