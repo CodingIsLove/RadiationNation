@@ -1,6 +1,10 @@
 <template>
-    <v-container fluid>
-        <div class="text-center white"><span class="float-left red--text">USA: {{this.usaGold}} {{$t("money")}} | {{this.usaHealth}} {{$t("life")}}</span>{{ $t('welcome') }} {{userName}}<span class="float-right blue--text">RUS: {{this.rusGold}} {{$t("money")}} | {{this.rusHealth}} {{$t("life")}}</span></div>
+    <v-container
+            id="container"
+            fluid>
+        <div class="text-center white"><span class="float-left red--text">USA: {{this.usaGold}} {{$t("money")}} | {{this.usaHealth}} {{$t("life")}}</span>{{
+            $t('welcome') }} {{userName}}<span class="float-right blue--text">RUS: {{this.rusGold}} {{$t("money")}} | {{this.rusHealth}} {{$t("life")}}</span>
+        </div>
         <div id="gameContainer">
             <canvas id="gameScreen">Seems that your browser does not support canvas :(</canvas>
             <canvas id="controlPanel">Seems that your browser does not support canvas :(</canvas>
@@ -88,85 +92,78 @@
         methods: {
             newSocket() {
                 this.gameSocket = io.connect('localhost:8081/game');
-                this.gameSocket.on('connect',()=>{
+                this.gameSocket.on('connect', () => {
                     console.log('shit was connected');
-                    this.gameSocket.emit('room',2 ) //todo: replace 2 with the real mount of users
+                    this.gameSocket.emit('room', 2) //todo: replace 2 with the real mount of users
                 });
                 this.gameSocket.on('welcome', (data) => {
                     console.log(`The received data is: ${data}`)
                 });
-                this.gameSocket.on('newMap',(newMap)=>{
+                this.gameSocket.on('newMap', (newMap) => {
                     this.map = newMap;
                     this.drawMap();
                 });
-                this.gameSocket.on('currentPlayerPosition', (data)=>{
-                    this.$store.commit('updateCurrentPlayerPosition',data.playerPosition)
+                this.gameSocket.on('currentPlayerPosition', (data) => {
+                    this.$store.commit('updateCurrentPlayerPosition', data.playerPosition)
                 })
             },
             // ---- GS FUNCTIONS
-            initializeGS: function() {
+            initializeGS: function () {
                 // 1. Draw Grid
                 // ---- Canvas Setup
                 this.initializeMap();
 
                 // ---- Add Event Listener
                 // Onclick-Event for clicking on the GS
-                this.vueCanvasGS.addEventListener('click',(event)=>{
+                this.vueCanvasGS.addEventListener('click', (event) => {
                     this.gsClick(event);
                 });
             },
             // ---- CP FUNCTIONS
             initializeCP: function () {
 
-                var cp_warrior_1 = new Image();
-                var cp_warrior_2 = new Image();
-                var cp_warrior_3 = new Image();
-                var cp_warrior_4 = new Image();
-                var offset = 10;
+                let cp_warrior_1 = new Image();
+                let cp_warrior_2 = new Image();
+                let cp_warrior_3 = new Image();
+                let cp_warrior_4 = new Image();
+                let offset = 10;
 
                 for (let i = 0; i < this.vueCanvasCP.width; i += this.cpTileWidth) {
                     if (i === 0) {
                         if (this.$store.getters.playerPosition === 1) {
                             cp_warrior_1.src = require('@/assets/sprites/warriors/cp_rus_warrior_1.png');
-                        }
-                        else if (this.$store.getters.playerPosition === 2) {
+                        } else if (this.$store.getters.playerPosition === 2) {
                             cp_warrior_1.src = require('@/assets/sprites/warriors/cp_usa_warrior_1.png');
                         }
                         cp_warrior_1.onload = () => {
-                            document.getElementById("controlPanel").getContext('2d').drawImage(cp_warrior_1, i + offset/2, offset / 2, this.cpTileWidth - offset, this.vueCanvasCP.height - offset);
+                            document.getElementById("controlPanel").getContext('2d').drawImage(cp_warrior_1, i + offset / 2, offset / 2, this.cpTileWidth - offset, this.vueCanvasCP.height - offset);
                         };
-                    }
-                    else if (i === this.cpTileWidth) {
+                    } else if (i === this.cpTileWidth) {
                         if (this.$store.getters.playerPosition === 1) {
                             cp_warrior_2.src = require('@/assets/sprites/warriors/cp_rus_warrior_2.png');
-                        }
-                        else if (this.$store.getters.playerPosition === 2) {
+                        } else if (this.$store.getters.playerPosition === 2) {
                             cp_warrior_2.src = require('@/assets/sprites/warriors/cp_usa_warrior_2.png');
                         }
                         cp_warrior_2.onload = () => {
-                            document.getElementById("controlPanel").getContext('2d').drawImage(cp_warrior_2, i + offset/2, offset / 2, this.cpTileWidth - offset, this.vueCanvasCP.height - offset);
+                            document.getElementById("controlPanel").getContext('2d').drawImage(cp_warrior_2, i + offset / 2, offset / 2, this.cpTileWidth - offset, this.vueCanvasCP.height - offset);
                         };
-                    }
-                    else if (i === this.cpTileWidth * 2) {
+                    } else if (i === this.cpTileWidth * 2) {
                         if (this.$store.getters.playerPosition === 1) {
                             cp_warrior_3.src = require('@/assets/sprites/warriors/cp_rus_warrior_3.png');
-                        }
-                        else if (this.$store.getters.playerPosition === 2) {
+                        } else if (this.$store.getters.playerPosition === 2) {
                             cp_warrior_3.src = require('@/assets/sprites/warriors/cp_usa_warrior_3.png');
                         }
                         cp_warrior_3.onload = () => {
-                            document.getElementById("controlPanel").getContext('2d').drawImage(cp_warrior_3, i + offset/2, offset / 2, this.cpTileWidth - offset, this.vueCanvasCP.height - offset);
+                            document.getElementById("controlPanel").getContext('2d').drawImage(cp_warrior_3, i + offset / 2, offset / 2, this.cpTileWidth - offset, this.vueCanvasCP.height - offset);
                         };
-                    }
-                    else if (i === this.cpTileWidth * 3) {
+                    } else if (i === this.cpTileWidth * 3) {
                         if (this.$store.getters.playerPosition === 1) {
                             cp_warrior_4.src = require('@/assets/sprites/warriors/cp_rus_warrior_4.png');
-                        }
-                        else if (this.$store.getters.playerPosition === 2) {
+                        } else if (this.$store.getters.playerPosition === 2) {
                             cp_warrior_4.src = require('@/assets/sprites/warriors/cp_usa_warrior_4.png');
                         }
                         cp_warrior_4.onload = () => {
-                            document.getElementById("controlPanel").getContext('2d').drawImage(cp_warrior_4, i + offset/2, offset / 2, this.cpTileWidth - offset, this.vueCanvasCP.height - offset);
+                            document.getElementById("controlPanel").getContext('2d').drawImage(cp_warrior_4, i + offset / 2, offset / 2, this.cpTileWidth - offset, this.vueCanvasCP.height - offset);
                         };
                     }
 
@@ -180,12 +177,12 @@
 
                 // ---- Add Event Listener
                 // Onclick-Event for clicking on the CP
-                this.vueCanvasCP.addEventListener('click',(event)=>{
+                this.vueCanvasCP.addEventListener('click', (event) => {
                     this.cpClick(event);
                 });
 
                 // Re-Calculate CP Width and Tile Width after Window resizing
-                window.addEventListener('resize',()=>{
+                window.addEventListener('resize', () => {
                     // CP
                     this.rectCP = this.vueCanvasCP.getBoundingClientRect();
                     this.rectCPTileWidth = this.rectCP.width / this.amountCpTiles;
@@ -195,34 +192,30 @@
                     this.gsTileHeight = this.vueCanvasGS.height / this.amountOfColumns;
                 })
             },
-            cpClick:function(event){
+            cpClick: function (event) {
                 const x = event.clientX - this.rectCP.left;
                 //const y = event.clientY - this.rectCP.top;
 
                 if (x < this.rectCPTileWidth) {
                     this.spawnUnit('Swordfighter', 0);
-                }
-                else if (x < this.rectCPTileWidth * 2) {
+                } else if (x < this.rectCPTileWidth * 2) {
                     this.spawnUnit('Knight', 0);
-                }
-                else if (x < this.rectCPTileWidth * 3) {
+                } else if (x < this.rectCPTileWidth * 3) {
                     this.spawnUnit('Spearfighter', 0);
-                }
-                else if (x < this.rectCPTileWidth * 4) {
+                } else if (x < this.rectCPTileWidth * 4) {
                     this.spawnUnit('Archer', 0);
-                }
-                else {
+                } else {
                     alert('Something went wrong! You pressed outside of the Canvas!');
                 }
             },
             // ---- Game Functions
             spawnUnit(unitType) {
-                var unitToSpawn = new Image();
+                let unitToSpawn = new Image();
 
                 console.log(this.$store.getters.playerPosition);
 
                 if (this.$store.getters.playerPosition === 1) {
-                    switch(unitType) {
+                    switch (unitType) {
                         case 'Swordfighter':
                             unitToSpawn.src = require('@/assets/sprites/warriors/cp_rus_warrior_1.png');
                             break;
@@ -244,9 +237,8 @@
                         this.imgToAnimate = unitToSpawn;
                         this.animateRightToLeft();
                     }
-                }
-                else if (this.$store.getters.playerPosition === 2) {
-                    switch(unitType) {
+                } else if (this.$store.getters.playerPosition === 2) {
+                    switch (unitType) {
                         case 'Swordfighter':
                             unitToSpawn.src = require('@/assets/sprites/warriors/cp_usa_warrior_1.png');
                             break;
@@ -276,8 +268,7 @@
                 this.xSpawn_One += 1;
                 if (this.xSpawn_One < this.gsTileWidth * 7) {
                     requestAnimationFrame(this.animateLeftToRight);
-                }
-                else {
+                } else {
                     this.xSpawn_One = this.gsTileWidth;
                     this.rusHealth -= 10;
                     if (this.rusHealth === 0) {
@@ -291,8 +282,7 @@
                 this.xSpawn_Two -= 1;
                 if (this.xSpawn_Two > this.gsTileWidth) {
                     requestAnimationFrame(this.animateRightToLeft);
-                }
-                else {
+                } else {
                     this.xSpawn_Two = this.gsTileWidth * 7;
                     this.usaHealth -= 10;
                     if (this.usaHealth === 0) {
@@ -309,89 +299,73 @@
                 this.drawMap();
             },
             selectMap(int) {
-              switch (int) {
-                  // STANDARD MAP
-                case 0:
-                    for (let i = 0; i < this.amountOfColumns; i++) {
-                        this.map[i] = new Array(this.amountOfRows);
-                        for (let j = 0; j < this.amountOfRows; j++) {
-                            if (i <= 2) {
-                                this.map[i][j] = 0;
-                            }
-                            else if (i === 5 && j === 0) {
-                                this.map[i][j] = 3;
-                            }
-                            else if (i === 5 && j === 7) {
-                                this.map[i][j] = 4;
-                            }
-                            else if (i === 5) {
-                                this.map[i][j] = 2;
-                            }
-                            else if (i === 7 && j === 5 || i === 3 && j === 3) {
-                                this.map[i][j] = 5;
-                            }
-                            else if (i === 3 && j === 4 || i === 7 && j === 3 || i === 6 && j === 4 || i === 4 && j === 2) {
-                                this.map[i][j] = 6;
-                            }
-                            else {
-                                this.map[i][j] = 1;
+                switch (int) {
+                    // STANDARD MAP
+                    case 0:
+                        for (let i = 0; i < this.amountOfColumns; i++) {
+                            this.map[i] = new Array(this.amountOfRows);
+                            for (let j = 0; j < this.amountOfRows; j++) {
+                                if (i <= 2) {
+                                    this.map[i][j] = 0;
+                                } else if (i === 5 && j === 0) {
+                                    this.map[i][j] = 3;
+                                } else if (i === 5 && j === 7) {
+                                    this.map[i][j] = 4;
+                                } else if (i === 5) {
+                                    this.map[i][j] = 2;
+                                } else if (i === 7 && j === 5 || i === 3 && j === 3) {
+                                    this.map[i][j] = 5;
+                                } else if (i === 3 && j === 4 || i === 7 && j === 3 || i === 6 && j === 4 || i === 4 && j === 2) {
+                                    this.map[i][j] = 6;
+                                } else {
+                                    this.map[i][j] = 1;
+                                }
                             }
                         }
-                    }
-                    break;
+                        break;
                     //FOREST MAP
-                case 1:
-                    for (let i = 0; i < this.amountOfColumns; i++) {
-                        this.map[i] = new Array(this.amountOfRows);
-                        for (let j = 0; j < this.amountOfRows; j++) {
-                            if (i <= 2) {
-                                this.map[i][j] = 0;
-                            }
-                            else if (i === 5 && j === 0) {
-                                this.map[i][j] = 3;
-                            }
-                            else if (i === 5 && j === 7) {
-                                this.map[i][j] = 4;
-                            }
-                            else if (i === 5) {
-                                this.map[i][j] = 2;
-                            }
-                            else {
-                                this.map[i][j] = 6;
+                    case 1:
+                        for (let i = 0; i < this.amountOfColumns; i++) {
+                            this.map[i] = new Array(this.amountOfRows);
+                            for (let j = 0; j < this.amountOfRows; j++) {
+                                if (i <= 2) {
+                                    this.map[i][j] = 0;
+                                } else if (i === 5 && j === 0) {
+                                    this.map[i][j] = 3;
+                                } else if (i === 5 && j === 7) {
+                                    this.map[i][j] = 4;
+                                } else if (i === 5) {
+                                    this.map[i][j] = 2;
+                                } else {
+                                    this.map[i][j] = 6;
+                                }
                             }
                         }
-                    }
-                    break;
+                        break;
                     // Forest vs Forest Map
-                case 2:
-                    for (let i = 0; i < this.amountOfColumns; i++) {
-                        this.map[i] = new Array(this.amountOfRows);
-                        for (let j = 0; j < this.amountOfRows; j++) {
-                            if (i <= 2) {
-                                this.map[i][j] = 0;
-                            }
-                            else if (i === 5 && j === 0) {
-                                this.map[i][j] = 3;
-                            }
-                            else if (i === 5 && j === 7) {
-                                this.map[i][j] = 4;
-                            }
-                            else if (i === 5) {
-                                this.map[i][j] = 2;
-                            }
-                            else if (i === 7 && j === 5 || i === 4 && j === 6 || i === 6 && j === 1 || i === 4 && j === 2) {
-                                this.map[i][j] = 5;
-                            }
-                            else if (j === 0 || j === 1 || j === 2 || j === 5 || j === 6 || j === 7) {
-                                this.map[i][j] = 6;
-                            }
-                            else {
-                                this.map[i][j] = 1;
+                    case 2:
+                        for (let i = 0; i < this.amountOfColumns; i++) {
+                            this.map[i] = new Array(this.amountOfRows);
+                            for (let j = 0; j < this.amountOfRows; j++) {
+                                if (i <= 2) {
+                                    this.map[i][j] = 0;
+                                } else if (i === 5 && j === 0) {
+                                    this.map[i][j] = 3;
+                                } else if (i === 5 && j === 7) {
+                                    this.map[i][j] = 4;
+                                } else if (i === 5) {
+                                    this.map[i][j] = 2;
+                                } else if (i === 7 && j === 5 || i === 4 && j === 6 || i === 6 && j === 1 || i === 4 && j === 2) {
+                                    this.map[i][j] = 5;
+                                } else if (j === 0 || j === 1 || j === 2 || j === 5 || j === 6 || j === 7) {
+                                    this.map[i][j] = 6;
+                                } else {
+                                    this.map[i][j] = 1;
+                                }
                             }
                         }
-                    }
-                    break;
-              }
+                        break;
+                }
             },
             drawMap() {
                 for (let i = 0; i < this.amountOfColumns; i++) {
@@ -404,7 +378,7 @@
                 const coordX = column * this.gsTileWidth;
                 const coordY = row * this.gsTileHeight;
 
-                var img = new Image;
+                let img = new Image;
 
                 switch (type) {
                     case 0:
@@ -432,8 +406,8 @@
                         break;
                 }
 
-                img.onload = ()=> {
-                    document.getElementById("gameScreen").getContext('2d').drawImage(img, coordX, coordY, this.gsTileWidth , this.gsTileHeight);
+                img.onload = () => {
+                    document.getElementById("gameScreen").getContext('2d').drawImage(img, coordX, coordY, this.gsTileWidth, this.gsTileHeight);
                 };
             }
         }
@@ -441,19 +415,26 @@
 </script>
 
 <style scoped>
+    #container {
+        display: flex;
+        flex-direction: column;
+    }
+
     #gameContainer {
-        height: 90%;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
     }
 
     #gameScreen {
         width: 100%;
-        height: 70%;
         border: 1px solid black;
+        display: flex;
+        flex-direction: column;
     }
 
     #controlPanel {
-        width: 100%;
-        height: 5%;
         border: 1px solid black;
+        height: 20%;
     }
 </style>
