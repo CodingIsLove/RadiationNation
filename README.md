@@ -3,10 +3,6 @@
 
 This is a game, we develop for the Web Engineering Course at our university of applied sciences
 
-## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
 ## How to Play
 ### Login / Register
 First you have to register yourself in order to get to the Lobby. Your Logindata will be stored in our MongoDB Atlas Database (encrypted). Usernames / Emails cannot be used twice. After registering simply type in the correct Username and Password.
