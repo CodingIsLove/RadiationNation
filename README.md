@@ -13,7 +13,7 @@ The Installation Manual can be found in the [Installation Guide (Wiki)](https://
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+We have deployed RadiationNation in our Local Network. For that we used 2 Raspberry Pi's (1x Backend / 1x Frontend). Then we opened Ports and forwarded them to run it and possibly accessing it remotely.
 
 ## Technologies used
 
