@@ -18,9 +18,13 @@ In the Lobby you can join a Game. Each Game Session shows which User has joined 
 Each Player gets assigned a Nation (USA-Red vs. Russia-Blue). They both have the same starting Gold (100) and Health (50). They can send a Unit listed below the Game Screen (Swordfighter, Knight, Spearfighter, Bowman), each send costs 10 Gold. The sent Units run towards eachother and fight. The Fight is decided like the following:
 
 Swordfighter: Wins against Spearfighter, Loses against Knight, Random against Bowman.
+
 Knight: Wins against Swordfighter, Loses against Spearfighter, Random against Bowman.
+
 Spearfighter: Wins against Knight, Loses against Swordfighter, Random against Bowman.
+
 Bowman: Random against Swordfighter, Random against Knight, Random against Spearfighter, Loses against Bowman.
+
 
 If a Unit reaches the enemy's Base, the enemy loses 10 Health.
 
